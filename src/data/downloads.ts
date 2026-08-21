@@ -36,6 +36,10 @@ export const downloadGroups: DownloadGroup[] = [
       { name: 'macOS', detail: 'Apple silicon · unsigned DMG', icon: 'apple', action: 'Download', href: `${serverRelease}/Portico-Media-Server-macOS-arm64.dmg` },
       { name: 'Linux archive (x64)', detail: 'Distribution-neutral · tar.gz', icon: 'linux', action: 'Download', href: `${serverRelease}/portico-media-server-linux-x64.tar.gz` },
       { name: 'Linux archive (ARM64)', detail: 'Distribution-neutral · tar.gz', icon: 'linux', action: 'Download', href: `${serverRelease}/portico-media-server-linux-arm64.tar.gz` },
+      { name: 'Debian and Ubuntu (x64)', detail: 'Installable · DEB', icon: 'linux', action: 'Download', href: `${serverRelease}/portico-media-server-linux-x64.deb` },
+      { name: 'Debian and Ubuntu (ARM64)', detail: 'Installable · DEB', icon: 'linux', action: 'Download', href: `${serverRelease}/portico-media-server-linux-arm64.deb` },
+      { name: 'Fedora and RPM Linux (x64)', detail: 'Installable · RPM', icon: 'linux', action: 'Download', href: `${serverRelease}/portico-media-server-linux-x64.rpm` },
+      { name: 'Fedora and RPM Linux (ARM64)', detail: 'Installable · RPM', icon: 'linux', action: 'Download', href: `${serverRelease}/portico-media-server-linux-arm64.rpm` },
       { name: 'Docker', detail: 'Multi-architecture image · amd64 and arm64', icon: 'docker', action: 'Download', href: 'https://github.com/PorticoMediaServer/portico-server/pkgs/container/portico-server' }
     ]
   },
@@ -43,7 +47,7 @@ export const downloadGroups: DownloadGroup[] = [
     title: 'Phones and tablets',
     description: 'Keep your libraries, progress, and playback close at hand.',
     items: [
-      { name: 'iPhone and iPad', detail: 'iOS and iPadOS', icon: 'apple', action: 'Download', href: 'https://testflight.apple.com/join/portico' },
+      { name: 'iPhone and iPad', detail: 'iOS and iPadOS', icon: 'apple', action: 'Coming soon' },
       { name: 'Android', detail: 'Phones and tablets', icon: 'android', action: 'Coming soon' }
     ]
   },
