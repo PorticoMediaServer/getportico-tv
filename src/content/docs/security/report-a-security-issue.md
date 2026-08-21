@@ -7,7 +7,7 @@ audience: Everyone
 updated: 2026-07-12
 ---
 
-Send security reports privately to [justin@ehler.ca](mailto:justin@ehler.ca). Do not open a public issue containing an unpatched vulnerability, account data, token, private key, server route, or personal media information.
+Send security reports privately to [admin@getportico.tv](mailto:admin@getportico.tv). Do not open a public issue containing an unpatched vulnerability, account data, token, private key, server route, or personal media information.
 
 Include the affected Portico component and version, the expected and observed result, the smallest reproducible steps, and the security impact. State whether the issue has been tested against a server, hosted account, client, or documentation site.
 

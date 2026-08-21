@@ -26,7 +26,7 @@ The generated site is written to `dist/`. Deployment configuration is intentiona
 
 ## Feedback and contributions
 
-Website problems and documentation feedback are welcome through [GitHub Issues](https://github.com/PorticoMediaServer/getportico-tv/issues). Portico is not accepting external code contributions or pull requests at this stage. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Website problems and documentation feedback are welcome through [GitHub Issues](https://github.com/PorticoMediaServer/getportico-tv/issues). Portico does not accept external code contributions. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Please report security issues privately as described in [SECURITY.md](SECURITY.md).
 

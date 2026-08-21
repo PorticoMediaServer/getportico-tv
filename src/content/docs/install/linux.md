@@ -7,7 +7,9 @@ audience: Server owners
 updated: 2026-07-12
 ---
 
-Download the Linux package for the architecture of your server. Use a normal administrative account and keep Portico's executable, configuration, data, and media paths separate.
+Download the Linux package for the architecture of your server. Portico publishes DEB and RPM packages plus a distribution-neutral `.tar.gz` bundle for both x64 and ARM64. Use a normal administrative account and keep Portico's executable, configuration, data, and media paths separate.
+
+Use the DEB package on Debian or Ubuntu, the RPM package on Fedora or a related distribution, or unpack the `.tar.gz` bundle when neither package format fits your system. The archive contains Portico Media Server, its web application, ffmpeg, ffprobe, licences, and third-party notices.
 
 ## Service account
 

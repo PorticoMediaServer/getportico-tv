@@ -24,17 +24,19 @@ export type DownloadGroup = {
   items: DownloadItem[];
 };
 
-const serverRelease = 'https://github.com/justinehler/portico/releases/latest/download';
+const serverRelease = 'https://github.com/PorticoMediaServer/portico-server/releases/latest/download';
 
 export const downloadGroups: DownloadGroup[] = [
   {
     title: 'Portico Server',
     description: 'Install Portico on the computer that stores or can reach your media.',
     items: [
-      { name: 'Windows', detail: 'Windows 10 and 11 · x64', icon: 'windows', action: 'Download', href: `${serverRelease}/portico-server-windows-x64.exe` },
-      { name: 'macOS', detail: 'macOS 13 or later · Apple silicon and Intel', icon: 'apple', action: 'Download', href: `${serverRelease}/portico-server-macos-universal.dmg` },
-      { name: 'Linux', detail: 'Debian and Ubuntu · x64 and ARM64', icon: 'linux', action: 'Download', href: `${serverRelease}/portico-server-linux-x64.tar.gz` },
-      { name: 'Docker', detail: 'Docker Engine on Linux', icon: 'docker', action: 'Coming soon' }
+      { name: 'Windows x64', detail: 'Windows 10 and 11 · unsigned installer', icon: 'windows', action: 'Download', href: `${serverRelease}/Portico-Media-Server-Windows-x64-Setup.exe` },
+      { name: 'Windows ARM64', detail: 'Windows 11 on ARM · unsigned installer', icon: 'windows', action: 'Download', href: `${serverRelease}/Portico-Media-Server-Windows-arm64-Setup.exe` },
+      { name: 'macOS', detail: 'Apple silicon · unsigned DMG', icon: 'apple', action: 'Download', href: `${serverRelease}/Portico-Media-Server-macOS-arm64.dmg` },
+      { name: 'Linux archive (x64)', detail: 'Distribution-neutral · tar.gz', icon: 'linux', action: 'Download', href: `${serverRelease}/portico-media-server-linux-x64.tar.gz` },
+      { name: 'Linux archive (ARM64)', detail: 'Distribution-neutral · tar.gz', icon: 'linux', action: 'Download', href: `${serverRelease}/portico-media-server-linux-arm64.tar.gz` },
+      { name: 'Docker', detail: 'Multi-architecture image · amd64 and arm64', icon: 'docker', action: 'Download', href: 'https://github.com/PorticoMediaServer/portico-server/pkgs/container/portico-server' }
     ]
   },
   {
