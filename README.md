@@ -1,0 +1,42 @@
+# getportico.tv
+
+> Portico Media Server is the heart of the project. Start with the [primary `portico-server` repository](https://github.com/PorticoMediaServer/portico-server) or visit the live site at [getportico.tv](https://getportico.tv).
+
+This repository contains the public Portico website. It explains the project, hosts user documentation, and points visitors to verified downloads published through GitHub Releases.
+
+## Technology
+
+| Area | Technology |
+| --- | --- |
+| Site generator | Astro |
+| Language | TypeScript |
+| Styling | CSS |
+| Content | Astro content collections and Markdown |
+| Automation | GitHub Actions |
+
+## Development
+
+```sh
+npm ci
+npm run check
+npm run build
+```
+
+The generated site is written to `dist/`. Deployment configuration is intentionally separate from Hosted Services and is documented only where it is safe and useful to users.
+
+## Feedback and contributions
+
+Website problems and documentation feedback are welcome through [GitHub Issues](https://github.com/PorticoMediaServer/getportico-tv/issues). Portico is not accepting external code contributions or pull requests at this stage. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Please report security issues privately as described in [SECURITY.md](SECURITY.md).
+
+## License and trademarks
+
+This repository is licensed under `GPL-3.0-or-later`. See [LICENSE](LICENSE). The license does not permit unofficial sites or builds to be represented as official Portico services; see [TRADEMARKS.md](TRADEMARKS.md).
+
+---
+
+Made with ❤️ in Nova Scotia, Canada | Developed by [Justin Ehler](https://ehler.ca)  
+Copyright © 2026 Justin Ehler  
+Portico Media Server is free software licensed under the GNU General  
+Public License, version 3 or, at your option, any later version.
