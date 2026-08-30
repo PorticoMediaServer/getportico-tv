@@ -32,22 +32,4 @@ const entries = (await getCollection('docs')).sort((a, b) => a.data.order - b.da
   })}
 </nav>
 
-<script>
-  const sidebarSearch = document.querySelector<HTMLInputElement>('[data-sidebar-search]');
-  const sidebar = sidebarSearch?.closest('.docs-sidebar');
-  sidebarSearch?.addEventListener('input', () => {
-    const query = sidebarSearch.value.trim().toLowerCase();
-    const details = [...(sidebar?.querySelectorAll<HTMLDetailsElement>('details') ?? [])];
-    for (const group of details) {
-      const links = [...group.querySelectorAll<HTMLAnchorElement>('a')];
-      let matchCount = 0;
-      for (const link of links) {
-        const matches = !query || link.textContent?.toLowerCase().includes(query);
-        link.hidden = !matches;
-        if (matches) matchCount += 1;
-      }
-      group.hidden = matchCount === 0;
-      if (query && matchCount > 0) group.open = true;
-    }
-  });
-</script>
+<script is:inline src="/scripts/docs-sidebar.js"></script>

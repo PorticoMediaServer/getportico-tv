@@ -28,12 +28,4 @@ const links = [
   </div>
 </header>
 
-<script>
-  const button = document.querySelector<HTMLButtonElement>('.menu-button');
-  const navigation = document.querySelector<HTMLElement>('.header-navigation');
-  button?.addEventListener('click', () => {
-    const open = button.getAttribute('aria-expanded') === 'true';
-    button.setAttribute('aria-expanded', String(!open));
-    navigation?.toggleAttribute('data-open', !open);
-  });
-</script>
+<script is:inline src="/scripts/site-header.js"></script>

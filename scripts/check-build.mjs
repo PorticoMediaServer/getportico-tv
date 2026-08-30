@@ -26,6 +26,10 @@ for (const asset of ['brand/portico-wordmark-white.svg', 'brand/portico-wordmark
   await access(new URL(asset, root));
 }
 
+for (const script of ['scripts/site-header.js', 'scripts/docs-sidebar.js', 'scripts/docs-directory.js']) {
+  await access(new URL(script, root));
+}
+
 const docsRoot = new URL('docs/', root);
 const docsEntries = await readdir(docsRoot, { recursive: true });
 const articleCount = docsEntries.filter((entry) => entry.endsWith('index.html')).length;
@@ -39,6 +43,9 @@ const broken = [];
 
 for (const file of htmlFiles) {
   const html = await readFile(new URL(file, root), 'utf8');
+  if (/<script(?![^>]*\bsrc=)[^>]*>/i.test(html)) {
+    throw new Error(`Inline production script violates the deployed CSP: ${file}`);
+  }
   const references = [...html.matchAll(/(?:href|src)="([^"]+)"/g)].map((match) => match[1]);
   for (const reference of references) {
     if (!reference.startsWith('/') || reference.startsWith('//')) continue;
@@ -51,6 +58,11 @@ for (const file of htmlFiles) {
       broken.push(`${file}: ${reference}`);
     }
   }
+}
+
+const homeHtml = await readFile(new URL('index.html', root), 'utf8');
+if (!homeHtml.includes('<main id="main-content" tabindex="-1">')) {
+  throw new Error('Skip-link target must accept programmatic keyboard focus.');
 }
 
 if (broken.length > 0) {

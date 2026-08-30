@@ -47,7 +47,7 @@ const fullTitle = title === 'Portico' ? title : `${title} | Portico`;
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     {!hideChrome && <SiteHeader />}
-    <main id="main-content">
+    <main id="main-content" tabindex="-1">
       <slot />
     </main>
     {!hideChrome && <SiteFooter />}
