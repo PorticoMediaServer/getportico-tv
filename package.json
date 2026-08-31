@@ -14,7 +14,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource/manrope": "^5.2.8",
     "astro": "^7.0.7",
-    "simple-icons": "^16.26.0"
+    "simple-icons": "^16.28.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
