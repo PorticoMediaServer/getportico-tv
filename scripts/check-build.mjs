@@ -1,4 +1,9 @@
-import { access, readFile, readdir } from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
+import {access, readFile, readdir} from 'node:fs/promises';
+import {dirname, resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
+
+const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const root = new URL('../dist/', import.meta.url);
 const required = [
   'index.html',
@@ -14,6 +19,20 @@ const required = [
 ];
 
 await Promise.all(required.map((file) => access(new URL(file, root))));
+
+const buildIdentity = JSON.parse(await readFile(new URL('portico-static-build-identity.json', root), 'utf8'));
+const identityFields = Object.keys(buildIdentity).sort();
+if (identityFields.join('\0') !== ['commit', 'project', 'repository', 'schema'].join('\0')) {
+  throw new Error('Public-site build identity fields are not the exact reviewed set.');
+}
+const currentCommit = execFileSync('git', ['-C', projectRoot, 'rev-parse', '--verify', 'HEAD'], {encoding: 'utf8'}).trim();
+if (buildIdentity.schema !== 'portico.static-build-identity.v1' ||
+    buildIdentity.project !== '@portico/website' ||
+    buildIdentity.repository !== 'getportico-tv' ||
+    buildIdentity.commit !== currentCommit ||
+    !/^[a-f0-9]{40}$/.test(buildIdentity.commit)) {
+  throw new Error('Public-site build identity does not match @portico/website at the current getportico-tv commit.');
+}
 
 const downloadHtml = await readFile(new URL('download/index.html', root), 'utf8');
 const labels = [...downloadHtml.matchAll(/class="download-(?:action|status)[^"]*"[^>]*>([^<]+)</g)].map((match) => match[1].trim());
@@ -69,4 +88,4 @@ if (broken.length > 0) {
   throw new Error(`Broken internal references:\n${broken.join('\n')}`);
 }
 
-console.log(`Verified ${htmlFiles.length} static pages, ${articleCount} documentation pages, ${labels.length} client actions, and all internal references.`);
+console.log(`Verified ${htmlFiles.length} static pages, ${articleCount} documentation pages, ${labels.length} client actions, all internal references, and build identity ${buildIdentity.commit}.`);

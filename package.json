@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1 --port 19200",
-    "build": "astro check && astro build && node scripts/check-build.mjs",
+    "build": "astro check && astro build && node scripts/write-build-identity.mjs && node scripts/check-build.mjs",
     "check": "astro check",
     "preview": "astro preview --host 127.0.0.1 --port 19201"
   },
