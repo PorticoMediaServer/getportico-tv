@@ -1,18 +1,46 @@
 ---
 title: Portico security model
-description: Understand the separate server and cloud authorities and where access is enforced.
+description: What Portico Server controls, what Portico Cloud controls, and where access is checked.
 category: security
 order: 1
 audience: Everyone
-updated: 2026-07-12
+updated: 2026-10-18
 ---
 
-Your Portico Server keeps control of your media and decides who can use it. Portico Cloud handles Portico Accounts and helps an approved app find the right server. It cannot play, share, or administer media that the server has not authorized.
+Your Portico Server keeps your media and decides who can use it. Portico Cloud handles Portico Accounts and helps an approved app find the right server. A signed route tells an app where to connect; it doesn't grant media access.
 
-## Technical details
+## What Portico Server controls
 
-Portico Server is the authority for media, libraries, playback, local users, permissions, settings, recordings, downloads, and administration. Every server request is authorized there, including one made through a Portico Account.
+Portico Server manages media, libraries, playback, local accounts, permissions, settings, recordings, downloads and administration. Protected requests are checked against current account, profile and permission state. Public discovery and setup endpoints have their own access rules.
 
-Portico Cloud is authoritative for Portico Accounts, hosted security settings, server ownership and membership, invitations, and signed route and policy documents. It cannot grant more media access than the server currently allows.
+## What Portico Cloud controls
 
-Server certificate private keys remain on the server. Cloud route and policy signing keys remain in the hosted control plane. Clients verify the documents and server identity used to establish a direct route.
+Portico Cloud manages Portico Accounts, hosted security settings, server ownership and membership, invitations, and signed route and policy documents. The server maps an admitted Portico Account to its local authorization state and checks the requested action. Cloud membership alone isn't a playback permission.
+
+## Keys and verification
+
+The server's identity signing key and certificate private key stay on the server. Certificate requests send a certificate signing request, not the certificate private key. Cloud route and policy signing keys belong to Portico Cloud. Portico Server verifies hosted signing certificates against Portico's trusted public signing root. The shared web and native connection code fetches the route-verification key from the configured Portico Account service over HTTPS and checks route signatures with that key.
+
+For account-based discovery, the app checks the route document's signature, account audience, server identity, generations and expiry. Before sending credentials to a candidate address, it asks that server to sign a fresh challenge for that exact address and checks it against the expected identity. A manually entered server address establishes an initial identity that the app remembers; this isn't prior independent proof that you entered the intended server.
+
+## HTTP and HTTPS
+
+Owners can use plain HTTP or HTTPS. Both use the same authentication and permission checks, but plain HTTP doesn't encrypt credentials or media in transit. Use HTTPS on networks you don't trust. HTTP and HTTPS share the server's listening port, which defaults to TCP **32500**. HTTPS can use a Portico-managed certificate or the owner's certificate; a reverse proxy can also terminate HTTPS.
+
+Portico Cloud publishes public routes over HTTPS. Apple apps accept plain HTTP only for local-network addresses, including supported private and overlay addresses. They require HTTPS for other addresses. Signed identity checks don't turn plain HTTP into an encrypted connection.
+
+## Sessions
+
+The server issues short-lived bearer access tokens and rotating refresh tokens bound to an installation ID. Server access tokens last up to 15 minutes. The installation ID identifies an app installation; it isn't a device private key. Signing out ends the session family. Disabling an account, changing its password or blocking a device ends its sessions; permission changes apply to subsequent requests.
+
+The web app keeps saved server credentials in an encrypted browser store. Server API authentication uses bearer headers, not cookies. Portico Account sessions and server sessions are separate; the app doesn't forward a cloud session token to an arbitrary server.
+
+## API keys and personal access tokens
+
+Owners create API keys; members can create their own personal access tokens when the owner allows it. Each credential acts as its creator under current permissions and its chosen scopes: `read`, `playback`, `library` or `admin`. It can perform most actions that person can perform with those scopes.
+
+Send the credential in `Authorization: Bearer <secret>`. For `GET` and `HEAD`, `apiKey=<secret>` is also accepted in the query string. These credentials work from any browser origin. Cross-origin access doesn't bypass roles, library restrictions or scopes. URLs containing keys are secrets too.
+
+Sign-in, password and two-step verification changes, credential management, ownership and server claiming require sessions. Other session-only operations, including profile selection, invitation acceptance and device pairing, are identified by `x-scope: session` in the API contract. Keys can't create other keys.
+
+Keys and tokens have their own lifetime. Password changes and sign-out don't revoke them. Revoke them separately under **Settings → Integrations** in the **Server** section, or **Personal access tokens** under **Settings → Profile & account**. After restoring a backup, review the credentials restored with the database.

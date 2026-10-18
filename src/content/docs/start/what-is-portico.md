@@ -1,27 +1,29 @@
 ---
 title: What is Portico?
-description: Learn what Portico does, what runs on your server, and how the apps fit together.
+description: What Portico does, what runs on your server and how the apps connect to it.
 category: start
 order: 1
 audience: Everyone
-updated: 2026-07-12
+updated: 2026-10-18
 ---
 
-Portico is a personal media server. You install Portico Server on a computer that can reach your media files, add the folders you want to use, and then watch from Portico apps on other devices.
+Portico is a personal media server. You install Portico Server on a computer that can reach your media files and add the folders you want to use. Then you watch from Portico apps on your other devices.
 
-The server does the important work. It scans files, builds libraries, stores account permissions and watch progress, decides how each item should play, and sends media to an authorized app.
+## What the server does
+
+The server does the real work. It scans your files and builds libraries. It stores account permissions and watch progress. It decides how each item should play, and it sends media to apps that are allowed to receive it.
 
 ## What Portico Cloud does
 
-A Portico Account gives people one identity they can use across their approved servers and devices. Portico Cloud coordinates account security, server membership, and signed connection information. It does not become the home of your media.
+A Portico Account gives each person one identity they can use on every server and device they've been approved for. Portico Cloud handles account security, server membership and signed connection information. Your media never moves there.
 
-After an app verifies a route to a server, server-specific requests and media travel directly between the app and that server. Portico Cloud does not relay, cache, or inspect the stream.
+Once an app has verified a route to a server, requests for that server and the media itself go directly between the app and the server. Portico Cloud doesn't relay, cache or inspect the stream.
 
 ## What you need
 
 - A computer that can stay on when people want to watch.
-- Storage containing media you are authorized to use.
-- A reliable local network connection.
-- A Portico app or modern web browser.
+- Storage with media you're authorized to use.
+- A reliable connection to your local network.
+- A Portico app or a modern web browser.
 
-Start with [Choose a server](/docs/start/choose-a-server/) if you have not selected the computer that will run Portico.
+If you haven't picked the computer that will run Portico yet, start with [Choose a server](/docs/start/choose-a-server/).

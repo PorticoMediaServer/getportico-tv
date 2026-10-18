@@ -45,7 +45,7 @@ for (const asset of ['brand/portico-wordmark-white.svg', 'brand/portico-wordmark
   await access(new URL(asset, root));
 }
 
-for (const script of ['scripts/site-header.js', 'scripts/docs-sidebar.js', 'scripts/docs-directory.js']) {
+for (const script of ['scripts/site-header.js', 'scripts/docs-sidebar.js', 'scripts/docs-search.js', 'scripts/docs-toc.js']) {
   await access(new URL(script, root));
 }
 

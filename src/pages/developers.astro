@@ -2,23 +2,69 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Developers" description="Portico architecture, API contracts, client integration, and contribution documentation.">
-  <header class="page-intro dark-intro">
-    <div>
-      <h1>Build with Portico.</h1>
-      <p>Portico publishes separate contracts for the local server and hosted control plane, with a shared product contract for client behaviour.</p>
+<BaseLayout title="Developers" description="Build on Portico: the server API, the Portico Cloud API, authentication, client architecture and security requirements.">
+  <header class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Developers</span>
+      <h1 class="display-1">Build with Portico.</h1>
+      <p class="lede">Portico's own apps use the same server API you can. Create an API key in a minute, script your library, receive signed webhooks, or connect an assistant over MCP. All of it runs on your own server, with no Portico Account required.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/docs/developers/api-overview/">API overview</a>
+        <a class="button button-ghost" href="https://github.com/PorticoMediaServer/portico-server">View on GitHub <span aria-hidden="true">↗</span></a>
+      </div>
     </div>
   </header>
-  <section class="developer-page section-light">
-    <div class="developer-intro">
-      <h2>Start with the authority you need.</h2>
-      <p>Portico Server owns media, libraries, playback, local permissions, and administration. Portico Cloud owns Portico Accounts, server membership, signed route discovery, and hosted account security.</p>
-    </div>
-    <div class="developer-links">
-      <a href="/docs/developers/api-overview/"><strong>API overview</strong><span>Choose the server or cloud contract and understand the authentication boundary.</span></a>
-      <a href="/docs/developers/client-architecture/"><strong>Client architecture</strong><span>Use the product contract and platform-appropriate playback integration.</span></a>
-      <a href="/docs/developers/security-requirements/"><strong>Security requirements</strong><span>Preserve direct-route verification, server authorization, and secret handling.</span></a>
-      <a href="/docs/developers/reporting-issues/"><strong>Report an issue</strong><span>Collect useful evidence without exposing media, credentials, or private routes.</span></a>
+  <section class="section">
+    <div class="container">
+      <div class="feature-grid dev-capabilities">
+        <article>
+          <span class="feature-index">REST</span>
+          <h3>Server API</h3>
+          <p>Everything under <code>/v1</code> on port 32500, described by a published OpenAPI contract. Libraries, search, playback, Live TV, DVR, people and settings.</p>
+        </article>
+        <article>
+          <span class="feature-index">KEYS</span>
+          <h3>API keys and tokens</h3>
+          <p>Create scoped keys under Settings → Integrations. Send them as a bearer header from any tool or origin.</p>
+        </article>
+        <article>
+          <span class="feature-index">EVENTS</span>
+          <h3>Signed webhooks</h3>
+          <p>The server posts events straight to your endpoint, signed with HMAC-SHA256, with retries and a delivery log.</p>
+        </article>
+        <article>
+          <span class="feature-index">MCP</span>
+          <h3>Assistants</h3>
+          <p>A Model Context Protocol endpoint at <code>/v1/mcp</code>. Tools follow the key's scopes and the member's permissions.</p>
+        </article>
+      </div>
+      <div class="split-panels">
+        <article>
+          <h3>Portico Server</h3>
+          <ul>
+            <li>Media and libraries</li>
+            <li>Playback decisions and streams</li>
+            <li>Local accounts and permissions</li>
+            <li>Server administration</li>
+          </ul>
+        </article>
+        <article>
+          <h3>Portico Cloud</h3>
+          <ul>
+            <li>Portico Accounts and sign-in security</li>
+            <li>Server membership and invitations</li>
+            <li>Signed route discovery for direct connections</li>
+          </ul>
+        </article>
+      </div>
+      <div class="developer-grid">
+        <a href="/docs/developers/api-overview/"><strong>API overview</strong><span>Choose the server or cloud API and see where each one's authentication applies.</span></a>
+        <a href="/docs/developers/authentication/"><strong>Authentication</strong><span>Sign people in, keep sessions safe and use API keys.</span></a>
+        <a href="/docs/developers/client-architecture/"><strong>Client architecture</strong><span>Follow the shared client behaviour and use each platform's native playback.</span></a>
+        <a href="/docs/developers/security-requirements/"><strong>Security requirements</strong><span>Verify direct routes, respect server permissions and handle secrets properly.</span></a>
+        <a href="/docs/developers/reporting-issues/"><strong>Report an issue</strong><span>Send useful evidence without exposing media, credentials or private addresses.</span></a>
+        <a href="/docs/security/report-a-security-issue/"><strong>Report a security issue</strong><span>Tell us privately about a vulnerability.</span></a>
+      </div>
     </div>
   </section>
 </BaseLayout>
