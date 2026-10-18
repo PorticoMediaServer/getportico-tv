@@ -24,7 +24,9 @@ const kib = (bytes: number) => (bytes >= 1048576 ? `${Math.round(bytes / 1048576
     <span class="api-method">{operation.method.toUpperCase()}</span>
     <code class="api-path">{pathParts.map((part) => (part.startsWith('{') ? <span class="api-path-param">{part}</span> : part))}</code>
     <span class="api-title">{operation.title}</span>
-    <span class:list={['api-scope', `api-scope-${operation.scope}`]} title={scopeDescriptions[operation.scope]}>{operation.scope}</span>
+    {!(operation.auth && operation.scope === 'open') && (
+      <span class:list={['api-scope', `api-scope-${operation.scope}`]} title={scopeDescriptions[operation.scope]}>{operation.scope}</span>
+    )}
   </summary>
   <div class="api-op-body">
     {operation.description && <p class="api-description">{operation.description}</p>}

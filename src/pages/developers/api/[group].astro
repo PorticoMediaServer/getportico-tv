@@ -20,7 +20,7 @@ const operations = operationsFor(group.id);
     <p>{group.description}</p>
     <label class="api-filter">
       <span class="sr-only">Filter operations</span>
-      <input type="search" placeholder={`Filter ${operations.length} operations`} data-api-filter />
+      <input type="search" placeholder={`Filter ${operations.length} ${operations.length === 1 ? 'operation' : 'operations'}`} data-api-filter />
     </label>
   </header>
   <div class="api-op-list">
