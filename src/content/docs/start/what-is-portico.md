@@ -13,11 +13,11 @@ Portico is a personal media server. You install Portico Server on a computer tha
 
 Portico Server scans your files and builds libraries, stores account permissions and profile watch progress, decides how each item plays, and sends media to apps allowed to receive it.
 
-## What Portico Cloud does
+## What Portico Services do
 
-A Portico Account gives each person one identity they can use on every server and device they've been approved for. Portico Cloud handles account security, server membership and signed connection information. Your media never moves there.
+A Portico Account gives each person one identity they can use on every server and device they've been approved for. Portico Services handle account security, server membership and signed connection information. Your media never moves there.
 
-Once an app has verified a route to a server, requests for that server and the media itself go directly between the app and the server. Portico Cloud doesn't relay, cache or inspect the stream.
+Once an app has verified a route to a server, requests for that server and the media itself go directly between the app and the server. Portico Services don't relay, cache or inspect the stream.
 
 ## What you need
 

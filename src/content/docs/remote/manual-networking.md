@@ -39,7 +39,7 @@ Portico supports a reverse proxy at its own hostname, such as `https://media.exa
 4. Configure the proxy to replace client-supplied forwarding headers. Preserve `Host` or set `X-Forwarded-Host`, set `X-Forwarded-Proto`, and pass the real client address in `X-Forwarded-For`. Portico also accepts RFC `Forwarded` headers from trusted proxies.
 5. Save and test the external address.
 
-An HTTPS proxy normally accepts clients on port 443 and forwards to Portico on 32500. Use the actual ports you configured. Only HTTPS addresses are published through Portico Cloud.
+An HTTPS proxy normally accepts clients on port 443 and forwards to Portico on 32500. Use the actual ports you configured. Only HTTPS addresses are published through Portico Services.
 
 ## Use your own certificate
 

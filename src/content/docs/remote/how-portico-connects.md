@@ -1,6 +1,6 @@
 ---
 title: How Portico connects
-description: How an app finds your server without sending your private media through Portico Cloud.
+description: How an app finds your server without sending your private media through Portico Services.
 category: remote
 order: 1
 audience: Everyone
@@ -11,7 +11,7 @@ You can connect with a Portico Account or sign in directly to a server account.
 
 ## What each side knows
 
-- **Portico Cloud** manages Portico Accounts, server membership and signed connection information.
+- **Portico Services** manage Portico Accounts, server membership and signed connection information.
 - **Your Portico Server** manages its media, local permissions, playback and server settings.
 
 ## Connect with a Portico Account
@@ -26,8 +26,8 @@ Direct sign-in also works away from home when the address is reachable and the o
 
 ## Where your media travels
 
-Media and server-specific API requests go directly between the app and your Portico Server. Portico Cloud doesn't relay, tunnel, cache or inspect your private media.
+Media and server-specific API requests go directly between the app and your Portico Server. Portico Services don't relay, tunnel, cache or inspect your private media.
 
 ## The server has the final say
 
-Your server makes the final access decision, including for a request that started with a Portico Account. Cloud membership can't grant a library or action that the server doesn't allow.
+Your server makes the final access decision, including for a request that started with a Portico Account. Membership through a Portico Account can't grant a library or action that the server doesn't allow.

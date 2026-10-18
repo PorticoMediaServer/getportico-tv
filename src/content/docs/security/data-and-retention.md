@@ -1,6 +1,6 @@
 ---
 title: Data and retention
-description: Which information Portico Server and Portico Cloud each store, and how long it's kept.
+description: Which information Portico Server and Portico Services each store, and how long it's kept.
 category: security
 order: 4
 audience: Everyone
@@ -18,9 +18,9 @@ Portico Server stores what it needs to run your media server:
 - Recordings
 - Operational data
 
-## What Portico Cloud stores
+## What Portico Services store
 
-Portico Cloud stores:
+Portico Services store:
 
 - Portico Account and hosted security information
 - Server ownership and membership
@@ -33,12 +33,12 @@ These connection addresses can include local-network addresses. They identify wh
 
 Retention depends on the kind of record. Active accounts, memberships and credentials remain while they're needed; temporary setup, sign-in and recovery records expire and are cleaned up separately.
 
-Portico Cloud's retention periods are in [Privacy → Retention](/privacy/#retention). Server retention is managed separately by the server owner.
+Retention periods for Portico Services are in [Privacy → Retention](/privacy/#retention). Server retention is managed separately by the server owner.
 
 On your server, owners control log-file retention under **Settings → Server → Storage & backups → What Portico keeps**. Deleting an app doesn't delete its account, server activity or API credentials. Revoke access and review stored data separately.
 
 Database backups preserve the records present when they were made. Restoring a backup can also restore credentials that were revoked later. Keep backups private and review access after a restore.
 
-## What never moves to Portico Cloud
+## What never moves to Portico Services
 
-Private media files, playback history, My List and server certificate private keys don't move to Portico Cloud. Owner-configured webhooks can send event details, including media titles and playback activity, to a destination chosen by the owner. Those messages go directly from the server to that destination.
+Private media files, playback history, My List and server certificate private keys don't move to Portico Services. Owner-configured webhooks can send event details, including media titles and playback activity, to a destination chosen by the owner. Those messages go directly from the server to that destination.

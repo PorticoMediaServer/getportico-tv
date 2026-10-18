@@ -1,25 +1,25 @@
 ---
 title: Portico security model
-description: What Portico Server controls, what Portico Cloud controls, and where access is checked.
+description: What Portico Server controls, what Portico Services control, and where access is checked.
 category: security
 order: 1
 audience: Everyone
 updated: 2026-10-18
 ---
 
-Your Portico Server keeps your media and decides who can use it. Portico Cloud handles Portico Accounts and helps an approved app find the right server. A signed route tells an app where to connect; it doesn't grant media access.
+Your Portico Server keeps your media and decides who can use it. Portico Services handle Portico Accounts and help an approved app find the right server. A signed route tells an app where to connect; it doesn't grant media access.
 
 ## What Portico Server controls
 
 Portico Server manages media, libraries, playback, server accounts, permissions, settings, recordings, downloads and administration. Protected requests are checked against current account, profile and permission state. Public discovery and setup endpoints have their own access rules.
 
-## What Portico Cloud controls
+## What Portico Services control
 
-Portico Cloud manages Portico Accounts, hosted security settings, server ownership and membership, invitations, and signed route and policy documents. The server maps an admitted Portico Account to its local authorization state and checks the requested action. Cloud membership alone isn't a playback permission.
+Portico Services manage Portico Accounts, hosted security settings, server ownership and membership, invitations, and signed route and policy documents. The server maps an admitted Portico Account to its local authorization state and checks the requested action. Membership through a Portico Account alone isn't a playback permission.
 
 ## Keys and verification
 
-The server's identity signing key and certificate private key stay on the server. Certificate requests send a certificate signing request, not the certificate private key. Cloud route and policy signing keys belong to Portico Cloud. Portico Server verifies hosted signing certificates against Portico's trusted public signing root. The shared web and native connection code fetches the route-verification key from the configured Portico Account service over HTTPS and checks route signatures with that key.
+The server's identity signing key and certificate private key stay on the server. Certificate requests send a certificate signing request, not the certificate private key. Route and policy signing keys belong to Portico Services. Portico Server verifies hosted signing certificates against Portico's trusted public signing root. The shared web and native connection code fetches the route-verification key from the configured Portico Account service over HTTPS and checks route signatures with that key.
 
 For account-based discovery, the app checks the connection document's signature, intended account, server identity, version numbers (generations) and expiry. Before sending credentials to an address, it asks the server to sign a new challenge for that exact address and verifies the signature against the expected server identity. A manually entered server address establishes an initial identity that the app remembers; this isn't prior independent proof that you entered the intended server.
 
@@ -27,13 +27,13 @@ For account-based discovery, the app checks the connection document's signature,
 
 Owners can use plain HTTP or HTTPS. Both use the same authentication and permission checks, but plain HTTP doesn't encrypt credentials or media in transit. Use HTTPS on networks you don't trust. HTTP and HTTPS share the server's listening port, which defaults to TCP **32500**. HTTPS can use a Portico-managed certificate or the owner's certificate; a reverse proxy can also terminate HTTPS.
 
-Portico Cloud publishes public routes over HTTPS. Apple apps accept plain HTTP only for local-network addresses, including supported private and overlay addresses. They require HTTPS for other addresses. Signed identity checks don't turn plain HTTP into an encrypted connection.
+Portico Services publish public routes over HTTPS. Apple apps accept plain HTTP only for local-network addresses, including supported private and overlay addresses. They require HTTPS for other addresses. Signed identity checks don't turn plain HTTP into an encrypted connection.
 
 ## Sessions
 
 The server issues short-lived bearer access tokens and rotating refresh tokens bound to an installation ID. Server access tokens last up to 15 minutes. The installation ID identifies an app installation; it isn't a device private key. Signing out ends the session family. Disabling an account, changing its password or blocking a device ends its sessions; permission changes apply to subsequent requests.
 
-Portico Web keeps saved server credentials in an encrypted browser store. Server API authentication uses bearer headers, not cookies. Portico Account sessions and server sessions are separate; the app doesn't forward a cloud session token to an arbitrary server.
+Portico Web keeps saved server credentials in an encrypted browser store. Server API authentication uses bearer headers, not cookies. Portico Account sessions and server sessions are separate; the app doesn't forward a Portico Account session token to an arbitrary server.
 
 ## API keys and personal access tokens
 

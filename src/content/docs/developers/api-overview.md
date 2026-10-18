@@ -1,13 +1,13 @@
 ---
 title: API architecture overview
-description: How Portico splits its Server and Cloud API contracts, and which one to use for what.
+description: How Portico splits the Server API and the Portico Services API, and which one to use for what.
 category: developers
 order: 1
 audience: Developers
 updated: 2026-10-18
 ---
 
-Portico Server and Portico Cloud have separate APIs. Use the Server API for integrations that work with a person's media server. Portico Account sign-in and connection coordination use the Cloud API.
+Portico Server and Portico Services have separate APIs. Use the Server API for integrations that work with a person's media server. Portico Account sign-in and connection coordination use the Portico Services API.
 
 For every public operation, with parameters, schemas and example requests, see the [API reference](/developers/api/).
 
@@ -21,11 +21,11 @@ The server repository's `server/api/portico.openapi.json` is generated from the 
 
 Use this contract for libraries, titles, search, playback, downloads, Live TV, DVR, permissions, settings and diagnostics.
 
-## Cloud API
+## Portico Services API
 
-Portico Cloud manages Portico Accounts, hosted sessions and security, claimed servers, invitations, membership, route discovery and signed policy coordination. Its contract is separate from the Server API. A server integration using a locally issued key doesn't need a Portico Account or cloud app registration.
+Portico Services manage Portico Accounts, hosted sessions and security, claimed servers, invitations, membership, route discovery and signed policy coordination. The Portico Services API contract is separate from the Server API. A server integration using a locally issued key doesn't need a Portico Account or an app registered with Portico Services.
 
-Don't treat cloud membership as media permission. An account-based app verifies a server route and obtains that server's own session. Portico Server then authorizes each request.
+Don't treat membership through a Portico Account as media permission. An account-based app verifies a server route and obtains that server's own session. Portico Server then authorizes each request.
 
 ## Requests, paging and retries
 

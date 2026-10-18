@@ -57,7 +57,7 @@ Success returns a `session` containing an `accessToken` and refresh credentials.
 
 An account-based app starts with a Portico Account session, lists eligible servers and verifies signed connection information. It verifies the selected server's identity before exchanging account identity evidence for a server-scoped session.
 
-The server's `POST /v1/direct/portico-challenge` supplies a challenge for a hosted identity assertion. Submit the assertion as `porticoIdentity` to `POST /v1/direct/sign-in`. The server verifies the signed identity and its existing local membership. This isn't permission to send a cloud bearer token to the server. Use Portico's shared connection and identity services for this sequence; external server integrations can use server account credentials or scoped keys.
+The server's `POST /v1/direct/portico-challenge` supplies a challenge for a hosted identity assertion. Submit the assertion as `porticoIdentity` to `POST /v1/direct/sign-in`. The server verifies the signed identity and its existing local membership. This isn't permission to send a Portico Account bearer token to the server. Use Portico's shared connection and identity services for this sequence; external server integrations can use server account credentials or scoped keys.
 
 ## Refresh and sign-out
 
