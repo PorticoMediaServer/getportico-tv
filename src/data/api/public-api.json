@@ -180,7 +180,7 @@
       "group": "authentication",
       "core": true,
       "title": "Sign in with local credentials",
-      "description": "Signs in with a username and password and returns the account snapshot and session when admission succeeds. Handle a two-factor challenge, required password change, pending device approval or account-only session before browsing.",
+      "description": "Signs in with a username and password and returns the account snapshot and session after the server accepts the sign-in. Handle a two-factor challenge, required password change, pending device approval or account-only session before browsing.",
       "params": {
         "X-Portico-Installation-Id": "Stable random ID for this installation, 32–128 letters, digits, hyphens or underscores."
       },
@@ -189,7 +189,8 @@
         "Tokenless cross-origin browser sign-in is refused; native clients can omit Origin.",
         "Local credentials and TV codes are the documented third-party sign-in paths; third-party Portico Account assertion issuance is not provided.",
         "API keys and personal access tokens cannot be used for this operation."
-      ]
+      ],
+      "auth": "Send sign-in credentials in the request body; API keys and personal access tokens are refused."
     },
     {
       "operationId": "post_auth_two_factor_challenge",
@@ -202,7 +203,8 @@
       "params": {},
       "notes": [
         "API keys and personal access tokens cannot be used for this operation."
-      ]
+      ],
+      "auth": "Send the challenge token and verification code in the request body; API keys and personal access tokens are refused."
     },
     {
       "operationId": "get_direct_account",
@@ -270,7 +272,8 @@
       "notes": [
         "Store refresh tokens privately and serialize refreshes within the app. Reusing a predecessor outside an exact retry can revoke its session family.",
         "API keys and personal access tokens cannot be used for this operation."
-      ]
+      ],
+      "auth": "Send the refresh token, installationId and requestId in the request body; API keys and personal access tokens are refused."
     },
     {
       "operationId": "get_me",
@@ -308,7 +311,8 @@
       "params": {},
       "notes": [
         "API keys and personal access tokens cannot be used for this operation."
-      ]
+      ],
+      "auth": "Send a session-family access token in Authorization; authentic expired or retired tokens are accepted, but API keys and personal access tokens are refused."
     },
     {
       "operationId": "post_quick_connect",
@@ -363,7 +367,8 @@
       "params": {},
       "notes": [
         "API keys and personal access tokens cannot be used for this operation."
-      ]
+      ],
+      "auth": "The secret deviceCode in the request body authorizes polling; API keys and personal access tokens are refused."
     },
     {
       "operationId": "post_quick_connect_cancel",
@@ -376,7 +381,8 @@
       "params": {},
       "notes": [
         "API keys and personal access tokens cannot be used for this operation."
-      ]
+      ],
+      "auth": "The secret deviceCode in the request body authorizes cancellation; API keys and personal access tokens are refused."
     },
     {
       "operationId": "get_api_access_options",
@@ -401,7 +407,7 @@
       "description": "Lists the current member's tokens with hints, usage and lifecycle state. Stored secrets cannot be read back.",
       "params": {
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Credentials per page, 1–100; defaults to 25."
       },
       "notes": [
         "API keys and personal access tokens cannot be used for this operation."
@@ -414,11 +420,12 @@
       "group": "credentials",
       "core": true,
       "title": "Create a personal access token",
-      "description": "Creates a token for the signed-in member with the requested scopes and optional expiry. The operation ID prevents duplicate creation, but a replay does not return the secret again.",
+      "description": "Creates a token for the signed-in member with the requested scopes and optional expiry. The client-generated `operationId` in the request body prevents duplicate creation, but a replay does not return the secret again.",
       "params": {},
       "notes": [
         "Save the secret from the first response; it is not returned on an idempotent replay.",
-        "API keys and personal access tokens cannot be used for this operation."
+        "API keys and personal access tokens cannot be used for this operation.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -446,7 +453,7 @@
       "description": "Lets the owner list integration keys, including their scopes, usage and state. The list shows secret hints rather than full secrets.",
       "params": {
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Credentials per page, 1–100; defaults to 25."
       },
       "notes": [
         "API keys and personal access tokens cannot be used for this operation."
@@ -459,11 +466,12 @@
       "group": "credentials",
       "core": true,
       "title": "Create an API key",
-      "description": "Lets a signed-in owner create a scoped integration key with an optional expiry. Save the secret from the first successful response; replaying the operation ID does not reveal it again.",
+      "description": "Lets a signed-in owner create a scoped integration key with an optional expiry. Save the secret from the first successful response; replaying the client-generated `operationId` in the request body does not reveal it again.",
       "params": {},
       "notes": [
         "Save the secret from the first response; it is not returned on an idempotent replay.",
-        "API keys and personal access tokens cannot be used for this operation."
+        "API keys and personal access tokens cannot be used for this operation.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -501,7 +509,7 @@
       "title": "Read Home",
       "description": "Returns the viewer's Home hero, layout and initial rows. Continue individual rows through their returned paging information.",
       "params": {
-        "limit": "Initial entry limit used when composing Home rows."
+        "limit": "Initial entries per Home row, 1–60; defaults to 12. Larger values are capped at 60."
       },
       "notes": []
     },
@@ -515,7 +523,7 @@
       "description": "Returns a bounded portion of one Home row. Use its cursor or positional window with the matching revision rather than loading the whole library.",
       "params": {
         "id": "Home row ID from the Home response.",
-        "limit": "Page or window size within this operation’s published bounds.",
+        "limit": "Entries per row window, 1–60; defaults to 12. Larger values are capped at 60.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
         "start": "Starting row position; use the revision belonging to this row.",
         "revision": "Revision from the same Home row being continued.",
@@ -532,11 +540,11 @@
       "title": "Read a Saved screen",
       "description": "Returns a composed global content screen selected by view, with headings, sections and allowed choices. Use the returned navigation and filters for the viewer's Saved content.",
       "params": {
-        "view": "Saved content or directory view from the returned navigation.",
-        "sort": "Sort choice published for this operation.",
-        "direction": "Sort or window direction supported by this operation.",
-        "filter": "Filter choice offered by the Saved screen.",
-        "limit": "Page or window size within this operation’s published bounds.",
+        "view": "Required: watchlist (My List), favorites or playlists.",
+        "sort": "For watchlist and favorites: title (default), added, updated, year, duration or progress. For playlists: title (default), created, updated or count.",
+        "direction": "asc or desc. Defaults to asc for watchlist and favorites. For playlists, defaults to asc for title and desc for created, updated and count.",
+        "filter": "For watchlist and favorites: all (default), unwatched or inProgress. For playlists: all (default), mine, shared or pinned.",
+        "limit": "Entries per page, 1–100; defaults to 40.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query."
       },
       "notes": []
@@ -551,16 +559,16 @@
       "description": "Returns a composed library screen with navigation, sections, available sorts and filters. The view and entityId select the library or subgroup being shown.",
       "params": {
         "id": "Library ID.",
-        "view": "Content view named by the returned navigation.",
+        "view": "Video libraries: discover, browse, collections, categories, collection, show or season. Music: browse, discover, releases, songs, artist, album or disc. Audiobooks: browse, discover, authors, series, author, book or book_series. Use the navigation returned for the library. Defaults to discover for movies and browse for other library kinds.",
         "entityId": "Entity ID selecting a subgroup within the requested content view.",
-        "sort": "Sort choice published for this operation.",
-        "direction": "Sort or window direction supported by this operation.",
-        "category": "Category value offered by the content screen.",
-        "q": "Search text or the text used to narrow facet choices.",
+        "sort": "Video browse and collection views: title (default), plus added or year for movies. Collections and artist views use title. Other video views use server (discover), decade (categories), season (show) or episode (season). Music and audiobook views use title, track (album/disc), part (book), order (book_series) or server (discover).",
+        "direction": "asc or desc for title, added and year. Defaults to desc for added, year and decade; otherwise asc. Video discover requires asc and categories requires desc. Ordered show, season, album, disc, book and book_series views require asc.",
+        "category": "Movie category ID from the returned filters; accepted only with browse or collection.",
+        "q": "Title prefix, at most 100 bytes; omit for discover and ordered show, season, album, disc, book and book_series views, and for video categories.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds.",
-        "start": "Starting position in the matching content window.",
-        "section": "Section of the composed library screen to continue."
+        "limit": "Entries per page, 1–100; defaults to 40. Larger values are capped at 100.",
+        "start": "Zero-based nonnegative starting position; defaults to 0. A positive start is accepted for video browse, collection, collections or artist views, without cursor; music and audiobook views ignore it.",
+        "section": "Listed in the spec but unused by this handler. Continue a section with its returned cursor."
       },
       "notes": []
     },
@@ -574,7 +582,7 @@
       "description": "Returns the fields, operators, pivots, sorts and query limits supported by this library. Read it before building a structured browse request.",
       "params": {
         "id": "Library ID.",
-        "pivot": "Browse pivot from the published capabilities."
+        "pivot": "Movie: discover, movies, collections or categories. TV/anime: discover, shows, episodes, collections or categories. Music: discover, artists, albums, songs or genres. Audiobooks: discover, authors, books or series. Omit to read the library’s full vocabulary."
       },
       "notes": []
     },
@@ -588,9 +596,9 @@
       "description": "Returns values and counts for a supported browse field within the visible library. Use q to narrow the facet choices.",
       "params": {
         "id": "Library ID.",
-        "field": "Browse field whose facet values should be returned.",
-        "q": "Search text or the text used to narrow facet choices.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "field": "Counted facet field: genre, decade, year, contentRating, resolution, audioLanguage, studio, network, tag, label, series or collection.",
+        "q": "Optional text to filter facet values, at most 100 bytes.",
+        "limit": "Facet values, 1–200; defaults to 200. Larger values are capped at 200."
       },
       "notes": []
     },
@@ -618,7 +626,7 @@
       "title": "Read cross-library browse options",
       "description": "Returns the supported fields, pivots, sorts and limits for grouped lists across visible libraries. Use it before browsing a person, playlist or personal list.",
       "params": {
-        "pivot": "Supported pivot for the cross-library browse vocabulary."
+        "pivot": "titles (default) or items."
       },
       "notes": []
     },
@@ -631,11 +639,11 @@
       "title": "List cross-library facet values",
       "description": "Returns facet choices and counts across the viewer's libraries. Group and value can restrict the facet to the same group as the browse query.",
       "params": {
-        "field": "Browse field whose facet values should be returned.",
-        "q": "Search text or the text used to narrow facet choices.",
-        "limit": "Page or window size within this operation’s published bounds.",
-        "group": "Group condition such as person, list, savedCollection, homeRow, watchlisted, favorite or lastPlayedAt.",
-        "value": "Subject of the named group condition, such as a person or list ID."
+        "field": "Counted facet field: genre, decade, year, contentRating, resolution, audioLanguage, studio, network, tag, label, series or collection.",
+        "q": "Optional text to filter facet values, at most 100 bytes.",
+        "limit": "Facet values, 1–200; defaults to 200. Larger values are capped at 200.",
+        "group": "Optional group: person, cast, crew, list, savedCollection, homeRow, watchlisted, favorite or lastPlayedAt.",
+        "value": "Person ID for person/cast/crew, playlist ID for list, saved collection ID for savedCollection or Home row ID for homeRow. Ignored for watchlisted, favorite and lastPlayedAt, which select saved titles, favourites or played titles."
       },
       "notes": []
     },
@@ -659,17 +667,17 @@
       "group": "browse",
       "core": true,
       "title": "Search the catalogue",
-      "description": "Searches visible titles, people, years and collections and returns grouped results. Limit is 1–40; set record=1 only when a person commits a search.",
+      "description": "Searches visible titles, people, years and collections and returns grouped results. Each group previews up to 12 results; use its group and nextCursor to continue with up to 40 per page. Set record=1 only when a person commits a search.",
       "params": {
-        "q": "Search text or the text used to narrow facet choices.",
-        "group": "Search result group to continue.",
-        "groups": "Search result groups to include, as accepted by the search contract.",
-        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Results per page, 1–40.",
-        "sort": "Sort choice published for this operation.",
-        "direction": "Sort direction accepted by the search contract.",
-        "libraryIds": "Library IDs to search, within the viewer’s current access.",
-        "record": "Set 1 only when a person commits a search, to save it in their history."
+        "q": "Required search text, 1–128 Unicode characters after trimming and collapsing whitespace.",
+        "group": "One result group: movies, shows, episodes, artists, albums, songs, books, collections, authors, people or live-tv. Use it with a continuation cursor; do not combine with groups.",
+        "groups": "Comma-separated unique result groups: movies, shows, episodes, artists, albums, songs, books, collections, authors, people or live-tv. Omit to search all groups; do not combine with group.",
+        "cursor": "Continuation returned for the selected group, at most 4096 characters; keep q, group, sort, direction, libraryIds and limit unchanged.",
+        "limit": "Results per group, 1–40; defaults to 40 and larger values are capped at 40. Without group, each group shows at most 12 results.",
+        "sort": "relevance (default), title, releaseYear or dateAdded. Artists, collections, authors, people and live-tv use title when releaseYear or dateAdded is requested.",
+        "direction": "asc or desc. Defaults to asc for title and desc for relevance, releaseYear and dateAdded.",
+        "libraryIds": "Comma-separated library IDs, at most 64, within the viewer’s access; omit to search all visible libraries.",
+        "record": "0 (default) or 1. Use 1 only when a person commits a search; continuation requests do not record history."
       },
       "notes": []
     },
@@ -704,8 +712,8 @@
       "title": "Find people",
       "description": "Searches people in the visible catalogue. Use the returned person IDs to read credits and related titles.",
       "params": {
-        "limit": "Page or window size within this operation’s published bounds.",
-        "q": "Search text or the text used to narrow facet choices."
+        "limit": "People per page, 1–100; defaults to 25.",
+        "q": "Required search text, 1–128 Unicode characters after trimming and collapsing whitespace."
       },
       "notes": []
     },
@@ -732,7 +740,7 @@
       "description": "Returns the item's details, files, metadata, personal state and available actions. Use related to request the supported related-content sections.",
       "params": {
         "id": "Item ID.",
-        "related": "Use all for the complete supported related-content sections."
+        "related": "Set all to include related sections for episodes, songs and audiobook files. Movies include related sections by default; other item kinds have none."
       },
       "notes": []
     },
@@ -747,8 +755,8 @@
       "params": {
         "id": "Item ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "group": "Result or content group supported by this operation.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "group": "Required credit group: cast or crew.",
+        "limit": "Credits per page, 1–200; defaults to 200. Out-of-range values also use 200."
       },
       "notes": []
     },
@@ -776,7 +784,7 @@
       "params": {
         "id": "Show ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Entries per page, 1–100; defaults to 40. Larger values are capped at 100."
       },
       "notes": []
     },
@@ -791,7 +799,7 @@
       "params": {
         "id": "Season ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Entries per page, 1–100; defaults to 40. Larger values are capped at 100."
       },
       "notes": []
     },
@@ -806,7 +814,7 @@
       "params": {
         "id": "Artist ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Entries per page, 1–100; defaults to 40. Larger values are capped at 100."
       },
       "notes": []
     },
@@ -821,7 +829,7 @@
       "params": {
         "id": "Album ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Entries per page, 1–100; defaults to 40. Larger values are capped at 100."
       },
       "notes": []
     },
@@ -836,7 +844,7 @@
       "params": {
         "id": "Book ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Entries per page, 1–100; defaults to 40. Larger values are capped at 100."
       },
       "notes": []
     },
@@ -851,7 +859,7 @@
       "params": {
         "id": "Book ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Entries per page, 1–100; defaults to 40. Larger values are capped at 100."
       },
       "notes": []
     },
@@ -865,9 +873,9 @@
       "description": "Returns the person's catalogue page and a paged set of credits. The role parameter narrows the credit view.",
       "params": {
         "id": "Person ID.",
-        "role": "Credit role used to narrow this person’s titles.",
+        "role": "all (default), cast or crew.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Credits per page, 1–100; defaults to 40."
       },
       "notes": []
     },
@@ -895,7 +903,7 @@
       "description": "Returns the selected image for a title and artwork kind. Replaced versioned images return 410; reuse the server's URL and validators.",
       "params": {
         "id": "Item ID.",
-        "kind": "Artwork role, such as poster or backdrop.",
+        "kind": "poster, backdrop, thumbnail, still, logo, square, portrait, banner or cover; use the returned artwork URL.",
         "v": "Artwork version digest from the returned image URL.",
         "w": "Artwork width from the returned URL: 400, 800 or 1920."
       },
@@ -914,16 +922,17 @@
       "params": {
         "kind": "item, album, show, artist, book or season.",
         "id": "Entity ID for the requested kind.",
-        "role": "Artwork role from the returned image URL.",
+        "role": "poster, backdrop, thumbnail, still, logo, square, portrait, banner or cover; use the returned artwork URL.",
         "candidate": "Artwork candidate ID for an owner-only preview.",
-        "subject": "Subject identifier for role-specific artwork, such as a portrait.",
+        "subject": "Subject key from the returned artwork URL, at most 160 bytes; include it when the URL names a particular portrait.",
         "v": "Artwork version digest from the returned image URL.",
         "w": "Artwork width from the returned URL: 400, 800 or 1920."
       },
       "notes": [
-        "Ordinary selected artwork follows viewer visibility checks. The spec’s owner access label also covers owner-only candidate previews.",
+        "Selected artwork requires access to the title. Previewing a candidate also requires the owner.",
         "The handler accepts w for the returned artwork sizes (400, 800 or 1920), though the spec omits that query parameter."
-      ]
+      ],
+      "auth": "A session or read-scoped API key or personal access token is required; only candidate previews require the owner."
     },
     {
       "operationId": "get_items_id_recommendations",
@@ -962,7 +971,7 @@
       "params": {
         "id": "Item ID.",
         "sessionId": "Playback session whose source or presentation should be used.",
-        "sourceId": "Source ID used to narrow or select this operation’s data.",
+        "sourceId": "Exact media source ID from the lyric source information.",
         "sourceVersion": "Exact source version from the lyric source information."
       },
       "notes": []
@@ -977,10 +986,10 @@
       "description": "Returns a particular revision of a lyric resource for a visible item. Preserve the document's timing units when synchronizing lyrics with playback.",
       "params": {
         "id": "Item ID.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "resource": "Lyric resource ID from the returned lyric choices.",
+        "revision": "Lyric resource revision from the returned lyric choices; keep it unchanged.",
         "sessionId": "Playback session whose source or presentation should be used.",
-        "sourceId": "Source ID used to narrow or select this operation’s data.",
+        "sourceId": "Exact media source ID from the lyric source information.",
         "sourceVersion": "Exact source version from the lyric source information."
       },
       "notes": []
@@ -1038,11 +1047,11 @@
         "partId": "Media part ID to preview.",
         "audioId": "Audio track ID to preview.",
         "subtitleId": "Subtitle track ID to preview.",
-        "quality": "Quality mode to preview, using the server’s supported choices.",
-        "qualityId": "Saved quality ID used with the selected quality mode.",
-        "maxVideoBitrateKbps": "Maximum video bitrate in kilobits per second for the quality preview.",
-        "maxHeight": "Maximum video height in pixels for the quality preview.",
-        "maxAudioBitrateKbps": "Maximum audio bitrate in kilobits per second for the quality preview."
+        "quality": "original, automatic, fixed or limit; omit to use the saved quality choice. fixed requires qualityId; limit uses the numeric ceilings.",
+        "qualityId": "Quality ladder ID from the delivery policy. Required for fixed; automatic accepts a ladder ID or original. Omit for original and limit.",
+        "maxVideoBitrateKbps": "Video bitrate ceiling in kilobits per second, 0–2000000; use with quality=limit. 0 means no explicit ceiling.",
+        "maxHeight": "Video height ceiling in pixels, 0–8640; use with quality=limit. 0 means no explicit ceiling.",
+        "maxAudioBitrateKbps": "Audio bitrate ceiling in kilobits per second, 0–10000; use with quality=limit. 0 means no explicit ceiling."
       },
       "notes": []
     },
@@ -1140,7 +1149,7 @@
       "params": {
         "id": "Playback session ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds.",
+        "limit": "Chapters per page, 1–100; defaults to 100.",
         "revision": "Chapter-list revision from the same playback session."
       },
       "notes": []
@@ -1155,7 +1164,7 @@
       "description": "Returns what the current profile is playing on its devices and the controls it may use. Page the list and use the returned session information for remote controls.",
       "params": {
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Sessions per page, 1–100; defaults to 50."
       },
       "notes": []
     },
@@ -1211,9 +1220,11 @@
         "id": "Item ID.",
         "set": "Trickplay set identifier from the returned preview information.",
         "tile": "Tile identifier from the returned trickplay index.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "segment": "Not accepted. This image handler rejects all query parameters; omit segment."
       },
-      "notes": []
+      "notes": [
+        "Query parameters are rejected."
+      ]
     },
     {
       "operationId": "get_v1_items_id_chapters_chapter_image",
@@ -1226,9 +1237,11 @@
       "params": {
         "id": "Item ID.",
         "chapter": "Chapter identifier from the title’s chapter information.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "segment": "Not accepted. This image handler rejects all query parameters; omit segment."
       },
-      "notes": []
+      "notes": [
+        "Query parameters are rejected."
+      ]
     },
     {
       "operationId": "create_queue",
@@ -1270,8 +1283,8 @@
       "params": {
         "id": "Queue ID.",
         "around": "Only current is accepted; omitting it has the same effect.",
-        "before": "Entries before the current entry; defaults to 20.",
-        "after": "Entries after the current entry; defaults to 50."
+        "before": "Nonnegative entries before the current entry; defaults to 20 and is capped at 200.",
+        "after": "Nonnegative entries after the current entry; defaults to 50 and is capped so before plus after is at most 200."
       },
       "notes": []
     },
@@ -1286,8 +1299,8 @@
       "params": {
         "id": "Queue ID.",
         "from": "Zero-based starting queue position; defaults to 0.",
-        "limit": "Entries per page, at most 200; defaults to 50.",
-        "cursor": "Continuation returned by the previous page; send it unchanged with the same query."
+        "limit": "Entries per page, 1–200; defaults to 50.",
+        "cursor": "Continuation in the form from:<position>; it overrides from when supplied."
       },
       "notes": []
     },
@@ -1448,9 +1461,10 @@
       "title": "Read a playback stream",
       "description": "Delivers media authorized by the current playback grant. Open the URL returned by the presentation and follow its selected engine.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_media_grant_file",
@@ -1461,10 +1475,11 @@
       "title": "Read a playback media file",
       "description": "Delivers the requested file under a playback grant, such as a manifest or segment. Follow the returned presentation and manifest URLs.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "file": "File name or relative resource supplied by the presentation or bundle."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "file": "Media filename supplied by the returned presentation or HLS manifest."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_media_grant_audio",
@@ -1475,9 +1490,10 @@
       "title": "Read direct audio",
       "description": "Delivers audio under a playback grant. Use the presentation's audio URL rather than deriving a path from the item ID.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "head_media_grant_audio",
@@ -1488,9 +1504,10 @@
       "title": "Read direct audio headers",
       "description": "Returns audio response headers without the media body. The same grant and access checks apply as for GET.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_media_grant_audio_converted",
@@ -1501,10 +1518,11 @@
       "title": "Read converted audio",
       "description": "Delivers converted audio for the current playback grant. Use this route only through the URL selected by the server.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
         "fromFrame": "Audio frame at which the converted stream should start."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_media_grant_audio_index",
@@ -1515,9 +1533,10 @@
       "title": "Read an audio seek index",
       "description": "Returns the seek index for audio delivered under a playback grant. Use it when the selected audio presentation requires indexed seeking.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_v1_items_itemId_subtitles",
@@ -1526,10 +1545,10 @@
       "group": "media-delivery",
       "core": false,
       "title": "List subtitle choices",
-      "description": "Returns admitted subtitle discoveries and their available delivery formats for a title. A discovered track can be selected directly; it does not need an import before playback.",
+      "description": "Returns the subtitle tracks available for a title and each track’s delivery formats. A discovered track can be selected directly; it does not need an import before playback.",
       "params": {
         "itemId": "Visible item ID.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
       "notes": []
     },
@@ -1544,7 +1563,7 @@
       "params": {
         "itemId": "Visible item ID.",
         "session": "Playback session ID associated with the item.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
       "notes": []
     },
@@ -1557,14 +1576,15 @@
       "title": "Read subtitle cues as JSON",
       "description": "Returns a version 1 cue document on the source-relative timeline. Cue startUs and endUs are decimal microsecond strings; plain-text clients apply the selected offset locally.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
       "notes": [
         "Use the returned documentUrl. Stopping the session or changing its grant ends subtitle access."
-      ]
+      ],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_v1_media_subtitles_grant_resource_revision_vtt",
@@ -1575,14 +1595,15 @@
       "title": "Read WebVTT subtitles",
       "description": "Returns UTF-8 WebVTT for the selected resource revision, including the selected offset. The first request can fill the subtitle cache; retries join work already in progress.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "WebVTT segment index, 0–1440; omit to fetch the full subtitle document."
       },
       "notes": [
         "Cold embedded subtitles can require a full demux pass. A disconnected request does not cancel cache filling; retry the same URL."
-      ]
+      ],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_v1_media_subtitles_grant_resource_revision_fonts",
@@ -1593,12 +1614,13 @@
       "title": "List subtitle fonts",
       "description": "Returns the font names and grant URLs attached to an authored subtitle script. Fetch each returned URL rather than turning a font label into a path.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_v1_media_subtitles_grant_resource_revision_fonts_font",
@@ -1609,13 +1631,14 @@
       "title": "Read a subtitle font",
       "description": "Returns one font attached to the selected subtitle resource. Grant, revision and access checks apply to range and conditional requests.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
         "font": "Font identifier from the subtitle font list.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "head_v1_media_subtitles_grant_resource_revision_fonts_font",
@@ -1626,13 +1649,14 @@
       "title": "Read subtitle font headers",
       "description": "Returns the font response headers without its bytes. The same grant and revision checks apply as for GET.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
         "font": "Font identifier from the subtitle font list.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_subtitle_fonts_cjk",
@@ -1654,12 +1678,13 @@
       "title": "Read ASS subtitle script",
       "description": "Returns the original ASS subtitle script for the selected resource revision. Preserves the authored script and source encoding; honour the response charset.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "head_v1_media_subtitles_grant_resource_revision_original_ass",
@@ -1670,12 +1695,13 @@
       "title": "Read headers for ASS subtitle script",
       "description": "Returns response headers for the original ASS subtitle script without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_v1_media_subtitles_grant_resource_revision_original_ssa",
@@ -1686,12 +1712,13 @@
       "title": "Read SSA subtitle script",
       "description": "Returns the original SSA subtitle script for the selected resource revision. Preserves the authored script and source encoding; honour the response charset.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "head_v1_media_subtitles_grant_resource_revision_original_ssa",
@@ -1702,12 +1729,13 @@
       "title": "Read headers for SSA subtitle script",
       "description": "Returns response headers for the original SSA subtitle script without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_v1_media_subtitles_grant_resource_revision_original_sup",
@@ -1718,12 +1746,13 @@
       "title": "Read PGS subtitle packets",
       "description": "Returns the original PGS subtitle packets for the selected resource revision. Use a client renderer that declares PGS support.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "head_v1_media_subtitles_grant_resource_revision_original_sup",
@@ -1734,12 +1763,13 @@
       "title": "Read headers for PGS subtitle packets",
       "description": "Returns response headers for the original PGS subtitle packets without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_v1_media_subtitles_grant_resource_revision_original_idx",
@@ -1750,12 +1780,13 @@
       "title": "Read VobSub subtitle index",
       "description": "Returns the original VobSub subtitle index for the selected resource revision. Fetch the companion SUB file and preserve their matching basename locally.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "head_v1_media_subtitles_grant_resource_revision_original_idx",
@@ -1766,12 +1797,13 @@
       "title": "Read headers for VobSub subtitle index",
       "description": "Returns response headers for the original VobSub subtitle index without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_v1_media_subtitles_grant_resource_revision_original_sub",
@@ -1782,12 +1814,13 @@
       "title": "Read VobSub subtitle pictures",
       "description": "Returns the original VobSub subtitle pictures for the selected resource revision. Keep this file beside the matching IDX index with the same basename.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "head_v1_media_subtitles_grant_resource_revision_original_sub",
@@ -1798,12 +1831,13 @@
       "title": "Read headers for VobSub subtitle pictures",
       "description": "Returns response headers for the original VobSub subtitle pictures without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_v1_media_subtitles_grant_resource_revision_original_mks",
@@ -1814,12 +1848,13 @@
       "title": "Read DVB subtitle capsule",
       "description": "Returns the original DVB subtitle capsule for the selected resource revision. The single-track Matroska capsule contains DVB subtitle packets.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "head_v1_media_subtitles_grant_resource_revision_original_mks",
@@ -1830,12 +1865,13 @@
       "title": "Read headers for DVB subtitle capsule",
       "description": "Returns response headers for the original DVB subtitle capsule without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+        "grant": "Secret playback grant from the returned presentation or subtitle URL.",
+        "resource": "Subtitle resource ID from the returned subtitle delivery URL.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "segment": "Unused by this handler. Omit it; segment selects a segment only on the WebVTT delivery route."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_download_options",
@@ -1860,7 +1896,8 @@
       "description": "Creates a download request for a show, season, album, book or playlist and a target device. The server pages the membership and applies the requested all, unwatched or next policy.",
       "params": {},
       "notes": [
-        "Quality is explicit in this request; choose original for the original file."
+        "Quality is explicit in this request; choose original for the original file.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -1887,7 +1924,7 @@
       "params": {
         "id": "Download request ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Number of request members to read in this page."
+        "limit": "Request members per page, 1–100; defaults to 100."
       },
       "notes": []
     },
@@ -1898,9 +1935,11 @@
       "group": "downloads",
       "core": false,
       "title": "Prepare titles for download",
-      "description": "Creates or finds preparation claims for the requested titles and quality. An original becomes ready after its digest is known; converted copies may require background work.",
+      "description": "Creates or finds download preparations for the requested titles and quality. An original becomes ready after its digest is known; converted copies may require background work.",
       "params": {},
-      "notes": []
+      "notes": [
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
+      ]
     },
     {
       "operationId": "list_download_preparations",
@@ -1909,13 +1948,13 @@
       "group": "downloads",
       "core": false,
       "title": "List download preparations",
-      "description": "Returns preparation claims visible to the viewer. Use the returned states and actions to show download progress.",
+      "description": "Returns download preparations visible to the viewer. Use the returned states and actions to show download progress.",
       "params": {
-        "state": "State filter supported by this resource.",
-        "profileId": "Profile filter available to an authorized owner.",
+        "state": "queued, running, ready, paused, failed, unavailable, cancelled or expired; omit to include all states.",
+        "profileId": "Profile ID to filter preparations when called by the owner; other callers always read their own preparations.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds.",
-        "ids": "Comma-separated preparation IDs to read together."
+        "limit": "Preparations per page, 1–200; defaults to 50. Out-of-range values also use 50; ids requests allow up to 200.",
+        "ids": "Comma-separated preparation IDs, at most 200; do not combine with cursor."
       },
       "notes": []
     },
@@ -1944,7 +1983,8 @@
         "id": "Download preparation ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -1969,12 +2009,13 @@
       "group": "downloads",
       "core": false,
       "title": "Create or renew a transfer URL",
-      "description": "Returns a grant URL and token for transferring the prepared file and companions. Send the held token in renew to retain the same URL when it still names the same claim and file, and renew unfinished transfers at renewAfterMs.",
+      "description": "Returns a grant URL and token for transferring the prepared file and companions. Send the held token in renew to retain the same URL when it still names the same preparation and file. The grant is valid for 24 hours after its most recent use or renewal; renew unfinished transfers at renewAfterMs.",
       "params": {
         "id": "Download preparation ID."
       },
       "notes": [
-        "An active transfer grant lasts through use or renewal and for 24 hours after the last of either. Follow renewAfterMs for unfinished transfers."
+        "The transfer grant is valid for 24 hours after its most recent use or renewal; renew unfinished transfers at renewAfterMs.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -1986,11 +2027,12 @@
       "title": "Download prepared media",
       "description": "Transfers media using the grant URL without a sign-in header. Resume with Range and If-Range, and verify the completed SHA-256 against the preparation.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL."
+        "grant": "Secret download grant from the returned transfer URL."
       },
       "notes": [
-        "The grant URL is the transfer credential. Every request still checks the claim, current permission and exact bytes."
-      ]
+        "The grant URL is the transfer credential. Every request still checks the preparation, current permission and exact bytes."
+      ],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "head_download_artifact",
@@ -2001,11 +2043,12 @@
       "title": "Read download media headers",
       "description": "Returns the prepared file's headers without its body. The grant URL, current download permission and exact file identity are still checked.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL."
+        "grant": "Secret download grant from the returned transfer URL."
       },
       "notes": [
-        "The grant URL is the transfer credential. Every request still checks the claim, current permission and exact bytes."
-      ]
+        "The grant URL is the transfer credential. Every request still checks the preparation, current permission and exact bytes."
+      ],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_download_artwork",
@@ -2016,10 +2059,11 @@
       "title": "Download offline artwork",
       "description": "Returns artwork for a download grant and role. Use the relative path in the bundle; 404 can mean that the title has no image for that role.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "role": "Artwork or credit role supported by this operation."
+        "grant": "Secret download grant from the returned transfer URL.",
+        "role": "poster, still, cover or backdrop, as listed in the offline bundle."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_download_chapter_image",
@@ -2030,11 +2074,12 @@
       "title": "Download an offline chapter image",
       "description": "Returns a chapter image associated with the prepared media. Fetch it through the companion path supplied by the bundle.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "source": "Library source ID, or source identifier from an offline bundle.",
+        "grant": "Secret download grant from the returned transfer URL.",
+        "source": "Exact chapter source identifier from the offline bundle’s image path.",
         "index": "Chapter-image index from the offline bundle."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_download_subtitle",
@@ -2045,11 +2090,12 @@
       "title": "Download offline WebVTT subtitles",
       "description": "Returns a subtitle companion as WebVTT under the download grant. Retain it with the downloaded media for offline playback.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value."
+        "grant": "Secret download grant from the returned transfer URL.",
+        "resource": "Subtitle resource ID from the returned subtitle choices or offline bundle.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_download_subtitle_original",
@@ -2060,12 +2106,13 @@
       "title": "Download an original subtitle companion",
       "description": "Returns an authored subtitle, bitmap companion or attached font named by the bundle. Keep each required companion when storing the offline title.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
-        "resource": "Subtitle or lyric resource ID from the returned inventory.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "file": "File name or relative resource supplied by the presentation or bundle."
+        "grant": "Secret download grant from the returned transfer URL.",
+        "resource": "Subtitle resource ID from the returned subtitle choices or offline bundle.",
+        "revision": "Subtitle resource revision from the returned delivery URL; keep it unchanged.",
+        "file": "Exact companion filename from the offline bundle."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_download_trickplay_thumbnails",
@@ -2076,10 +2123,11 @@
       "title": "Download an offline seek-preview index",
       "description": "Returns the WebVTT thumbnail index for the prepared title's trickplay set. Store it with the referenced tiles for offline seeking.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
+        "grant": "Secret download grant from the returned transfer URL.",
         "set": "Trickplay set identifier from the returned preview information."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_download_trickplay_tile",
@@ -2090,11 +2138,12 @@
       "title": "Download an offline seek-preview tile",
       "description": "Returns one trickplay tile under the download grant. Use the tile path supplied by the offline index.",
       "params": {
-        "grant": "Secret grant component from the returned playback or download URL.",
+        "grant": "Secret download grant from the returned transfer URL.",
         "set": "Trickplay set identifier from the returned preview information.",
         "tile": "Tile identifier from the returned trickplay index."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The grant in the returned URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "list_download_receipt_keys",
@@ -2117,7 +2166,8 @@
       "description": "Issues signed receipts for up to 100 preparations. Verify the signature and viewer, file digest and expiry before allowing offline playback.",
       "params": {},
       "notes": [
-        "Receipts last thirty days. Offline playback requires a valid signature, the current viewer and an unexpired receipt."
+        "Receipts last thirty days. Offline playback requires a valid signature, the current viewer and an unexpired receipt.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2130,7 +2180,8 @@
       "description": "Revalidates up to 100 receipts and returns current viewing state with successful renewals. Handle refusal reasons individually; unknown_receipt calls for reconciliation rather than immediate deletion of the local copy.",
       "params": {},
       "notes": [
-        "Revalidate regularly when online. Access refusals can require removing a copy; unknown_receipt requires reconciling its claim."
+        "Revalidate regularly when online. Access refusals can require removing a copy; unknown_receipt requires reconciling its download preparation.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2143,7 +2194,7 @@
       "description": "Pages withdrawn receipts by sequence so a device can reconcile its copies. Keep the returned continuation position.",
       "params": {
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds.",
+        "limit": "Revocations per page, 1–500; defaults to 200. Out-of-range values also use 200.",
         "scope": "Set server for owner-authorized server-wide revocations; otherwise reads this viewer’s revocations."
       },
       "notes": []
@@ -2157,7 +2208,9 @@
       "title": "Revoke offline playback receipts",
       "description": "Withdraws the named receipts; viewers can revoke their own and the owner can act across profiles. Call it when a device removes its local copy.",
       "params": {},
-      "notes": []
+      "notes": [
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
+      ]
     },
     {
       "operationId": "sync_download_progress",
@@ -2169,7 +2222,8 @@
       "description": "Reconciles up to 100 offline play observations, keeping one stable playId per play. Each outcome returns current server progress and watched state, including when a newer online change supersedes the observation.",
       "params": {},
       "notes": [
-        "Read each outcome, including superseded_online, stale_observation or history_paused; adopt the returned server state."
+        "Read each outcome, including superseded_online, stale_observation or history_paused; adopt the returned server state.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2194,7 +2248,7 @@
       "params": {
         "scope": "Set server for owner-authorized server-wide usage; otherwise reads this viewer’s usage.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Profile usage rows per page, 1–256; defaults to 256."
       },
       "notes": []
     },
@@ -2205,12 +2259,13 @@
       "group": "personal-state",
       "core": true,
       "title": "Change an item's personal state",
-      "description": "Changes the viewer's watched state, progress, rating, favourite or My List state with an operation ID and expectedRevision. Reconcile conflicts with the current state before retrying.",
+      "description": "Changes the viewer's watched state, progress, rating, favourite or My List state with a client-generated `operationId` in the request body and expectedRevision. Reconcile conflicts with the current state before retrying.",
       "params": {
         "id": "Item ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2220,9 +2275,11 @@
       "group": "personal-state",
       "core": false,
       "title": "Change personal state for several items",
-      "description": "Applies up to 200 personal-state intents under one operation ID. Each item has its own outcome; inspect the receipt rather than assuming every row succeeded.",
+      "description": "Applies up to 200 personal-state intents under one client-generated `operationId` in the request body. Each item has its own outcome; inspect the receipt rather than assuming every row succeeded.",
       "params": {},
-      "notes": []
+      "notes": [
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
+      ]
     },
     {
       "operationId": "get_container_personal_state",
@@ -2231,7 +2288,7 @@
       "group": "personal-state",
       "core": false,
       "title": "Read a container's personal state",
-      "description": "Returns the current watched watermark, revision, saved flags and visible-member counts for a show, season, album or book. Read it before changing container state.",
+      "description": "Returns the current watched-mark cutoff, revision, saved flags and visible-member counts for a show, season, album or book. The cutoff identifies which existing members a watched mark covers. Read this before changing container state.",
       "params": {
         "kind": "show, season, album or book.",
         "id": "Container ID for the requested kind."
@@ -2245,7 +2302,7 @@
       "group": "personal-state",
       "core": false,
       "title": "Change a container's personal state",
-      "description": "Sets watched state, My List or favourite state for a visible container using expectedRevision. A watched mark covers members present at its watermark, clears their progress and does not mark later additions.",
+      "description": "Sets watched state, My List or favourite state for a visible container using expectedRevision. A watched mark covers the members present when it is made, clears their progress and does not mark later additions.",
       "params": {
         "kind": "show, season, album or book.",
         "id": "Container ID for the requested kind."
@@ -2280,9 +2337,9 @@
       "description": "Returns a paged history for the current profile under current title access. Filter by library and period where needed.",
       "params": {
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "period": "History period supported by the server.",
+        "period": "24h, 7d, 30d, 90d or all (default).",
         "libraryId": "Library ID used to narrow the result.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "History entries per page, 1–100; defaults to 40."
       },
       "notes": []
     },
@@ -2293,10 +2350,11 @@
       "group": "personal-state",
       "core": false,
       "title": "Change your viewing history",
-      "description": "Applies a personal history action with an operation ID and expectedRevision. Changes to this history do not erase the owner's play history.",
+      "description": "Applies a personal history action with a client-generated `operationId` in the request body and expectedRevision. Changes to this history do not erase the owner's play history.",
       "params": {},
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2308,7 +2366,7 @@
       "title": "Read your preferences",
       "description": "Returns the viewer's effective preferences and revision, optionally for a device class. Use this document before editing personal playback choices.",
       "params": {
-        "deviceClass": "Device class whose effective preferences should be read."
+        "deviceClass": "web, mobile or television; omit to read preferences without a device-class override."
       },
       "notes": []
     },
@@ -2319,10 +2377,11 @@
       "group": "personal-state",
       "core": false,
       "title": "Change your preferences",
-      "description": "Changes the selected preference values using expectedRevision and an idempotency key. Keep account, profile and device-class choices in the scope defined by the request.",
+      "description": "Changes profile-server or profile-device-class preferences using expectedRevision and the client-generated idempotencyKey in the request body. Device-class changes require web, mobile or television.",
       "params": {},
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse idempotencyKey only when retrying the same request; use a new value for a new change."
       ]
     },
     {
@@ -2336,7 +2395,8 @@
       "params": {},
       "notes": [
         "Commands that edit library metadata require the appropriate library authority in addition to access to this bulk-job route.",
-        "Read individual failures; accepted work is not an all-or-nothing completion result."
+        "Read individual failures; accepted work is not an all-or-nothing completion result.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2373,10 +2433,11 @@
       "group": "playlists",
       "core": false,
       "title": "Create a playlist",
-      "description": "Creates a playlist for the current profile using an operation ID. Keep its ID and revision for later edits and queue selectors.",
+      "description": "Creates a playlist for the current profile using a client-generated `operationId` in the request body. Keep its ID and revision for later edits and queue selectors.",
       "params": {},
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "For a new playlist, omit expectedRevision or send 0. A nonzero revision is rejected.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2399,12 +2460,13 @@
       "group": "playlists",
       "core": false,
       "title": "Edit a playlist",
-      "description": "Changes a playlist's supported fields using its expectedRevision and an operation ID. Reread the resource when another edit changes the revision.",
+      "description": "Changes a playlist's supported fields using its expectedRevision and a client-generated `operationId` in the request body. Reread the resource when another edit changes the revision.",
       "params": {
         "id": "Playlist ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2414,12 +2476,13 @@
       "group": "playlists",
       "core": false,
       "title": "Delete a playlist",
-      "description": "Deletes a playlist the viewer may manage using its revision and operation ID. This removes the list rather than its library media.",
+      "description": "Deletes a playlist the viewer may manage using its revision and client-generated `operationId` in the request body. This removes the list rather than its library media.",
       "params": {
         "id": "Playlist ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2429,12 +2492,13 @@
       "group": "playlists",
       "core": false,
       "title": "Add playlist entries",
-      "description": "Adds titles as playlist occurrences using an operation ID and expectedRevision. An occurrence has its own entry ID, so a title can appear more than once.",
+      "description": "Adds titles as playlist occurrences using a client-generated `operationId` in the request body and expectedRevision. An occurrence has its own entry ID, so a title can appear more than once.",
       "params": {
         "id": "Playlist ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2444,13 +2508,14 @@
       "group": "playlists",
       "core": false,
       "title": "Remove a playlist entry",
-      "description": "Removes one playlist occurrence using its entry ID, expectedRevision and an operation ID. Other occurrences of the same title remain.",
+      "description": "Removes one playlist occurrence using its entry ID, expectedRevision and a client-generated `operationId` in the request body. Other occurrences of the same title remain.",
       "params": {
         "id": "Playlist ID.",
         "entryId": "Occurrence ID within the list or queue, not the title ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2460,11 +2525,11 @@
       "group": "playlists",
       "core": false,
       "title": "Read playlist entry order",
-      "description": "Returns a revision-bound window of occurrence IDs, with pages of up to 100. Use entry IDs rather than title IDs when reordering.",
+      "description": "Returns a window of playlist entry IDs tied to the current revision, with pages of up to 100. Use entry IDs rather than title IDs when reordering.",
       "params": {
         "id": "Playlist ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Entry IDs per page, 1–100; defaults to 100."
       },
       "notes": []
     },
@@ -2475,12 +2540,13 @@
       "group": "playlists",
       "core": false,
       "title": "Reorder playlist entries",
-      "description": "Moves or permutes up to 200 occurrences using expectedRevision and an operation ID. An afterEntryId places the selected block relative to an existing occurrence.",
+      "description": "Moves or permutes up to 200 occurrences using expectedRevision and a client-generated `operationId` in the request body. An afterEntryId places the selected block relative to an existing occurrence.",
       "params": {
         "id": "Playlist ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2494,7 +2560,7 @@
       "params": {
         "id": "Playlist ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Sharing candidates per page, 1–100; defaults to 40."
       },
       "notes": []
     },
@@ -2505,12 +2571,13 @@
       "group": "playlists",
       "core": false,
       "title": "Share a playlist",
-      "description": "Adds or changes a playlist share for the named member or profile. Send the operation ID and current expectedRevision and respect the caller's sharing role.",
+      "description": "Adds or changes a playlist share for the named member or profile. Send the client-generated `operationId` in the request body and current expectedRevision and respect the caller's sharing role.",
       "params": {
         "id": "Playlist ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2520,12 +2587,13 @@
       "group": "playlists",
       "core": false,
       "title": "Remove a playlist share",
-      "description": "Removes the specified share using an operation ID and expectedRevision. The playlist remains available to its other permitted viewers.",
+      "description": "Removes the specified share using a client-generated `operationId` in the request body and expectedRevision. The playlist remains available to its other permitted viewers.",
       "params": {
         "id": "Playlist ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2535,11 +2603,11 @@
       "group": "playlists",
       "core": false,
       "title": "List saved resources",
-      "description": "Returns the viewer's saved resources, optionally filtered by kind or pinned state. Pinned results follow the viewer's arrangement.",
+      "description": "Returns the viewer’s saved collections or saved filters, selected by the required kind. Set pinned=true to read only pinned resources in the viewer’s arrangement.",
       "params": {
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "kind": "Saved-resource kind filter, such as collection or view.",
-        "pinned": "Filter by pinned state; true, false, 1 and 0 are accepted.",
+        "kind": "Required: collection or view.",
+        "pinned": "true or 1 returns only pinned resources in the viewer’s arrangement. false, 0 or omission includes both pinned and unpinned resources.",
         "limit": "Resources per page, 1–100; defaults to 40."
       },
       "notes": [
@@ -2566,10 +2634,11 @@
       "group": "playlists",
       "core": false,
       "title": "Create a saved resource",
-      "description": "Creates a supported personal collection or saved filter using an operation ID and expectedRevision. Keep the returned definition and revision for later changes.",
+      "description": "Creates a supported personal collection or saved filter using a client-generated `operationId` in the request body and expectedRevision. Keep the returned definition and revision for later changes.",
       "params": {},
       "notes": [
-        "For a new resource, send expectedRevision: 0 with kind collection or view. A saved view also needs its query definition."
+        "For a new resource, send expectedRevision: 0 with kind collection or view. A saved view also needs its query definition.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2579,12 +2648,13 @@
       "group": "playlists",
       "core": false,
       "title": "Edit a saved resource",
-      "description": "Changes a saved resource's name, summary or supported definition fields. Send expectedRevision and an operation ID to protect concurrent edits.",
+      "description": "Changes a saved resource's name, summary or supported definition fields. Send expectedRevision and a client-generated `operationId` in the request body to protect concurrent edits.",
       "params": {
         "id": "Saved resource ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2594,12 +2664,13 @@
       "group": "playlists",
       "core": false,
       "title": "Delete a saved resource",
-      "description": "Deletes a saved resource the viewer may manage using expectedRevision and an operation ID. Its library titles are retained.",
+      "description": "Deletes a saved resource the viewer may manage using expectedRevision and a client-generated `operationId` in the request body. Its library titles are retained.",
       "params": {
         "id": "Saved resource ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2609,12 +2680,13 @@
       "group": "playlists",
       "core": false,
       "title": "Change collection membership",
-      "description": "Adds titles to or removes entries from a personal collection using expectedRevision and an operation ID. Inspect per-entry outcomes because hidden or missing titles can be refused individually.",
+      "description": "Adds titles to or removes entries from a personal collection using expectedRevision and a client-generated `operationId` in the request body. Inspect per-entry outcomes because hidden or missing titles can be refused individually.",
       "params": {
         "id": "Saved resource ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2624,12 +2696,13 @@
       "group": "playlists",
       "core": false,
       "title": "Reorder a personal collection",
-      "description": "Moves up to 200 entries in a personal collection using its revision and an operation ID. Use collection entry IDs and the supported placement fields.",
+      "description": "Moves up to 200 entries in a personal collection using its revision and a client-generated `operationId` in the request body. Send entryIds in the desired order. Set afterEntryId to move them after that entry, or to an empty string to move them to the front; omit it to rearrange only their existing positions.",
       "params": {
         "id": "Saved resource ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2653,12 +2726,13 @@
       "group": "playlists",
       "core": false,
       "title": "Share a saved resource",
-      "description": "Adds or changes access for the named member or profile. Send expectedRevision and an operation ID and use an allowed sharing role.",
+      "description": "Adds or changes access for the named member or profile. Send expectedRevision and a client-generated `operationId` in the request body and use an allowed sharing role.",
       "params": {
         "id": "Saved resource ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2668,12 +2742,13 @@
       "group": "playlists",
       "core": false,
       "title": "Remove a saved-resource share",
-      "description": "Removes the specified share using expectedRevision and an operation ID. Other shares and the saved resource remain.",
+      "description": "Removes the specified share using expectedRevision and a client-generated `operationId` in the request body. Other shares and the saved resource remain.",
       "params": {
         "id": "Saved resource ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -2685,8 +2760,8 @@
       "title": "List visible TV sources",
       "description": "Returns Live TV sources the viewer is allowed to use. Use their IDs to narrow the guide and channel directory.",
       "params": {
-        "includeHidden": "Set true to include channels this viewer has hidden.",
-        "timezone": "Time zone for the guide or channel directory."
+        "includeHidden": "true or false (default). Only the owner may set true to include channels hidden by the viewer; other callers receive 403.",
+        "timezone": "IANA time zone name, such as America/Halifax; omit for UTC."
       },
       "notes": []
     },
@@ -2700,20 +2775,20 @@
       "description": "Returns a channel directory with the supported sort, filters and positioning information. Keep its revision when continuing a positional or anchored window.",
       "params": {
         "anchorChannelId": "Channel ID used to anchor a directory window.",
-        "anchorProvenance": "Provenance of the channel used as the directory anchor.",
+        "anchorProvenance": "live-source or library-channel; required with direction.",
         "anchorSourceId": "Source ID of the channel used as the directory anchor.",
-        "direction": "Directory window direction for an anchor, as supported by the channel contract.",
-        "favorites": "Set true to show only channels this viewer has marked as favourites.",
-        "group": "Result or content group supported by this operation.",
-        "includeHidden": "Set true to include channels this viewer has hidden.",
-        "kind": "Channel provenance filter supported by Live TV.",
-        "limit": "Page or window size within this operation’s published bounds.",
-        "offset": "Directory offset in the matching channel revision.",
-        "revision": "Revision belonging to this resource or window; preserve its returned value.",
-        "search": "Text used to narrow channels.",
-        "sort": "Sort choice published for this operation.",
-        "sourceId": "Source ID used to narrow or select this operation’s data.",
-        "timezone": "Time zone for the guide or channel directory."
+        "direction": "next or previous relative to anchorChannelId, anchorSourceId and anchorProvenance. Omit offset; omit limit or set it to 1. Omit direction for an ordinary directory window.",
+        "favorites": "true or false (default); true returns only this viewer’s favourite channels.",
+        "group": "Exact channel group name, at most 120 bytes; omit to include all groups.",
+        "includeHidden": "true or false (default). Only the owner may set true to include channels hidden by the viewer; other callers receive 403.",
+        "kind": "all (default), live-source or library-channel.",
+        "limit": "Channels per window, 1–50; defaults to 50. With direction, omit limit or set it to 1.",
+        "offset": "Zero-based directory offset, 0–3200064; defaults to 0. Omit when direction is set.",
+        "revision": "Directory revision, at most 64 bytes; retain it when continuing a window.",
+        "search": "Text to match channel names or groups, at most 120 bytes.",
+        "sort": "number (default), server or name.",
+        "sourceId": "Source ID to filter channels, at most 256 bytes; omit to include all visible sources.",
+        "timezone": "IANA time zone name, such as America/Halifax; omit for UTC."
       },
       "notes": []
     },
@@ -2728,17 +2803,17 @@
       "params": {
         "channels": "Comma-separated channel IDs, up to 50.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "end": "Required guide-window end as RFC 3339 with whole seconds.",
-        "favorites": "Set true to show only channels this viewer has marked as favourites.",
-        "group": "Result or content group supported by this operation.",
-        "includeHidden": "Set true to include channels this viewer has hidden.",
-        "kind": "Channel provenance filter supported by Live TV.",
-        "limit": "Required channel-page size within the guide’s published bounds.",
+        "end": "Required guide-window end as RFC 3339 with whole seconds, after start and no more than 24 hours later.",
+        "favorites": "true or false (default); true returns only this viewer’s favourite channels.",
+        "group": "Exact channel group name, at most 120 bytes; omit to include all groups.",
+        "includeHidden": "true or false (default); true includes channels this viewer has hidden.",
+        "kind": "Required: live-source or library-channel. Omission and all are rejected.",
+        "limit": "Required channels per page, 1–50.",
         "programmes": "Set none to omit program data; otherwise omit this parameter.",
-        "search": "Text used to narrow channels.",
-        "sourceId": "Source ID used to narrow or select this operation’s data.",
-        "start": "Required guide-window start as RFC 3339 with whole seconds.",
-        "timezone": "Time zone for the guide or channel directory."
+        "search": "Text to match channel names or groups, at most 120 bytes.",
+        "sourceId": "Source ID to filter channels; omit to include all visible sources.",
+        "start": "Required guide-window start as RFC 3339 with whole seconds; end must follow it by at most 24 hours.",
+        "timezone": "IANA time zone name, such as America/Halifax; omit for UTC."
       },
       "notes": [
         "Send start, end and limit. Omit programmes for program data or set programmes=none for channels alone."
@@ -2811,7 +2886,8 @@
         "token": "Secret token component from the current Live TV presentation URL.",
         "name": "Media resource name from the current Live TV presentation."
       },
-      "notes": []
+      "notes": [],
+      "auth": "The token in the returned presentation URL authorizes the request; no Authorization header is needed."
     },
     {
       "operationId": "get_dvr",
@@ -2823,8 +2899,8 @@
       "description": "Returns a page of recordings for the viewer, filtered by state. The default state is upcoming; continue with the returned cursor.",
       "params": {
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds.",
-        "state": "Recording state to list; defaults to upcoming."
+        "limit": "Recordings per page, 1–50; defaults to 50.",
+        "state": "upcoming (default), recorded, history, rules or all."
       },
       "notes": []
     },
@@ -2839,7 +2915,7 @@
       "params": {
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
         "search": "Text used to narrow channels.",
-        "sourceId": "Source ID used to narrow or select this operation’s data."
+        "sourceId": "Live TV source ID to restrict the recording channel choices."
       },
       "notes": []
     },
@@ -2861,10 +2937,10 @@
       "group": "live-tv",
       "core": false,
       "title": "Read a recording",
-      "description": "Returns one visible recording and its current actions and revision. Use after for the supported detail continuation.",
+      "description": "Returns one visible recording and its current actions, revision and overlapping recordings. Continue overlaps using nextOverlap as after.",
       "params": {
         "id": "Recording ID.",
-        "after": "Detail continuation supplied by the recording response."
+        "after": "Recording ID from nextOverlap to continue the overlap list, 20 entries at a time; omit for the first page."
       },
       "notes": []
     },
@@ -2964,7 +3040,7 @@
         "id": "Recording rule ID."
       },
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send expectedRevision: 0 to create a rule, or the current rule revision to update it; reconcile conflicts before retrying."
       ]
     },
     {
@@ -2991,7 +3067,7 @@
       "title": "Follow resource changes",
       "description": "Streams authorized invalidation hints as SSE, or returns JSON when waitMs is supplied. Resume SSE with Last-Event-ID or polling with nextAfter; stream.resync means reread visible resources and continue from the new position.",
       "params": {
-        "after": "Continuation position returned by the preceding response.",
+        "after": "Position from nextAfter for JSON polling with waitMs. For SSE, resume with Last-Event-ID instead; an after query parameter is rejected.",
         "waitMs": "Use 0–25000 milliseconds for a JSON event poll; omit for SSE."
       },
       "notes": [
@@ -3019,10 +3095,10 @@
       "title": "Read the notification inbox",
       "description": "Returns a paged inbox with its own revision, filtered by audience and state. Keep the scope and revision from the returned data envelope.",
       "params": {
-        "audience": "Notification audience to read or act on, as allowed by the server.",
-        "state": "Inbox state filter supported by notification capabilities.",
+        "audience": "all (default), profile or account-admin. account-admin requires the local owner; all includes only audiences the caller can read.",
+        "state": "all (default), unread, read or archived.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Notifications per page, 1–100; defaults to 40."
       },
       "notes": []
     },
@@ -3035,7 +3111,7 @@
       "title": "Read the unread notification count",
       "description": "Returns the unread count for the selected audience. Refresh it after notification.changed rather than deriving it from event positions.",
       "params": {
-        "audience": "Notification audience to read or act on, as allowed by the server."
+        "audience": "all (default), profile or account-admin. account-admin requires the local owner; all includes only audiences the caller can read."
       },
       "notes": []
     },
@@ -3046,10 +3122,11 @@
       "group": "events",
       "core": false,
       "title": "Change notification state",
-      "description": "Applies read or archive actions with an operation ID and expectedRevision. Use the inbox revision, which is independent of the event feed cursor.",
+      "description": "Applies read or archive actions with a client-generated `operationId` in the request body and expectedRevision. Use the inbox revision, which is independent of the event feed cursor.",
       "params": {},
       "notes": [
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "Reuse the client-generated `operationId` in the request body only when retrying the same request; use a new value for a new request."
       ]
     },
     {
@@ -3132,8 +3209,8 @@
       "description": "Returns scan job history for an owner integration. Use the returned items and continuation information to follow recent ingestion work.",
       "params": {
         "libraryId": "Library ID used to narrow scan jobs.",
-        "status": "Scan job state, such as queued, running, complete or failed.",
-        "limit": "Jobs per page, 1–40.",
+        "status": "queued, running, paused, complete, complete_with_warnings, failed or cancelled; omit to include all states.",
+        "limit": "Jobs per page, 1–40; defaults to 40.",
         "cursor": "Continuation from the preceding scan-job page."
       },
       "notes": [
@@ -3217,11 +3294,11 @@
       "description": "Returns paged inventory entries for an owner integration, with filters for source, asset or state. Use it to investigate unmatched or unavailable files without reading console panels.",
       "params": {
         "id": "Library ID.",
-        "sourceId": "Source ID used to narrow or select this operation’s data.",
+        "sourceId": "Library source ID to restrict the inventory entries.",
         "assetId": "Inventory asset ID used to narrow the results.",
-        "state": "State filter supported by this resource.",
+        "state": "available, missing or unsupported; omit to include all states.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Inventory entries per page, 1–40; defaults to 40."
       },
       "notes": [
         "Requires the owner; an API key or personal token also needs library scope."
@@ -3236,7 +3313,7 @@
       "title": "Read a title's match and metadata",
       "description": "Returns the repair state, current revision, match evidence and provider candidates for a supported entity kind. Read this before searching for or selecting a different match.",
       "params": {
-        "kind": "Entity kind supported by metadata repair, such as item, show, season, album, artist or book.",
+        "kind": "item, show, season, album, artist or book.",
         "id": "Entity ID for the requested kind."
       },
       "notes": [
@@ -3250,14 +3327,15 @@
       "group": "metadata-integrations",
       "core": false,
       "title": "Change a title's match or metadata",
-      "description": "Applies a supported repair action such as searching, identifying a provider candidate or editing fields. Send the current expectedRevision and the action's required confirmation or operation ID; provider work can continue in the background.",
+      "description": "Applies a metadata repair action, including searching, choosing a provider candidate or editing fields. Send the current expectedRevision and any required confirmation; provider work can continue in the background.",
       "params": {
-        "kind": "Entity kind supported by metadata repair, such as item, show, season, album, artist or book.",
+        "kind": "item, show, season, album, artist or book.",
         "id": "Entity ID for the requested kind."
       },
       "notes": [
         "Requires the owner; an API key or personal token also needs library scope.",
-        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying.",
+        "For cancel_cascade, operationId in the request body is the existing server-generated cascade ID from the repair state, not a client-generated idempotency value."
       ]
     },
     {
@@ -3376,7 +3454,7 @@
       "group": "metadata-integrations",
       "core": false,
       "title": "Edit item metadata",
-      "description": "Changes supported manual metadata fields under the owner's authority. Send the current revision and reconcile manual_metadata_conflict before retrying.",
+      "description": "Lets the owner change manually editable metadata fields. Send the current revision and reconcile manual_metadata_conflict before retrying.",
       "params": {
         "id": "Item ID."
       },
@@ -3394,7 +3472,7 @@
       "title": "List active playback sessions",
       "description": "Returns a paged list of active sessions with the viewer, title, device and delivery information. Refresh it after an admin.sessions event to keep a dashboard current.",
       "params": {
-        "limit": "Page or window size within this operation’s published bounds.",
+        "limit": "Sessions per page, 1–200; defaults to 50.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query."
       },
       "notes": [
@@ -3547,7 +3625,7 @@
       "params": {
         "id": "Webhook ID.",
         "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
-        "limit": "Page or window size within this operation’s published bounds."
+        "limit": "Deliveries per page, 1–100; defaults to 50."
       },
       "notes": [
         "Verify signatures against the raw request body, reject stale timestamps and deduplicate Portico-Event-Id values at the receiver.",
@@ -3564,10 +3642,11 @@
       "description": "Accepts MCP JSON-RPC over stateless Streamable HTTP, with JSON responses and no session ID to retain. Use initialize, tools/list and tools/call with an API key or personal token; signed-in app sessions are refused.",
       "params": {},
       "notes": [
-        "Use an API key or personal access token; the route’s open scope label does not mean unauthenticated MCP access.",
+        "Use an API key or personal access token with the scopes needed by the requested tools.",
         "POST supports initialize, ping, tools/list, tools/call and notifications. GET returns 405; there is no server event stream.",
         "Supported protocol versions: 2025-06-18, 2025-03-26 and 2024-11-05. Tools are filtered by scope, role and configured features."
-      ]
+      ],
+      "auth": "API key or personal access token required; app sessions aren't accepted."
     }
   ]
 }
