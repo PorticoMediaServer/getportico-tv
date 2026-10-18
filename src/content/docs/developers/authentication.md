@@ -1,6 +1,6 @@
 ---
 title: Authentication architecture
-description: Choose API keys, personal access tokens or server sessions, and implement local or Portico Account sign-in.
+description: Choose API keys, personal access tokens or server sessions, and implement server account or Portico Account sign-in.
 category: developers
 order: 3
 audience: Developers
@@ -11,7 +11,7 @@ updated: 2026-10-18
 
 An interactive app uses a server session. A script or assistant normally uses an API key or personal access token.
 
-| Credential | Created by | Web app location |
+| Credential | Created by | Portico Web location |
 | --- | --- | --- |
 | API key (`pk.`) | Server owner | **Settings → Server → Integrations → API keys → Create a key** |
 | Personal access token (`pat.`) | A member, when allowed by the owner | **Settings → Account → Profile & account → Personal access tokens → Create a token** |
@@ -39,13 +39,13 @@ Authorization: Bearer <your-key-or-token>
 
 On `GET` or `HEAD`, `?apiKey=<secret>` is also accepted. Don't send both forms. The server removes the query credential before its handlers and logging, but browser history, proxies and other tools can still see the original URL. Treat that URL as a secret. Other HTTP methods require the header.
 
-Keys and tokens work from any browser origin through CORS. Cookies don't authenticate Server API requests and aren't allowed as cross-origin credentials. A cross-origin request without an allowed bearer credential or resource grant is refused; setup requires the server web app's own origin.
+Keys and tokens work from any browser origin through CORS. Cookies don't authenticate Server API requests and aren't allowed as cross-origin credentials. A cross-origin request without an allowed bearer credential or resource grant is refused; setup requires the same origin as Portico Web bundled with the server.
 
 Keys can't perform session-only operations. These include sign-in and refresh, passwords and two-step verification, credential management, ownership, claiming, profile selection, invitation acceptance and pairing. Check the operation's `x-scope` in `server/api/portico.openapi.json`. A `403 session_required` means signing in is required; `403 insufficient_scope` means the key lacks the operation's scope.
 
 Changing a password or signing out doesn't end keys or tokens. Revoke them separately. Expiry, disabling or deleting the member, or deleting the issuing profile also ends them. Permission changes apply live. Restoring an older database can restore a key revoked after that backup.
 
-## Local server sign-in
+## Server account sign-in
 
 No Portico Account is required. Call `POST /v1/direct/sign-in` with a JSON `username` and `password`. Send a stable random `X-Portico-Installation-Id` of 32–128 letters, digits, hyphens or underscores, plus descriptive `X-Portico-Device-Name`, `X-Portico-Device-Platform`, `X-Portico-App` and `X-Portico-App-Version` headers.
 
@@ -57,7 +57,7 @@ Success returns a `session` containing an `accessToken` and refresh credentials.
 
 An account-based app starts with a Portico Account session, lists eligible servers and verifies signed connection information. It verifies the selected server's identity before exchanging account identity evidence for a server-scoped session.
 
-The server's `POST /v1/direct/portico-challenge` supplies a challenge for a hosted identity assertion. Submit the assertion as `porticoIdentity` to `POST /v1/direct/sign-in`. The server verifies the signed identity and its existing local membership. This isn't permission to send a cloud bearer token to the server. Use Portico's shared connection and identity services for this sequence; external server integrations can use local credentials or scoped keys.
+The server's `POST /v1/direct/portico-challenge` supplies a challenge for a hosted identity assertion. Submit the assertion as `porticoIdentity` to `POST /v1/direct/sign-in`. The server verifies the signed identity and its existing local membership. This isn't permission to send a cloud bearer token to the server. Use Portico's shared connection and identity services for this sequence; external server integrations can use server account credentials or scoped keys.
 
 ## Refresh and sign-out
 

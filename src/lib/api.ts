@@ -46,6 +46,7 @@ export type ApiOperation = {
   access: string;
   errorCodes: string[];
   maxBodyBytes: number | null;
+  auth?: string;
 };
 
 export type ApiGroup = { id: string; title: string; description: string };
@@ -60,11 +61,11 @@ export const operationUrl = (operation: ApiOperation) => `/developers/api/${oper
 
 export const scopeDescriptions: Record<string, string> = {
   open: 'No credential needed.',
-  read: 'Look at libraries, titles, the guide, and the member’s own watch state, lists and notifications.',
+  read: 'Read libraries, titles, the guide, and the member’s own watch state, lists and notifications.',
   playback: 'Play and control playback, and change the member’s own watch state, lists, preferences and recordings.',
   library: 'Scan, report changed paths, match, edit and delete what is in the libraries.',
-  admin: 'Everything else the member may administer, including the three scopes above.',
-  session: 'Only a signed-in session can call it. API keys and personal access tokens are refused.'
+  admin: 'Everything else the member may administer. Includes read, playback and library.',
+  session: 'API keys and personal access tokens are refused. Depending on the operation, send sign-in details, challenge or refresh data, a pairing code, or an existing session token.'
 };
 
 const variants = (schema: Schema) => schema.anyOf ?? schema.oneOf;

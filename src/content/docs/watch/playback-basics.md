@@ -15,7 +15,11 @@ Open a movie, episode, track, audiobook, recording or live channel, and choose i
 
 Your progress is stored under the active profile on that server. Stop on one device, then use the same server and profile in another connected Portico app to resume the item.
 
-Progress is saved as playback is confirmed by the player. Stop or close playback while connected so the server can receive the latest position. Pausing watch history also pauses progress updates. Very short sessions and playback near the beginning may not count as started. Items near the end can count as finished under the profile's watched threshold or the library's completion rules. These checks keep accidental starts and finished items out of **Continue Watching**.
+Progress is saved as playback is confirmed by the player. Stop or close playback while connected so the server can receive the latest position. Pausing watch history also pauses progress updates.
+
+Playback counts as started when its position reaches the profile's **Counts as started** percentage, which defaults to 5% of the duration. When the duration is unknown, playback counts as started at 30 seconds. Audiobook parts count as started at one second. Change the percentage under **Settings → Account → Playback → Advanced**.
+
+An item counts as finished when playback reaches the end or meets the profile's watched threshold or the library's completion rules. The started and completion rules keep accidental starts and finished items out of **Continue Watching**.
 
 ## Player controls
 

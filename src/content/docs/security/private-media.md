@@ -19,7 +19,7 @@ Because media doesn't pass through Portico Cloud, the server owner keeps control
 
 ## Artwork and metadata
 
-Private-library metadata and artwork served by Portico Server require authorization. Before serving a protected file, the server checks the requesting account and profile's access or a valid permission issued specifically for that resource.
+Private-library metadata and artwork served by Portico Server require authorization. Before serving a protected file, the server checks that the requesting account and profile have access, or that a valid permission was issued for that resource.
 
 Save-for-later items appear under **Saved → My List**. My List, history and other personal media state belong to the selected profile on the server. They aren't sent to Portico Cloud.
 

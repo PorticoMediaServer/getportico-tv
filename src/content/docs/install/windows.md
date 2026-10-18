@@ -7,7 +7,7 @@ audience: Server owners
 updated: 2026-10-18
 ---
 
-Download the Windows installer from the [Download Portico](/download/). Run it from an administrator account.
+Download the Windows installer from the [Download Portico](/download/) page. Run it from an administrator account.
 
 ## Install the service
 

@@ -7,7 +7,7 @@ audience: Server owners
 updated: 2026-10-18
 ---
 
-Use `ghcr.io/porticomediaserver/portico-server:latest`, or replace `latest` with a release version tag. The image includes the server, web app, FFmpeg and FFprobe.
+Use `ghcr.io/porticomediaserver/portico-server:latest`, or replace `latest` with a release version tag. The image includes the server, Portico Web, FFmpeg and FFprobe.
 
 ## Data, media and port
 
@@ -67,7 +67,7 @@ The image already supplies these defaults:
 | --- | --- | --- |
 | `PORTICO_STATE_DIR` | `/var/lib/portico` | Persistent server data |
 | `PORTICO_BIND` | `[::]:32500` | Listener inside the container |
-| `PORTICO_WEB_DIR` | `/opt/portico/web` | Bundled web app |
+| `PORTICO_WEB_DIR` | `/opt/portico/web` | Bundled Portico Web |
 | `PORTICO_FFMPEG` | `/opt/portico/third_party/ffmpeg/bin/ffmpeg` | Bundled conversion tool |
 | `PORTICO_FFPROBE` | `/opt/portico/third_party/ffmpeg/bin/ffprobe` | Bundled media analysis tool |
 

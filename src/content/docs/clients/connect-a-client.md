@@ -7,7 +7,7 @@ audience: Viewers
 updated: 2026-10-18
 ---
 
-Use the kind of account the server owner gave you: a Portico Account invitation or an account created on that server. A server account doesn't require a Portico Account.
+Use the kind of account the server owner gave you: a Portico Account invitation or a server account. A server account doesn't require a Portico Account.
 
 ## Connect with a Portico Account
 
@@ -19,11 +19,11 @@ At home the app can prefer a verified local route. Away from home it uses curren
 
 ## Use a server account in a browser
 
-On a server that keeps sign-in local, open the address the owner provides, such as `http://192.168.1.20:32500` on its local network. Enter the username and password created on that server. The bundled Portico Web app already knows which server to connect to.
+On a server that keeps sign-in local, open the address the owner provides on its local network, such as `http://192.168.1.20:32500`. Enter the username and password created on that server. Portico Web bundled with the server already knows which server to connect to.
 
-If the server is linked to a Portico Account, its bundled start page offers Portico Account sign-in and **Owner recovery sign-in**. The recovery option is for the owner. For a normal server account on that server, use direct sign-in in a native app. In the hosted Portico Web app at [web.getportico.tv](https://web.getportico.tv), select **Sign in directly to a server**. Enter a reachable HTTPS server address your browser trusts.
+If the server is linked to a Portico Account, its bundled start page offers Portico Account sign-in and **Owner recovery sign-in**. The recovery option is for the owner. For a normal server account on that server, use direct sign-in in a native app. In Portico Web at [web.getportico.tv](https://web.getportico.tv), select **Sign in directly to a server**. Enter a reachable HTTPS server address your browser trusts.
 
-For direct local HTTP sign-in, open the bundled Portico Web app on a server that keeps sign-in local. A hosted HTTPS web app is subject to browser certificate, mixed-content and local-network rules.
+For direct local HTTP sign-in, open Portico Web bundled with a server that keeps sign-in local. Hosted Portico Web uses HTTPS and is subject to browser certificate, mixed-content and local-network rules.
 
 ## Use a server account in an app
 

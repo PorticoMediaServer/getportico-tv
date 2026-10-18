@@ -14,7 +14,7 @@ const features = [
   },
   {
     title: 'Playback that fits the device',
-    body: 'Portico plays the original file whenever it can. When a device, audio track, subtitle or connection needs something else, the server repackages or converts it.'
+    body: 'Portico plays the original file whenever it can. When a device, audio track, subtitle or connection needs something else, the server remuxes it into a compatible container or transcodes what it has to.'
   },
   {
     title: 'Live TV and DVR',
@@ -26,7 +26,7 @@ const features = [
   },
   {
     title: 'Server management built in',
-    body: 'Libraries, people, playback, remote access, Live TV, scheduled work, backups, diagnostics and server health, all managed in Settings in the Portico web app.'
+    body: 'Libraries, people, playback, remote access, Live TV, scheduled work, backups, diagnostics and server health, all managed from Settings → Server in Portico Web.'
   }
 ];
 ---
@@ -49,7 +49,7 @@ const features = [
       <div class="feature-row">
         <div class="feature-copy">
           <h2 class="display-3">Your progress and your lists follow you between devices.</h2>
-          <p class="lede">Browse, search, save and resume with the same profile wherever you use Portico. Start on the TV and finish on your phone.</p>
+          <p class="lede">Browse, search, save and resume with the same profile wherever you use Portico. Start on the TV and finish on your phone, on the same server.</p>
           <ul class="check-list">
             <li>Continue Watching follows you between screens</li>
             <li>My List, history and ratings stay with your profile</li>
@@ -61,7 +61,7 @@ const features = [
       <div class="feature-row">
         <div class="feature-copy">
           <h2 class="display-3">Posters, cast and episodes, filled in for you.</h2>
-          <p class="lede">Posters, backdrops, cast, seasons and episodes come in automatically when Portico scans your folders. If a title is matched wrong, you can fix it in a few clicks.</p>
+          <p class="lede">Portico reads your folders and fills in backdrops, cast and the full season and episode list for each title. If a title is matched wrong, you can pick the right one.</p>
           <a class="text-link" href="/docs/media/fix-a-match/">How to fix a match <span aria-hidden="true">→</span></a>
         </div>
         <BrowserFrame src="/media/portico-detail.png" alt="Portico's show page for Fargo" address="web.getportico.tv" />

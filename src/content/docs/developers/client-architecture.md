@@ -25,11 +25,11 @@ Generated API models and route helpers are part of this structure. Authenticatio
 
 Web and native clients use shared services for authentication, server discovery, route verification, request and error handling, library vocabulary, playback intent, search scope and view models. The shared settings structure supplies page names and available controls; capabilities, permissions and platform support determine what appears.
 
-The web app uses React with browser navigation and browser media constraints. The native apps use React Native alongside platform code for playback, secure storage and operating-system integration. A television also needs predictable remote focus; a phone needs touch navigation and mobile lifecycle handling.
+Portico Web uses React with browser navigation and browser media constraints. The native apps use React Native alongside platform code for playback, secure storage and operating-system integration. A television also needs predictable remote focus; a phone needs touch navigation and mobile lifecycle handling.
 
 ## Identity and playback
 
-Keep Portico Account sessions separate from server sessions. Verify a server connection before sending its credentials. Local server sign-in and scoped integration credentials also work without a Portico Account.
+Keep Portico Account sessions separate from server sessions. Verify a server connection before sending its credentials. Server account sign-in and scoped integration credentials also work without a Portico Account.
 
 Playback starts, queues and session controls use the server's `/v1` API. Playback services negotiate delivery with the server; a platform player handles the chosen media. Don't assume that sharing an API makes every device support the same codecs, subtitles or offline behaviour.
 

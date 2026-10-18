@@ -13,7 +13,7 @@ Identify:
 
 - The Portico component and version
 - The operating system or device
-- Whether you used the server’s bundled web app, Portico Account sign-in or a native app
+- Whether you used Portico Web bundled with the server, Portico Account sign-in or a native app
 - The exact action that failed
 - What you expected, and what happened instead
 
@@ -23,7 +23,7 @@ Reduce the problem to the shortest sequence that still fails. Say whether it hap
 
 ## Attach evidence
 
-Include a request identifier, a short relevant log excerpt and the playback decision when they apply. In the web app, server logs are under **Settings → Server → Troubleshooting**. The server version appears under **Settings → Server → General**.
+Include a request identifier, a short relevant log excerpt and the playback decision when they apply. In Portico Web, server logs are under **Settings → Server → Troubleshooting**. The server version appears under **Settings → Server → General**.
 
 Before you send them, remove tokens, cookies, emails, public or private addresses, filesystem paths, and media names that should stay private.
 

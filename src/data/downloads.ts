@@ -54,7 +54,7 @@ export const downloadGroups: DownloadGroup[] = [
   },
   {
     title: 'TV and streaming devices',
-    description: 'Apps for TVs and streaming players, made for a remote.',
+    description: 'Install the Portico app on your TV or streaming player, then connect to your server.',
     items: [
       { name: 'Apple TV', detail: 'tvOS', icon: 'apple', action: 'Coming soon' },
       { name: 'Android TV', detail: 'Android TV and Google TV', icon: 'android', action: 'Coming soon' },

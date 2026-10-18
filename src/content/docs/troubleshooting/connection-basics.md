@@ -15,7 +15,7 @@ Test the shortest path first.
 2. On the server computer, open `http://127.0.0.1:32500/`.
 3. From another device on the same network, open `http://<server-address>:32500/`, using the server's local address. Use your configured port if you changed it.
 
-The bundled web app and API share TCP port **32500** by default. HTTP and HTTPS use the same listener. Check the service, host firewall and Docker port mapping if neither address works. `127.0.0.1` always refers to the device opening the page.
+The bundled Portico Web and API share TCP port **32500** by default. HTTP and HTTPS use the same listener. Check the service, host firewall and Docker port mapping if neither address works. `127.0.0.1` always refers to the device opening the page.
 
 ## If local works but remote doesn't
 
@@ -29,7 +29,7 @@ If another account works, ask the owner to open **Settings → Server → People
 
 ## If one device fails
 
-If the same account works elsewhere, update the failing app, check the device clock, record the error and try signing in again. A browser loading an HTTPS page can also block requests to a plain HTTP server; test the server's bundled web app directly.
+If the same account works elsewhere, update the failing app, check the device clock, record the error and try signing in again. A browser loading an HTTPS page can also block requests to a plain HTTP server; test the server's bundled Portico Web directly.
 
 ## Collect details before you restart
 

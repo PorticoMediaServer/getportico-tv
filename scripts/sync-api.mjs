@@ -63,7 +63,8 @@ for (const entry of curation.operations) {
     scope: extensions['x-scope'],
     access: extensions['x-access'],
     errorCodes: extensions['x-error-codes'] ?? [],
-    maxBodyBytes: extensions['x-max-body-bytes'] ?? null
+    maxBodyBytes: extensions['x-max-body-bytes'] ?? null,
+    ...(entry.auth ? { auth: entry.auth } : {})
   });
 }
 

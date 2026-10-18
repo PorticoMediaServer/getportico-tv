@@ -19,7 +19,7 @@ Portico publishes three formats for both x64 and ARM64:
 | RPM package | Fedora or a related distribution |
 | `.tar.gz` bundle | Other Linux systems with compatible runtime requirements |
 
-The archive contains Portico Server, its web application, FFmpeg, FFprobe, licences and third-party notices. The package name is `portico-media-server`.
+The archive contains Portico Server, Portico Web, FFmpeg, FFprobe, licences and third-party notices. The package name is `portico-media-server`.
 
 For an x64 server, install the downloaded package with one of these commands. Use the corresponding `arm64` filename on ARM64.
 

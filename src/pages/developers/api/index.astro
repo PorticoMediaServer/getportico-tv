@@ -13,7 +13,7 @@ const scopes = ['open', 'read', 'playback', 'library', 'admin', 'session'];
   </nav>
   <header class="api-group-head">
     <h1>Portico API reference</h1>
-    <p>Everything a third-party player, script or integration can call on a Portico Server. It's generated from the server's OpenAPI contract, so methods, paths and schemas match the release exactly.</p>
+    <p>The public operations a third-party player, script or integration can call on a Portico Server. Methods, paths and schemas come straight from the server's OpenAPI contract, with descriptions and notes added for each operation.</p>
     <div class="api-meta">
       <span>OpenAPI {apiInfo.openapi}</span>
       <span>Version {apiInfo.version}</span>
@@ -32,18 +32,18 @@ const scopes = ['open', 'read', 'playback', 'library', 'admin', 'session'];
       <h3>Authorization</h3>
       <p>Send an API key, a personal access token or a session's access token as a bearer token.</p>
       <pre><code>Authorization: Bearer pk.3q2-7w…</code></pre>
-      <p class="api-small">On <code>GET</code> and <code>HEAD</code>, you can pass it as the <code>apiKey</code> query parameter instead, so a link works on its own.</p>
+      <p class="api-small">On <code>GET</code> and <code>HEAD</code>, an API key or personal access token can go in the <code>apiKey</code> query parameter instead, for links and players that can't set headers. Session tokens always use the header. Treat any link that carries a credential as a secret.</p>
     </article>
     <article>
       <h3>Requests and errors</h3>
-      <p>JSON in and out. Errors return an <code>error</code> object with a machine-readable <code>code</code> and a readable <code>message</code>. Lists page with <code>nextCursor</code>.</p>
-      <p class="api-small"><a href="/docs/developers/api-overview/">Read the API guide</a> for paging, revisions, retries and idempotency.</p>
+      <p>Most operations exchange JSON; media, artwork, subtitles and event streams use the format shown on the operation. Errors return an <code>error</code> object with a machine-readable <code>code</code> and a readable <code>message</code>. Follow each list's cursor or window fields to read more.</p>
+      <p class="api-small">See the <a href="/docs/developers/api-overview/">API architecture overview</a> for paging, revisions, retries and idempotency.</p>
     </article>
   </section>
 
   <section class="api-section" aria-labelledby="api-scopes-title">
     <h2 id="api-scopes-title">Scopes</h2>
-    <p>Each operation needs one scope. A key or token acts as the member who created it, limited to the scopes chosen when it was made. Owners create API keys in <strong>Settings → Server → Integrations</strong>; any member can create a personal access token in their own settings.</p>
+    <p>Each operation needs one scope. A key or token acts as the member who created it, limited to the scopes chosen when it was made. The <code>read</code>, <code>playback</code> and <code>library</code> scopes are independent, so a tool that reads titles and controls playback needs both <code>read</code> and <code>playback</code>; <code>admin</code> includes all three. Owners create API keys in <strong>Settings → Server → Integrations</strong>. Members can create personal access tokens in their own settings when the owner turns on <strong>Members may make their own tokens</strong> there; check <code>GET /v1/me/api-access</code> before offering it.</p>
     <table class="api-params api-scopes">
       <thead><tr><th>Scope</th><th>What it allows</th></tr></thead>
       <tbody>

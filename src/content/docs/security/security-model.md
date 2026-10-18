@@ -11,7 +11,7 @@ Your Portico Server keeps your media and decides who can use it. Portico Cloud h
 
 ## What Portico Server controls
 
-Portico Server manages media, libraries, playback, local accounts, permissions, settings, recordings, downloads and administration. Protected requests are checked against current account, profile and permission state. Public discovery and setup endpoints have their own access rules.
+Portico Server manages media, libraries, playback, server accounts, permissions, settings, recordings, downloads and administration. Protected requests are checked against current account, profile and permission state. Public discovery and setup endpoints have their own access rules.
 
 ## What Portico Cloud controls
 
@@ -33,7 +33,7 @@ Portico Cloud publishes public routes over HTTPS. Apple apps accept plain HTTP o
 
 The server issues short-lived bearer access tokens and rotating refresh tokens bound to an installation ID. Server access tokens last up to 15 minutes. The installation ID identifies an app installation; it isn't a device private key. Signing out ends the session family. Disabling an account, changing its password or blocking a device ends its sessions; permission changes apply to subsequent requests.
 
-The web app keeps saved server credentials in an encrypted browser store. Server API authentication uses bearer headers, not cookies. Portico Account sessions and server sessions are separate; the app doesn't forward a cloud session token to an arbitrary server.
+Portico Web keeps saved server credentials in an encrypted browser store. Server API authentication uses bearer headers, not cookies. Portico Account sessions and server sessions are separate; the app doesn't forward a cloud session token to an arbitrary server.
 
 ## API keys and personal access tokens
 

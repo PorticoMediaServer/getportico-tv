@@ -15,7 +15,7 @@ Look for the item with the owner account. If it appears there but not for a view
 
 Open **Settings → Server → Libraries**, select the library and check **Folders** on its **General** tab. The file must be inside a folder assigned to that library. The Portico service account needs permission to read the entire path. Your desktop account seeing a network drive doesn't establish that the service can read it. In Docker, use the path mounted inside the container.
 
-To add a missing library, use **Settings → Server → Libraries → Add library**. This opens the server library controls.
+To add a missing library, select **Add library** under **Settings → Server → Libraries**. This opens the **Add a library** dialog.
 
 ## Check filters, then scan
 

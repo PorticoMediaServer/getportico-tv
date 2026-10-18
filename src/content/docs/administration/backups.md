@@ -11,7 +11,7 @@ Back up Portico's server data separately from your media. The built-in backup pr
 
 ## What a backup contains
 
-Each backup folder contains `portico.db`, a checksum manifest and selected files that can't be rebuilt from your media. `portico.db` is the backup copy of the live `server.sqlite` database in the [Portico data folder](/docs/install/server-data-folder/); the two names are intentional. The selected files include server identity keys, TLS identity, the server state file `supervisor/authority-incarnation.v1`, managed-storage configuration, channel logos and subtitles. Database records include settings, accounts, permissions, libraries, metadata choices and watch progress.
+Each backup folder contains `portico.db`, a checksum manifest and selected files that can't be rebuilt from your media. Backups store a copy of the live `server.sqlite` database from the [Portico data folder](/docs/install/server-data-folder/) as `portico.db`. The selected files include server identity keys, TLS identity, the server state file `supervisor/authority-incarnation.v1`, managed-storage configuration, channel logos and subtitles. Database records include settings, accounts, permissions, libraries, metadata choices and watch progress.
 
 Backups exclude media files, recordings, generated artwork, conversion caches and logs. Certificates you supply outside the selected server files and operating-system service configuration need separate backups.
 
@@ -44,6 +44,6 @@ A standalone database file doesn't contain the companion identity and other file
 
 ## Review security after restoring
 
-People are signed out. Passwords, two-step verification and approved devices return to their backup-time state. API keys and personal tokens survive, so a credential revoked after the backup can work again. Review them after restoring.
+People are signed out. Passwords, two-step verification and approved devices return to their backup-time state. API keys and personal access tokens survive, so a credential revoked after the backup can work again. Review them after restoring.
 
 Test important backups on an isolated installation. Don't point the test at production media it can write to. For a complete offline recovery copy, stop Portico cleanly and copy the whole data folder plus external media, recordings, certificate files and service configuration you need.

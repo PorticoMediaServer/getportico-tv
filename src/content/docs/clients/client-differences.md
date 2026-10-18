@@ -13,7 +13,7 @@ Portico apps use the same account permissions, libraries, My List and watch prog
 
 - Phones and tablets use touch controls, background audio and mobile data preferences.
 - TV apps use the directional buttons on your remote and show which control is selected.
-- The web app uses the browser's media player and security rules.
+- Portico Web uses the browser's media player and security rules.
 - Native apps use the device's secure storage and playback integration.
 
 Use your device or TV's volume controls in native apps. An on-screen system volume slider, where shown, changes the device volume. The web player has its own volume control.

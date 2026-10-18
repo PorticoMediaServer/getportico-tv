@@ -11,7 +11,7 @@ Portico Server should run on a computer that can stay on and keep steady access 
 
 ## Start with the media path
 
-The server needs reliable read access to every folder a library uses. Storage attached directly to the server is the simplest option. Network storage works too, as long as the server account can reconnect to it after a reboot without anyone signing in first.
+The server needs reliable read access to every folder a library uses. Storage attached directly to the server is the simplest option. Network storage works too, as long as the Portico service account can reconnect to it after a reboot without anyone signing in first.
 
 ## Allow for playback work
 

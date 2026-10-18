@@ -7,7 +7,7 @@ audience: Viewers
 updated: 2026-10-18
 ---
 
-Install Portico from the [Download Portico](/download/) and connect with the account that has access to your server. You can use a Portico Account or an account created on that server. See [Connect a Portico app](/docs/clients/connect-a-client/).
+Install Portico from the [Download Portico](/download/) page and connect with the account that has access to your server. You can use a Portico Account or a server account. See [Connect a Portico app](/docs/clients/connect-a-client/).
 
 ## Libraries and playback
 

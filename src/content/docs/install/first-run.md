@@ -1,6 +1,6 @@
 ---
 title: Complete first-run setup
-description: Choose a Portico Account or a local server account, and secure the first owner.
+description: Choose a Portico Account or a server account, and secure the first owner.
 category: install
 order: 5
 audience: Server owners
@@ -17,7 +17,7 @@ Enter a **Server name** that people will recognize on their devices. Under **How
 
 Choose **Use a Portico Account** for one sign-in across Portico apps, invitations and access away from home.
 
-1. Under **Create a recovery owner**, enter a **Username**, **Password** and **Confirm password**. This local account gets you back in if your Portico Account is unavailable.
+1. Under **Create a recovery owner**, enter a **Username**, **Password** and **Confirm password**. This server account gets you back in if your Portico Account is unavailable.
 2. Save the credentials somewhere safe and check **I saved this password somewhere safe**.
 3. Select **Create recovery owner**.
 4. In the Portico Account window, sign in if needed and approve the server. If you need to reopen it, select **Open Portico Account**.
@@ -36,11 +36,11 @@ Choose **Keep accounts on this server** to manage sign-ins locally.
 
 This option doesn't create a Portico Account. You can configure remote access separately. See [Enable remote access](/docs/remote/enable-remote-access/).
 
-## Local password rules
+## Server account password rules
 
 The password must contain at least eight characters and use no more than 72 UTF-8 bytes. Some characters use more than one byte. Uppercase letters, numbers and symbols aren't required; choose a long, unique password.
 
-These rules apply to the local owner and recovery owner. Your Portico Account has its own account-security settings.
+These rules apply to the server owner and recovery owner accounts. Your Portico Account has its own account-security settings.
 
 ## After the owner is created
 

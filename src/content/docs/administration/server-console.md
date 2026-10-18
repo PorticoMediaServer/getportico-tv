@@ -15,7 +15,7 @@ Open **Settings → Server → Dashboard** for **Watching now**, **Alerts**, **H
 
 ## Find logs and records
 
-Open **Settings → Server → Troubleshooting → Logs** as an owner or administrator. Owners can also use **Server records**, server capabilities, client reports and **Support export** on the same page. Logs can be filtered by level and category and followed live. Server records separate server, client and audit events.
+Open **Settings → Server → Troubleshooting** as an owner or administrator and find **Logs**. Owners can also use **Server records**, server capabilities, client reports and **Support export** on the same page. **Logs** can be filtered by level and category and followed live. **Server records** separates server, client and audit events.
 
 As the owner, use **Support export** to prepare a downloadable diagnostic file with a selected time window and record types. See [Read logs and diagnostics](/docs/administration/logs-and-diagnostics/).
 
@@ -23,4 +23,4 @@ As the owner, use **Support export** to prepare a downloadable diagnostic file w
 
 Open **Settings → Server → General** for the installed version, update information and restart controls. Include the installed version and platform when reporting a problem after an update.
 
-Open **Settings → Server → Remote access** for outside reachability, local addresses, router mappings and certificate details. See [Read the connection status](/docs/remote/read-connection-status/).
+From the same **Server** settings list, open **Remote access** for outside reachability, local addresses, router mappings and certificate details. See [Read the connection status](/docs/remote/read-connection-status/).

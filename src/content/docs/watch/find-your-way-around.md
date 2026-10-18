@@ -27,4 +27,8 @@ Under **Libraries**, choose one of the media collections your account can use. M
 
 ## Your profile menu
 
-Use your profile menu to switch profiles or servers, open **Account**, get help or sign out. On a narrow screen, the menu also includes **Settings**. Under **Settings → Account**, choose a personal settings page. **Settings → Account → Profile & account** holds account security and connected devices. Playback preferences are on separate pages such as **Settings → Account → Audio & subtitles**. Server administration appears under **Settings → Server** for accounts with permission to use it.
+Use your profile menu to switch profiles or servers, open **Account**, get help or sign out. On a narrow screen, the menu also includes **Settings**.
+
+Under **Settings → Account**, the pages are **Profile & account**, **Playback**, **Audio & subtitles**, **Quality & data**, **Music**, **Appearance**, **Language & region**, **Privacy** and **This device**. Available controls depend on your device and account. **Profile & account** holds account security and connected devices. Choose **Playback**, **Audio & subtitles** or **Quality & data** for playback preferences.
+
+Server administration appears under **Settings → Server** for accounts with permission to use it.

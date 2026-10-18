@@ -21,7 +21,7 @@ The **Add a library** dialog offers these choices under **Type**:
 | **Music** | Artists, albums and songs |
 | **Audiobooks** | Books with chapters |
 
-**Channels → Recordings** manages DVR recordings separately. **Recordings** isn't a type in the add-library dialog.
+DVR recordings are managed separately in **Channels → Recordings** and aren't a library type.
 
 ## Add the library
 

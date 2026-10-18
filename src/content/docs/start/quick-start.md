@@ -11,7 +11,7 @@ This is the shortest path to a working Portico Server. Start on your home networ
 
 ## 1. Install Portico Server
 
-Download the package for the computer that stores your media or can reach it. Follow the instructions for [Install on Windows](/docs/install/windows/), [Install on macOS](/docs/install/macos/), [Install on Linux](/docs/install/linux/) or [Install with Docker](/docs/install/docker/).
+Download the package for the computer that stores your media or can reach it. Then follow the guide for your system: [Install on Windows](/docs/install/windows/), [Install on macOS](/docs/install/macos/), [Install on Linux](/docs/install/linux/) or [Install with Docker](/docs/install/docker/).
 
 Open `http://127.0.0.1:32500/` on the server. From another device on the same network, replace `127.0.0.1` with the server's local IP address.
 

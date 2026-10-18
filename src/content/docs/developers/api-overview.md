@@ -13,7 +13,7 @@ For every public operation, with parameters, schemas and example requests, see t
 
 ## Server address and contract
 
-The API base path is `/v1` on the same origin and port as the bundled web app. The default port is TCP **32500**. For example, a local server's library list is `http://127.0.0.1:32500/v1/libraries`. Give a reverse-proxied server its own hostname; hosting below a path such as `/portico` isn't supported.
+The API base path is `/v1` on the same origin and port as Portico Web bundled with the server. The default port is TCP **32500**. For example, a local server's library list is `http://127.0.0.1:32500/v1/libraries`. Give a reverse-proxied server its own hostname; hosting below a path such as `/portico` isn't supported.
 
 `GET /v1/system` is public and reports the server's ID, name, version and setup state. Protected operations require a server session, API key or personal access token, as described in [Authentication architecture](/docs/developers/authentication/).
 

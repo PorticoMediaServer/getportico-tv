@@ -10,7 +10,7 @@ updated: 2026-10-18
 ## Set up the app
 
 1. Install the Portico app for your television or streaming device.
-2. Sign in with your Portico Account, or choose **Sign in directly to a server** for an account created on the server.
+2. Sign in with your Portico Account, or choose **Sign in directly to a server** for a server account.
 3. Open a server you're authorized to use. For direct sign-in, enter its address and approve the TV's code from a signed-in phone or browser, or choose **Use a password instead**.
 
 See [Connect a Portico app](/docs/clients/connect-a-client/) for both account paths and connection requirements.

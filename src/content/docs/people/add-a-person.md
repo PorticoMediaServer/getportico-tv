@@ -9,7 +9,7 @@ updated: 2026-10-18
 
 Give each person their own account for sign-in, devices and security records. Use their profile for progress, My List, history and ratings. Keep the owner account private. See [Accounts and servers](/docs/start/accounts-and-servers/) for the difference.
 
-## Create an account on this server
+## Create a server account
 
 1. Sign in as the owner and open **Settings → Server → People → Accounts**.
 2. Select **Add account**.
@@ -29,7 +29,7 @@ Invitations created here grant access to all libraries. You can restrict library
 4. Select **Create invitation**.
 5. Copy the **Invitation link** or code and share it with the person. Portico doesn't send an email.
 
-An unrestricted invitation can be used by anyone who has the link or code. Invitations created here expire after seven days. The recipient can join with their Portico Account, or create an account on the server when the invitation permits it.
+An unrestricted invitation can be used by anyone who has the link or code. Invitations created here expire after seven days. The recipient can join with their Portico Account, or create a server account when the invitation permits it.
 
 After the person joins, open their account under **Settings → Server → People → Accounts** and edit **Libraries they can see** if they need restricted access.
 
