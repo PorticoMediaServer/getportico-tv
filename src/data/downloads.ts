@@ -8,7 +8,6 @@ export type PlatformIconName =
   | 'lg'
   | 'samsung'
   | 'fire-tv'
-  | 'xbox'
   | 'web';
 
 export type DownloadItem = {
@@ -61,8 +60,7 @@ export const downloadGroups: DownloadGroup[] = [
       { name: 'Fire TV', detail: 'Fire OS and Vega OS', icon: 'fire-tv', action: 'Coming soon' },
       { name: 'Roku', detail: 'Roku streaming players and televisions', icon: 'roku', action: 'Coming soon' },
       { name: 'LG', detail: 'webOS televisions', icon: 'lg', action: 'Coming soon' },
-      { name: 'Samsung', detail: 'Tizen televisions', icon: 'samsung', action: 'Coming soon' },
-      { name: 'Xbox', detail: 'Xbox One and Xbox Series', icon: 'xbox', action: 'Coming soon' }
+      { name: 'Samsung', detail: 'Tizen televisions', icon: 'samsung', action: 'Coming soon' }
     ]
   }
 ];

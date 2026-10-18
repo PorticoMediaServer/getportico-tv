@@ -766,6 +766,11 @@ kbd {
   font-weight: 600;
 }
 
+/* Web gets a double-width tile, which also keeps the nine watch tiles in full rows. */
+.platform-grid-watch li:first-child {
+  grid-column: span 2;
+}
+
 .platform-grid li span {
   margin-top: auto;
 }

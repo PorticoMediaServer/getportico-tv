@@ -42,7 +42,7 @@ const faqs = [
   },
   {
     q: "Which devices can I watch on?",
-    a: "In any modern web browser, and in the Portico apps for iPhone, iPad, Android, Apple TV, Android TV, Google TV, Fire TV, Roku, LG, Samsung and Xbox."
+    a: "In any modern web browser, and in the Portico apps for iPhone, iPad, Android, Apple TV, Android TV, Google TV, Fire TV, Roku, LG and Samsung."
   },
   {
     q: "Can I share my server with family?",
@@ -200,7 +200,7 @@ const faqs = [
       <div class="platform-board">
         <div class="platform-group">
           <h3>Watch on</h3>
-          <ul class="platform-grid">
+          <ul class="platform-grid platform-grid-watch">
             {watchPlatforms.map((platform) => (
               <li><PlatformIcon name={platform.icon} /><span>{platform.name}</span></li>
             ))}

@@ -18,6 +18,5 @@ export const watchPlatforms: Platform[] = [
   { name: 'Fire TV', icon: 'fire-tv' },
   { name: 'Roku', icon: 'roku' },
   { name: 'LG', icon: 'lg' },
-  { name: 'Samsung', icon: 'samsung' },
-  { name: 'Xbox', icon: 'xbox' }
+  { name: 'Samsung', icon: 'samsung' }
 ];
