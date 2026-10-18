@@ -9,6 +9,8 @@ updated: 2026-10-18
 
 Portico Server and Portico Cloud have separate APIs. Use the Server API for integrations that work with a person's media server. Portico Account sign-in and connection coordination use the Cloud API.
 
+For every public operation, with parameters, schemas and example requests, see the [API reference](/developers/api/).
+
 ## Server address and contract
 
 The API base path is `/v1` on the same origin and port as the bundled web app. The default port is TCP **32500**. For example, a local server's library list is `http://127.0.0.1:32500/v1/libraries`. Give a reverse-proxied server its own hostname; hosting below a path such as `/portico` isn't supported.

@@ -11,6 +11,8 @@ const required = [
   'download/index.html',
   'docs/index.html',
   'developers/index.html',
+  'developers/api/index.html',
+  'docs/search.json',
   'privacy/index.html',
   'terms/index.html',
   'license/index.html',
@@ -56,6 +58,14 @@ if (articleCount < 25) {
   throw new Error(`Documentation build is too small: ${articleCount} generated pages`);
 }
 
+const apiReference = JSON.parse(await readFile(new URL('../src/data/api/reference.json', import.meta.url), 'utf8'));
+const curatedIds = new Set(JSON.parse(await readFile(new URL('../src/data/api/public-api.json', import.meta.url), 'utf8')).operations.map((operation) => operation.operationId));
+const uncurated = apiReference.operations.filter((operation) => !curatedIds.has(operation.operationId));
+if (apiReference.operations.length === 0 || uncurated.length > 0) {
+  throw new Error(`API reference must contain only curated public operations: ${uncurated.map((operation) => operation.operationId).join(', ') || 'none generated'}`);
+}
+for (const group of apiReference.groups) await access(new URL(`developers/api/${group.id}/index.html`, root));
+
 const allEntries = await readdir(root, { recursive: true });
 const htmlFiles = allEntries.filter((entry) => entry.endsWith('.html'));
 const broken = [];
@@ -88,4 +98,4 @@ if (broken.length > 0) {
   throw new Error(`Broken internal references:\n${broken.join('\n')}`);
 }
 
-console.log(`Verified ${htmlFiles.length} static pages, ${articleCount} documentation pages, ${labels.length} client actions, all internal references, and build identity ${buildIdentity.commit}.`);
+console.log(`Verified ${htmlFiles.length} static pages, ${articleCount} documentation pages, ${apiReference.operations.length} public API operations, ${labels.length} client actions, all internal references, and build identity ${buildIdentity.commit}.`);

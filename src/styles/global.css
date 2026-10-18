@@ -3493,3 +3493,8 @@ body:has(dialog[open]) {
     display: none;
   }
 }
+
+.api-basics pre {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
