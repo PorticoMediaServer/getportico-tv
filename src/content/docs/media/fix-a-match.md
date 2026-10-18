@@ -7,7 +7,7 @@ audience: Server owners
 updated: 2026-10-18
 ---
 
-Check the file and folder names first. A manual correction fixes what's displayed, but clean names stop the same problem coming back after a rebuild or migration. See [Name movie files](/docs/media/name-movies/), [Name TV episodes](/docs/media/name-tv-shows/) and [Organize music](/docs/media/name-music/).
+Check the file and folder names first. A manual correction fixes what's displayed. Clear names reduce matching errors after a rebuild or migration; keep a backup to preserve manual corrections. See [Name movie files](/docs/media/name-movies/), [Name TV episodes](/docs/media/name-tv-shows/) and [Organize music](/docs/media/name-music/).
 
 ## Choose the right match
 

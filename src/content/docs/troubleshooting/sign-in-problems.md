@@ -17,9 +17,9 @@ If a Portico Account offers Google or Apple sign-in, use a method linked to the 
 
 For a Portico Account, use **Forgot password?** on the account sign-in form. If you sign in only through Google or Apple, recover access with that provider.
 
-For a local server account, ask the owner to reset that person's password under **Settings → People** in the **Server** section. Don't share or reset the owner's credential to sign in as a viewer.
+For a local server account, ask the owner to reset that person's password under **Settings → Server → People**. Don't share or reset the owner's credential to sign in as a viewer.
 
-If **Two-step verification** is on, enter a current authenticator code or an unused recovery code. Keep recovery codes before replacing the authenticator device. Portico Account security is under **Open your account → Security** from **Settings → Profile & account**; local account security is under **Settings → Profile & account → Sign-in**.
+If **Two-step verification** is on, enter a current authenticator code or an unused recovery code. Keep recovery codes before replacing the authenticator device. Portico Account security is under **Open your account → Security** from **Settings → Account → Profile & account**; local account security is under **Settings → Account → Profile & account → Sign-in**.
 
 ## Check the device date and time
 
@@ -27,7 +27,7 @@ Authenticator codes, sessions and signed connection documents depend on the devi
 
 ## Check approval and profile selection
 
-A successful password check can still leave a device waiting for owner approval, a required password change or a profile/PIN selection. Follow the displayed step. Ask the owner to review pending devices under **Settings → People**.
+A successful password check can still leave a device waiting for owner approval, a required password change or a profile/PIN selection. Follow the displayed step. Ask the owner to review pending devices under **Settings → Server → People**.
 
 ## If you sign in but the server is missing
 

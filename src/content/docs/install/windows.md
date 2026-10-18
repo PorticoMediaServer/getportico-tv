@@ -7,14 +7,14 @@ audience: Server owners
 updated: 2026-10-18
 ---
 
-Download the Windows installer from the [Downloads page](/download/). Run it from an administrator account.
+Download the Windows installer from the [Download Portico](/download/). Run it from an administrator account.
 
 ## Install the service
 
 1. Open the installer and choose the application installation location.
 2. Let the installer create the Windows service and add its inbound TCP `32500` firewall rule.
 3. Open Portico from the Start menu, or visit `http://127.0.0.1:32500/`.
-4. Complete [first-run setup](/docs/install/first-run/).
+4. Follow [Complete first-run setup](/docs/install/first-run/).
 
 The installer uses `%ProgramData%\Portico Media Server` for server data, separate from the application folder. It doesn't offer a data-folder chooser. See [Portico data folder](/docs/install/server-data-folder/).
 

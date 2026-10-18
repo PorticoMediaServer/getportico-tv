@@ -7,7 +7,7 @@ audience: Viewers
 updated: 2026-10-18
 ---
 
-Install Portico from the [Downloads page](/download/) and connect with the account that has access to your server. You can use a Portico Account or an account created on that server. See [Connect a Portico app](/docs/clients/connect-a-client/).
+Install Portico from the [Download Portico](/download/) and connect with the account that has access to your server. You can use a Portico Account or an account created on that server. See [Connect a Portico app](/docs/clients/connect-a-client/).
 
 ## Libraries and playback
 
@@ -23,4 +23,4 @@ Apple apps allow plain HTTP only to local-network addresses. Use the server's HT
 
 ## Shared or managed devices
 
-When access should end, sign out or remove the saved server connection and revoke the device from the account's security settings. For Portico Accounts, manage the device there; for server accounts, use that server's account settings. See [Account security](/docs/security/account-security/).
+When access should end, sign out or remove the saved server connection and revoke the device from the account's security settings. For Portico Accounts, manage the device there; for server accounts, use that server's account settings. See [Protect your account](/docs/security/account-security/).

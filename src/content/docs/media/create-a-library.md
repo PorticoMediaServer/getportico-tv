@@ -21,12 +21,12 @@ The **Add a library** dialog offers these choices under **Type**:
 | **Music** | Artists, albums and songs |
 | **Audiobooks** | Books with chapters |
 
-DVR manages recordings separately. **Recordings** isn't a type in the add-library dialog.
+**Channels → Recordings** manages DVR recordings separately. **Recordings** isn't a type in the add-library dialog.
 
 ## Add the library
 
-1. Open **Settings**.
-2. Under **Server**, choose **Libraries**, then **Add library**.
+1. Open **Settings → Server → Libraries**.
+2. Select **Add library**.
 3. Enter a **Name**.
 4. Choose the media **Type**.
 5. Enter **Folder on the server**, or select **Choose folder** to browse. Use a path the server can read, not a path on the device running your browser. In Docker, use the path inside the container, such as `/media/Movies`.

@@ -19,11 +19,11 @@ At home the app can prefer a verified local route. Away from home it uses curren
 
 ## Use a server account in a browser
 
-On the server's network, open the address the owner provides, such as `http://192.168.1.20:32500`. Use the username and password created on that server. The bundled web app already knows which server to connect to.
+On a server that keeps sign-in local, open the address the owner provides, such as `http://192.168.1.20:32500` on its local network. Enter the username and password created on that server. The bundled Portico Web app already knows which server to connect to.
 
-If the server is linked to a Portico Account, its bundled start page offers Portico Account sign-in and **Owner recovery sign-in**. The recovery option is for the owner. For a normal server account on that server, use direct sign-in in a native app, or select **Sign in directly to a server** at [web.getportico.tv](https://web.getportico.tv) and enter a server HTTPS address your browser trusts.
+If the server is linked to a Portico Account, its bundled start page offers Portico Account sign-in and **Owner recovery sign-in**. The recovery option is for the owner. For a normal server account on that server, use direct sign-in in a native app. In the hosted Portico Web app at [web.getportico.tv](https://web.getportico.tv), select **Sign in directly to a server**. Enter a reachable HTTPS server address your browser trusts.
 
-For direct local HTTP access, open the server's bundled web app. A hosted HTTPS web app is subject to browser certificate, mixed-content and local-network rules.
+For direct local HTTP sign-in, open the bundled Portico Web app on a server that keeps sign-in local. A hosted HTTPS web app is subject to browser certificate, mixed-content and local-network rules.
 
 ## Use a server account in an app
 
@@ -32,7 +32,7 @@ For direct local HTTP access, open the server's bundled web app. A hosted HTTPS 
 3. On a phone or tablet, enter the server account's username and password, then select **Sign in**.
 4. Complete two-step verification, a required password change or device approval if requested. Choose your profile when prompted.
 
-On a television, entering the address normally shows a Quick Connect code. Approve it from a device already signed in to that server: open **Settings → Link a TV** on a phone, or the server's `/device` page in a browser. You can also choose **Use a password instead**.
+On a television, entering the address normally shows a Quick Connect code. Approve it from a device already signed in to that server: open **Settings → Account → This device → Link a TV** on a phone, or the server's `/device` page in a browser. You can also choose **Use a password instead**.
 
 The server account can connect away from home too, if the owner provides a reachable address and permits outside sign-in. It won't appear in a Portico Account's server list just because you know its address.
 

@@ -21,7 +21,7 @@ Movies/
 
 Keep bonus material, alternate versions and subtitles inside the movie's folder. Use recognized extras folders such as `extras`, `trailers` or `behind the scenes`, or a suffix such as `Arrival (2016)-trailer.mkv`.
 
-Name alternate editions explicitly, for example `Arrival (2016) {edition-Extended Cut}.mkv`. Keep the movie title and year consistent across versions. Match a subtitle's base name to the video, for example `Arrival (2016).en.srt`. See [Audio and subtitles](/docs/watch/audio-and-subtitles/).
+Name alternate editions explicitly, for example `Arrival (2016) {edition-Extended Cut}.mkv`. Keep the movie title and year consistent across versions. Match a subtitle's base name to the video, for example `Arrival (2016).en.srt`. See [Choose audio and subtitles](/docs/watch/audio-and-subtitles/).
 
 For local artwork, use `poster.jpg` and `fanart.jpg`, or the video's base name followed by `-poster.jpg` or `-fanart.jpg`. PNG versions are also recognized. Keep unrelated movies in separate folders so folder artwork and extras belong to the right film.
 

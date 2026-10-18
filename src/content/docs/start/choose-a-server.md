@@ -15,7 +15,7 @@ The server needs reliable read access to every folder a library uses. Storage at
 
 ## Allow for playback work
 
-Direct play takes very little processing. Transcoding can take a lot more CPU, or supported hardware acceleration, especially for high-resolution video. So the right server depends on the files you keep and the devices that will play them. See [Direct play and transcoding](/docs/watch/direct-play-and-transcoding/) for how Portico chooses between them.
+Direct play takes very little processing. Transcoding can need much more processing power, especially for high-resolution video. Supported hardware acceleration reduces CPU work. So the right server depends on the files you keep and the devices that will play them. See [Direct play and transcoding](/docs/watch/direct-play-and-transcoding/) for how Portico chooses between them.
 
 ## Use a wired connection
 

@@ -13,11 +13,11 @@ Play the same item on another Portico client. Then play a different item on the 
 
 ## Check the file and delivery
 
-Confirm that the file still exists and that the Portico service can read it. As an owner or administrator, check **Settings → Dashboard → Watching now** in the **Server** section while retrying, if a session appears. Note its delivery method and bitrate when available.
+Confirm that the file still exists and that the Portico service can read it. As an owner or administrator, check **Settings → Server → Dashboard → Watching now** while retrying, if a session appears. Note its delivery method and bitrate when available.
 
-Check the matching events under **Settings → Troubleshooting → Logs**. [Connection troubleshooting basics](/docs/troubleshooting/connection-basics/) lists file and service log locations. Conversion failures appear in the server logs.
+Check the matching events under **Settings → Server → Troubleshooting → Logs**. [Connection troubleshooting basics](/docs/troubleshooting/connection-basics/) lists file and service log locations. Conversion failures appear in the server logs.
 
-If conversion is involved, check **Settings → Streaming** for conversion settings, available media tools, hardware acceleration and a writable conversion folder with enough free space.
+If conversion is involved, check **Settings → Server → Streaming** for conversion settings, available media tools, hardware acceleration and a writable conversion folder with enough free space.
 
 ## Check audio and subtitle tracks
 

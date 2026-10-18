@@ -22,7 +22,7 @@ For an HDHomeRun you haven't located yet, use **Add source → Find tuners on th
 
 ## Upload playlist files
 
-Select **Add source → Upload playlist files**. Choose an M3U or M3U8 playlist and, optionally, an XMLTV `.xml` guide. Set **Tuners** to the number of simultaneous streams the source allows, select **Check files**, then **Add source**. Uploaded files are stored on the server; they aren't a subscription that refreshes from your computer.
+Select **Add source → Upload playlist files**. Choose an M3U or M3U8 playlist and, optionally, an XMLTV `.xml` guide. Set **Tuners** to the number of simultaneous streams the source allows, select **Check files**, then **Add source**. Uploaded playlist and guide files are stored on the server. Changes to the originals on your computer aren't imported automatically.
 
 ## Review the channels
 

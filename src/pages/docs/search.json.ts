@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import { getDocCategory } from '@/data/docs';
+import { apiOperations, apiGroups } from '@/lib/api';
 
 const plain = (markdown: string) =>
   markdown
@@ -21,5 +22,16 @@ export async function GET() {
     headings: [...(entry.body ?? '').matchAll(/^#{2,3}\s+(.+)$/gm)].map((match) => match[1].trim()),
     text: plain(entry.body ?? '')
   }));
+  const groupTitles = new Map(apiGroups.map((group) => [group.id, group.title]));
+  for (const operation of apiOperations) {
+    index.push({
+      url: `/developers/api/${operation.group}/#${operation.operationId}`,
+      title: `${operation.method.toUpperCase()} ${operation.path}`,
+      description: operation.title,
+      category: `API · ${groupTitles.get(operation.group) ?? ''}`,
+      headings: [operation.title],
+      text: `${operation.title}. ${operation.description}`
+    });
+  }
   return new Response(JSON.stringify(index), { headers: { 'Content-Type': 'application/json' } });
 }

@@ -25,10 +25,9 @@ Portico recognizes sidecars including SRT, WebVTT, ASS and SSA. Playback depends
 
 ## Personal defaults
 
-1. Open **Settings**.
-2. Under **Account**, choose **Audio & subtitles**.
-3. Under **Audio**, set **Preferred audio languages** in order of preference.
-4. Under **Subtitles**, set **Preferred subtitle languages** and **Show subtitles**. The subtitle choices are **Off**, **Forced only** and **Always**.
+1. Open **Settings → Account → Audio & subtitles**.
+2. Under **Audio**, set **Preferred audio languages** in order of preference.
+3. Under **Subtitles**, set **Preferred subtitle languages** and **Show subtitles**. The subtitle choices are **Off**, **Forced only** and **Always**.
 
 Portico uses the first preferred language available for the title. With no preferred audio languages, it uses the title's original track. These settings belong to your profile. A preference can't add a track the media doesn't have.
 

@@ -11,7 +11,7 @@ Portico is a personal media server. You install Portico Server on a computer tha
 
 ## What the server does
 
-The server does the real work. It scans your files and builds libraries. It stores account permissions and watch progress. It decides how each item should play, and it sends media to apps that are allowed to receive it.
+Portico Server scans your files and builds libraries, stores account permissions and profile watch progress, decides how each item plays, and sends media to apps allowed to receive it.
 
 ## What Portico Cloud does
 

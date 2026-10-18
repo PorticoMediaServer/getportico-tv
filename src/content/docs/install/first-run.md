@@ -34,7 +34,7 @@ Choose **Keep accounts on this server** to manage sign-ins locally.
 1. Under **Create the owner account**, enter a **Username**, **Password** and **Confirm password**.
 2. Select **Create owner**.
 
-This option doesn't create a Portico Account. You can configure [remote access](/docs/remote/enable-remote-access/) separately.
+This option doesn't create a Portico Account. You can configure remote access separately. See [Enable remote access](/docs/remote/enable-remote-access/).
 
 ## Local password rules
 
@@ -48,8 +48,8 @@ Portico closes first-run setup so nobody else can claim the server. Keep owner a
 
 ## Check the basics
 
-Before you add media, check the server name, [data folder location](/docs/install/server-data-folder/), local connection and system clock. Incorrect system time can break authentication and signed connection checks.
+Before you add media, check the server name, data folder location, local connection and system clock. See [Portico data folder](/docs/install/server-data-folder/) for its location. Incorrect system time can break authentication and signed connection checks.
 
 ## Add viewers later
 
-Don't use the owner account as a shared household login. Finish your first library and a local playback test, then [add a person](/docs/people/add-a-person/) for each viewer.
+Don't use the owner account as a shared household login. Finish your first library and a local playback test, then [Add a person](/docs/people/add-a-person/) for each viewer.

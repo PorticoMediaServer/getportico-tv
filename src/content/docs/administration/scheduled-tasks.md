@@ -26,7 +26,7 @@ Maintenance windows don't schedule every kind of server work:
 - Remote Live TV sources have their own guide-refresh interval under **Settings → Server → Live TV & Channels → Sources**.
 - Recording jobs follow program times and recording rules.
 
-On **Schedule**, choose the background speed or select **Pause for an hour**. Use **Resume** to end the pause early. These controls manage background work; check **Dashboard → Background activity** for what's actually running.
+On **Schedule**, choose the background speed or select **Pause for an hour**. Use **Resume** to end the pause early. These controls manage background work; check **Settings → Server → Dashboard → Background activity** for what's actually running.
 
 ## Additional schedules
 

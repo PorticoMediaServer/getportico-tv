@@ -32,7 +32,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     <p>Processed profile images are kept in private object storage run by our infrastructure provider, separate from Portico's account database. After an authenticated request, Portico authorizes access to an image for a limited period. The storage bucket itself isn't made public.</p>
 
     <h2>Server coordination information</h2>
-    <p>Portico Cloud processes limited control-plane information needed to connect accounts and servers. This can include:</p>
+    <p>Portico Cloud processes the limited account and connection information needed to connect accounts and servers. This can include:</p>
     <ul>
       <li>a server identifier and public identity key</li>
       <li>ownership and membership records</li>
@@ -105,7 +105,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     <p>We review reports sent to <a href="mailto:abuse@getportico.tv">abuse@getportico.tv</a> in good faith. When necessary to investigate or to allow a response, we may share a report, including the reporter's contact information, with the relevant account or server operator. We won't do this if law, safety or the circumstances call for a different approach. Our <a href="/abuse/">Abuse page</a> explains the process and how to request a correction.</p>
     <p>Portico responds to valid legal process. We may preserve or disclose information where the law requires it. We can't provide media or media activity that Portico Cloud doesn't have.</p>
 
-    <h2>Retention</h2>
+    <h2 id="retention">Retention</h2>
     <p>Our goal is to keep personal and operational information for as short a time as practical while keeping the service secure and usable.</p>
     <p>Active account, membership, session and current connection information stays available while it's needed for those functions. It isn't deleted just because it was created more than 30 days ago.</p>
     <p>Once information is no longer needed for its stated purpose, we delete or anonymize it as soon as practical, and ordinarily no later than 30 days afterward. A longer period may apply when:</p>

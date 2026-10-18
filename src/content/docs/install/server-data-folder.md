@@ -37,7 +37,7 @@ Depending on which features you use, the folder can contain:
 - generated playback files
 - maintenance data
 
-The main database is `server.sqlite`. Keep the whole data folder for a server backup, including its identity and connection state. Generated files can use a separate cache location through `PORTICO_CACHE_DIR`, and database backups can use `PORTICO_BACKUP_DIR`. Both paths must be absolute and writable by the server. A saved conversion-folder setting can override the temporary conversion path.
+The live database is `server.sqlite`. Built-in backups name their database copy `portico.db`; see [Back up Portico Server](/docs/administration/backups/). Keep the whole data folder for a server backup, including its identity and connection state. Generated files can use a separate cache location through `PORTICO_CACHE_DIR`, and database backups can use `PORTICO_BACKUP_DIR`. Both paths must be absolute and writable by the server. A saved conversion-folder setting can override the temporary conversion path.
 
 ## Storage requirements
 

@@ -7,7 +7,7 @@ audience: Server owners
 updated: 2026-10-18
 ---
 
-Portico works best when each library points to folders that hold one kind of media. Keep movies, TV shows, music, anime and audiobooks in separate folders. Keep DVR recordings separate too; Portico manages them through DVR rather than the add-library dialog.
+Portico works best when each library points to folders that hold one kind of media. Keep movies, TV shows, music, anime and audiobooks in separate folders. Keep DVR recordings separate too; Portico manages them through **Channels → Recordings** rather than the add-library dialog.
 
 ## Use stable paths
 
@@ -23,4 +23,4 @@ The Portico service account needs read access to every folder in the path. If yo
 
 ## Next steps
 
-Name your files so Portico can match them: [movies](/docs/media/name-movies/), [TV shows](/docs/media/name-tv-shows/) and [music](/docs/media/name-music/). Then [create a library](/docs/media/create-a-library/).
+Name your files so Portico can match them: [Name movie files](/docs/media/name-movies/), [Name TV episodes](/docs/media/name-tv-shows/) and [Organize music](/docs/media/name-music/). Then [Create a library](/docs/media/create-a-library/).

@@ -24,7 +24,7 @@ Deletion removes the server account, its profiles, progress, history, lists and 
 
 ## Review devices and invitations
 
-Review the devices in the person's account record, or open **People → Devices**. Block devices you no longer trust. A blocked device is signed out and can't use the server until approved again.
+Review the devices in the person's account record, or open **Settings → Server → People → Devices**. Block devices you no longer trust. A blocked device is signed out and can't use the server until approved again.
 
 Under **People → Invitations**, revoke any unused invitation that should no longer work. Revoking an invitation invalidates its link and code; it doesn't remove someone who has already joined.
 

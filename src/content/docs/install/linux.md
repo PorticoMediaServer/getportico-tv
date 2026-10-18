@@ -63,7 +63,7 @@ An upgrade restarts an active service and leaves a stopped service stopped. Opti
 
 ## Open Portico and check the firewall
 
-The default listener is TCP `32500`. Open `http://127.0.0.1:32500/` on the server, or use its local IP address from another device. Complete [first-run setup](/docs/install/first-run/).
+The default listener is TCP `32500`. Open `http://127.0.0.1:32500/` on the server, or use its local IP address from another device. Follow [Complete first-run setup](/docs/install/first-run/).
 
 If you use UFW, this example allows a home subnet. Replace the subnet with your own:
 
@@ -78,7 +78,7 @@ sudo firewall-cmd --permanent --zone=home --add-port=32500/tcp
 sudo firewall-cmd --reload
 ```
 
-Keep database files, operating-system administration and unrelated ports private. Review [remote access](/docs/remote/enable-remote-access/) before allowing connections from outside your home.
+Keep database files, operating-system administration and unrelated ports private. Review [Enable remote access](/docs/remote/enable-remote-access/) before allowing connections from outside your home.
 
 ## Portable archive
 

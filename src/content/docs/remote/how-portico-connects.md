@@ -20,7 +20,7 @@ When an authorized app opens a server, it obtains short-lived signed connection 
 
 ## Connect directly
 
-An account created on one server can sign in at that server's address without a Portico Account. The bundled web app already knows its server's address. In a native app, enter the address and use the account created there. See [Connect a Portico app](/docs/clients/connect-a-client/).
+An account created on one server can sign in at that server's address without a Portico Account. The bundled Portico Web app already knows its server's address. It offers local username-and-password sign-in when the server keeps sign-in local; a linked server's start page offers Portico Account sign-in and owner recovery instead. In a native app, enter the address and use the account created there. See [Connect a Portico app](/docs/clients/connect-a-client/).
 
 Direct sign-in also works away from home when the address is reachable and the owner's outside sign-in policy allows it. A local account isn't automatically a Portico Account or an entry in its server list.
 

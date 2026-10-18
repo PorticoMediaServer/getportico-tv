@@ -7,10 +7,10 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     <div class="container">
       <span class="eyebrow">Developers</span>
       <h1 class="display-1">Build with Portico.</h1>
-      <p class="lede">Portico's own apps use the same server API you can. Create an API key in a minute, script your library, receive signed webhooks, or connect an assistant over MCP. All of it runs on your own server, with no Portico Account required.</p>
+      <p class="lede">Portico's own apps use the same server API you can. Create a scoped API key, script your library, receive signed webhooks, or connect an assistant over MCP. All of it runs on your own server, with no Portico Account required.</p>
       <div class="hero-actions">
-        <a class="button button-primary" href="/docs/developers/api-overview/">API overview</a>
-        <a class="button button-ghost" href="https://github.com/PorticoMediaServer/portico-server">View on GitHub <span aria-hidden="true">↗</span></a>
+        <a class="button button-primary" href="/developers/api/">API reference</a>
+        <a class="button button-ghost" href="/docs/developers/api-overview/">API guide</a>
       </div>
     </div>
   </header>
@@ -25,7 +25,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         <article>
           <span class="feature-index">KEYS</span>
           <h3>API keys and tokens</h3>
-          <p>Create scoped keys under Settings → Integrations. Send them as a bearer header from any tool or origin.</p>
+          <p>Create scoped keys under Settings → Server → Integrations. Send them as a bearer header from any tool or origin.</p>
         </article>
         <article>
           <span class="feature-index">EVENTS</span>
@@ -58,10 +58,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         </article>
       </div>
       <div class="developer-grid">
+        <a href="/developers/api/"><strong>API reference</strong><span>Every public operation, with parameters, schemas and example requests.</span></a>
         <a href="/docs/developers/api-overview/"><strong>API overview</strong><span>Choose the server or cloud API and see where each one's authentication applies.</span></a>
         <a href="/docs/developers/authentication/"><strong>Authentication</strong><span>Sign people in, keep sessions safe and use API keys.</span></a>
         <a href="/docs/developers/client-architecture/"><strong>Client architecture</strong><span>Follow the shared client behaviour and use each platform's native playback.</span></a>
-        <a href="/docs/developers/security-requirements/"><strong>Security requirements</strong><span>Verify direct routes, respect server permissions and handle secrets properly.</span></a>
+        <a href="/docs/developers/security-requirements/"><strong>Security requirements</strong><span>Verify direct routes, respect server permissions and keep credentials out of logs and URLs you share.</span></a>
         <a href="/docs/developers/reporting-issues/"><strong>Report an issue</strong><span>Send useful evidence without exposing media, credentials or private addresses.</span></a>
         <a href="/docs/security/report-a-security-issue/"><strong>Report a security issue</strong><span>Tell us privately about a vulnerability.</span></a>
       </div>

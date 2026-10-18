@@ -13,9 +13,9 @@ Start with the time, account, device and action involved. Note whether the same 
 
 Open **Settings → Server → Troubleshooting**. Under **Logs**, filter by level and category. Turn on **Live** while you reproduce the problem, or refresh to fetch recent messages.
 
-**Server records** separates server, client and audit events. Record the time, message, level and any request or job identifier available. For active playback decisions and background tasks, use **Settings → Server → Dashboard** in the [Server Console](/docs/administration/server-console/).
+Owners can also open **Settings → Server → Troubleshooting → Server records**, which separates server, client and audit events. Record the time, message, level and any request or job identifier available. For active playback decisions and background tasks, open **Settings → Server → Dashboard**. See [Use the Server Console](/docs/administration/server-console/).
 
-For a difficult problem, **Record more detail for 30 minutes** temporarily captures more detail. Reproduce the failure during that window. Include the playback decision and any relevant transcoder log for playback problems.
+For a difficult problem, the owner can use **Record more detail for 30 minutes** to temporarily capture more detail. Reproduce the failure during that window. Include the playback decision and any relevant transcoder log for playback problems.
 
 ## Prepare a support export
 

@@ -1,17 +1,17 @@
 ---
 title: Install on macOS
-description: Install Portico Server on a Mac and give it reliable access to your media folders.
+description: Install Portico Server on an Apple silicon Mac and give it reliable access to your media folders.
 category: install
 order: 2
 audience: Server owners
 updated: 2026-10-18
 ---
 
-Download the macOS package from the [Downloads page](/download/). Run the `.pkg` installer, including when you download a DMG containing it. The installer places the app at `/Applications/Portico Media Server.app` and installs the server service.
+Download the macOS package for Apple silicon (ARM64) Macs from the [Download Portico](/download/). Intel Macs aren't supported by this package. If you downloaded a DMG, open it and run the `.pkg` inside. If you downloaded the `.pkg` directly, run it. The installer places the app at `/Applications/Portico Media Server.app` and installs the server service.
 
 ## First launch
 
-Open the installed app to open the server console in your browser, or visit `http://127.0.0.1:32500/`. If macOS asks you to confirm the download, follow its prompt. Complete [first-run setup](/docs/install/first-run/).
+Open the installed app to open the server console in your browser, or visit `http://127.0.0.1:32500/`. If macOS asks you to confirm the download, follow its prompt. Follow [Complete first-run setup](/docs/install/first-run/).
 
 ## Automatic startup
 

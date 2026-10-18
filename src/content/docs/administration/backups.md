@@ -11,7 +11,7 @@ Back up Portico's server data separately from your media. The built-in backup pr
 
 ## What a backup contains
 
-Each backup folder contains `portico.db`, a checksum manifest and selected files that can't be rebuilt from your media. These include server identity keys, TLS identity, authority state, managed-storage configuration, channel logos and subtitles. Database records include settings, accounts, permissions, libraries, metadata choices and watch progress.
+Each backup folder contains `portico.db`, a checksum manifest and selected files that can't be rebuilt from your media. `portico.db` is the backup copy of the live `server.sqlite` database in the [Portico data folder](/docs/install/server-data-folder/); the two names are intentional. The selected files include server identity keys, TLS identity, the server state file `supervisor/authority-incarnation.v1`, managed-storage configuration, channel logos and subtitles. Database records include settings, accounts, permissions, libraries, metadata choices and watch progress.
 
 Backups exclude media files, recordings, generated artwork, conversion caches and logs. Certificates you supply outside the selected server files and operating-system service configuration need separate backups.
 
@@ -24,7 +24,7 @@ Backups exclude media files, recordings, generated artwork, conversion caches an
 
 The default location is `backups/` inside the server data folder. Set `PORTICO_BACKUP_DIR` to an absolute path before starting Portico to use another destination. The service account needs write access there. Pre-restore recovery copies stay beside the live database.
 
-Scheduled backups run in the windows set under **Settings → Server → Schedule**. **Backups to keep** under **Storage & backups → What Portico keeps** controls scheduled retention; the default is seven. Manual backups remain until deleted.
+Scheduled backups run in the windows set under **Settings → Server → Schedule**. **Backups to keep** under **Settings → Server → Storage & backups → What Portico keeps** controls scheduled retention; the default is seven. Manual backups remain until deleted.
 
 ## When to back up
 

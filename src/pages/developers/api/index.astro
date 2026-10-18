@@ -1,0 +1,86 @@
+---
+import ApiLayout from '@/layouts/ApiLayout.astro';
+import ApiOperation from '@/components/api/ApiOperation.astro';
+import { apiGroups, apiInfo, apiOperations, coreOperations, operationsFor, scopeDescriptions } from '@/lib/api';
+
+const core = coreOperations();
+const scopes = ['open', 'read', 'playback', 'library', 'admin', 'session'];
+---
+
+<ApiLayout title="API reference" description="Reference for the Portico Server API: authentication, scopes, and every operation available to third-party players and integrations.">
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <a href="/developers/">Developers</a><span aria-hidden="true">/</span><span>API reference</span>
+  </nav>
+  <header class="api-group-head">
+    <h1>Portico API reference</h1>
+    <p>Everything a third-party player, script or integration can call on a Portico Server. It's generated from the server's OpenAPI contract, so methods, paths and schemas match the release exactly.</p>
+    <div class="api-meta">
+      <span>OpenAPI {apiInfo.openapi}</span>
+      <span>Version {apiInfo.version}</span>
+      <span>{apiOperations.length} public operations</span>
+    </div>
+  </header>
+
+  <section class="api-basics" aria-labelledby="api-basics-title">
+    <h2 id="api-basics-title" class="sr-only">Basics</h2>
+    <article>
+      <h3>Base address</h3>
+      <p>The API shares the server's address and port with the web app. The default port is 32500.</p>
+      <pre><code>http://192.168.1.20:32500/v1</code></pre>
+    </article>
+    <article>
+      <h3>Authorization</h3>
+      <p>Send an API key, a personal access token or a session's access token as a bearer token.</p>
+      <pre><code>Authorization: Bearer pk.3q2-7w…</code></pre>
+      <p class="api-small">On <code>GET</code> and <code>HEAD</code>, you can pass it as the <code>apiKey</code> query parameter instead, so a link works on its own.</p>
+    </article>
+    <article>
+      <h3>Requests and errors</h3>
+      <p>JSON in and out. Errors return an <code>error</code> object with a machine-readable <code>code</code> and a readable <code>message</code>. Lists page with <code>nextCursor</code>.</p>
+      <p class="api-small"><a href="/docs/developers/api-overview/">Read the API guide</a> for paging, revisions, retries and idempotency.</p>
+    </article>
+  </section>
+
+  <section class="api-section" aria-labelledby="api-scopes-title">
+    <h2 id="api-scopes-title">Scopes</h2>
+    <p>Each operation needs one scope. A key or token acts as the member who created it, limited to the scopes chosen when it was made. Owners create API keys in <strong>Settings → Server → Integrations</strong>; any member can create a personal access token in their own settings.</p>
+    <table class="api-params api-scopes">
+      <thead><tr><th>Scope</th><th>What it allows</th></tr></thead>
+      <tbody>
+        {scopes.map((scope) => (
+          <tr><td><span class:list={['api-scope', `api-scope-${scope}`]}>{scope}</span></td><td>{scopeDescriptions[scope]}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  {core.length > 0 && (
+    <section class="api-section" aria-labelledby="api-core-title">
+      <div class="api-section-head">
+        <h2 id="api-core-title">Core API</h2>
+        <p>The operations most players and tools need. Open one to see its parameters, schemas and an example request.</p>
+      </div>
+      <label class="api-filter">
+        <span class="sr-only">Filter core operations</span>
+        <input type="search" placeholder={`Filter ${core.length} core operations`} data-api-filter />
+      </label>
+      <div class="api-op-list">
+        {core.map((operation) => <ApiOperation operation={operation} />)}
+      </div>
+      <p class="api-empty" hidden data-api-empty>No operations match that filter.</p>
+    </section>
+  )}
+
+  <section class="api-section" aria-labelledby="api-groups-title">
+    <h2 id="api-groups-title">All operations</h2>
+    <div class="api-group-grid">
+      {apiGroups.map((group) => (
+        <a href={`/developers/api/${group.id}/`}>
+          <strong>{group.title}</strong>
+          <span>{group.description}</span>
+          <small>{operationsFor(group.id).length} operations</small>
+        </a>
+      ))}
+    </div>
+  </section>
+</ApiLayout>

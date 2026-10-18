@@ -11,11 +11,11 @@ Use **Home**, **Search**, **Saved** and your libraries to find media. **Settings
 
 ## Home
 
-**Home** brings together what's most useful right now, including titles you haven't finished and recent additions. The rows you see can differ from one server or account to another.
+**Home** brings together what's most useful right now, including titles you haven't finished and recent additions. The rows you see can differ from one server or profile to another, within the libraries your account can use.
 
 ## Libraries
 
-Under **Libraries**, choose one of the media collections your account can use. Movies, TV shows, anime, music and audiobooks have views suited to that kind of media. When recording is available, choose **Recordings** under **Channels** for DVR recordings.
+Under **Libraries**, choose one of the media collections your account can use. Movies, TV shows, anime, music and audiobooks have views suited to that kind of media. When recording is available, open **Channels → Recordings** for DVR recordings.
 
 ## Search
 
@@ -27,4 +27,4 @@ Under **Libraries**, choose one of the media collections your account can use. M
 
 ## Your profile menu
 
-Use your profile menu to switch profiles or servers, open **Account**, get help or sign out. On a narrow screen, the menu also includes **Settings**. Personal settings, account security and connected devices are under **Settings → Account**. Server administration appears under **Settings → Server** for accounts with permission to use it.
+Use your profile menu to switch profiles or servers, open **Account**, get help or sign out. On a narrow screen, the menu also includes **Settings**. Under **Settings → Account**, choose a personal settings page. **Settings → Account → Profile & account** holds account security and connected devices. Playback preferences are on separate pages such as **Settings → Account → Audio & subtitles**. Server administration appears under **Settings → Server** for accounts with permission to use it.

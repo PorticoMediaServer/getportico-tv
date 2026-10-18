@@ -31,7 +31,7 @@ docker run -d --name portico --restart unless-stopped --stop-timeout 45 \
   ghcr.io/porticomediaserver/portico-server:latest
 ```
 
-Open `http://127.0.0.1:32500/` on the Docker host, or use its local IP address from another device. Complete [first-run setup](/docs/install/first-run/). When adding a library, use its container path, such as `/media/Movies`.
+Open `http://127.0.0.1:32500/` on the Docker host, or use its local IP address from another device. Follow [Complete first-run setup](/docs/install/first-run/). When adding a library, use its container path, such as `/media/Movies`.
 
 ## Use Docker Compose
 

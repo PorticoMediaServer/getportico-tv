@@ -1,6 +1,6 @@
 ---
 title: Search and save media
-description: Find items across your libraries and keep your own lists under your account.
+description: Find items across your libraries and keep your own lists under your profile on the selected server.
 category: watch
 order: 2
 audience: Viewers

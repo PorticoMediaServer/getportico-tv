@@ -46,7 +46,7 @@ export const downloadGroups: DownloadGroup[] = [
   },
   {
     title: 'Phones and tablets',
-    description: 'Your whole library and your place in it, wherever you are.',
+    description: 'Install Portico on iPhone, iPad or Android, then connect to your server.',
     items: [
       { name: 'iPhone and iPad', detail: 'iOS and iPadOS', icon: 'apple', action: 'Coming soon' },
       { name: 'Android', detail: 'Phones and tablets', icon: 'android', action: 'Coming soon' }
@@ -54,7 +54,7 @@ export const downloadGroups: DownloadGroup[] = [
   },
   {
     title: 'TV and streaming devices',
-    description: 'Made for the big screen and a remote.',
+    description: 'Apps for TVs and streaming players, made for a remote.',
     items: [
       { name: 'Apple TV', detail: 'tvOS', icon: 'apple', action: 'Coming soon' },
       { name: 'Android TV', detail: 'Android TV and Google TV', icon: 'android', action: 'Coming soon' },

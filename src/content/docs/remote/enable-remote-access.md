@@ -11,8 +11,8 @@ Set up remote access after the server works at home. Check that a normal viewer 
 
 ## Connect your Portico Account
 
-1. Sign in as the server owner and open **Settings**.
-2. Under **Server**, select **Remote access**.
+1. Sign in as the server owner.
+2. Open **Settings → Server → Remote access**.
 3. In **Secure connection**, select **Turn on secure connection**.
 4. Approve the server in the Portico Account window, then return to the server.
 5. Wait for the certificate to be issued. Keep **Use a secure connection** on.

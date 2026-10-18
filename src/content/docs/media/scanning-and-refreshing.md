@@ -21,9 +21,9 @@ A metadata refresh fetches details again for items Portico already knows about, 
 
 ## Use the narrowest action
 
-- If only one item's details are wrong, refresh that item.
+- If an item has the wrong title or match, use [Fix an incorrect match](/docs/media/fix-a-match/). If the match is right but its details need updating, refresh that item.
 - If files changed in one library, scan that library.
-- After a broad storage change, a full-server operation can help. It creates more work, though, and makes problems harder to isolate.
+- After a storage change affecting several libraries, check folder paths and scan each affected library. Broad scans create more work and make problems harder to isolate.
 
 ## Scheduled work
 

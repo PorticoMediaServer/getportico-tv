@@ -17,7 +17,7 @@ export const docCategories: DocCategory[] = [
   { id: 'clients', title: 'Apps and devices', description: 'Use Portico on the web, phones, tablets, TVs and streaming devices.', order: 9 },
   { id: 'troubleshooting', title: 'Troubleshooting', description: 'Fix connection, library, playback, sign-in and recording problems.', order: 10 },
   { id: 'security', title: 'Security and privacy', description: 'How sign-in, direct connections and data storage work, and how to report a security issue.', order: 11 },
-  { id: 'developers', title: 'Developers', description: 'API contracts, client architecture, security requirements and issue reports.', order: 12 }
+  { id: 'developers', title: 'Developers', description: 'The server API, client architecture, security requirements and how to report issues.', order: 12 }
 ];
 
 export function getDocCategory(id: string) {

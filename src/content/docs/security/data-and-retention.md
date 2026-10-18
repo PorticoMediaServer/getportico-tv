@@ -9,7 +9,7 @@ updated: 2026-10-18
 
 ## What Portico Server stores
 
-Portico Server stores the lasting information it needs to run a personal media server:
+Portico Server stores what it needs to run your media server:
 
 - Local media records
 - Local accounts, profile pictures, account mappings and permissions
@@ -33,7 +33,9 @@ These connection addresses can include local-network addresses. They identify wh
 
 Retention depends on the kind of record. Active accounts, memberships and credentials remain while they're needed; temporary setup, sign-in and recovery records expire and are cleaned up separately.
 
-On your server, owners control log-file retention under **Settings → Storage & backups** in the **Server** section. Deleting an app doesn't delete its account, server activity or API credentials. Revoke access and review stored data separately.
+See the Retention section of [Privacy](/privacy/#retention) for Portico Cloud's retention periods. Server retention is managed separately by the server owner.
+
+On your server, owners control log-file retention under **Settings → Server → Storage & backups → What Portico keeps**. Deleting an app doesn't delete its account, server activity or API credentials. Revoke access and review stored data separately.
 
 Database backups preserve the records present when they were made. Restoring a backup can also restore credentials that were revoked later. Keep backups private and review access after a restore.
 

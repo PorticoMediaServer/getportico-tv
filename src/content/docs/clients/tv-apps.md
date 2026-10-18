@@ -23,6 +23,6 @@ Use the directional buttons to move the highlighted selection, then press Select
 
 TV hardware varies in codec, subtitle, audio, HDR and network support. Portico uses direct play when the device can handle the source and requests a compatible stream when it can't.
 
-If one television keeps having problems, try the same item in another app. The owner can review the active playback decision under **Settings → Server → Dashboard → Now playing**.
+If one television keeps having problems, try the same item in another app. The owner can review the active playback decision under **Settings → Server → Dashboard → Watching now**.
 
 Apple TV requires HTTPS for remote public addresses; plain HTTP works only to local-network addresses. Other TV platforms allow HTTP from anywhere. Portico apps can use the owner's own certificate after checking the server's identity.

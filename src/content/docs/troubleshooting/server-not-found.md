@@ -19,7 +19,7 @@ If the server works locally, check that the affected account still belongs to it
 
 ## Check remote access
 
-Open **Settings → Remote access** under the **Server** heading. For remote access, check the published address, public reachability, **Portico Account** connection and secure-connection status. A VPN, a changed router address, a firewall update or expired connection information can break only the remote path.
+Open **Settings → Server → Remote access**. For remote access, check the published address, public reachability, **Portico Account** connection and secure-connection status. A VPN, a changed router address, a firewall update or expired connection information can break only the remote path.
 
 ## If the server was restored or moved
 

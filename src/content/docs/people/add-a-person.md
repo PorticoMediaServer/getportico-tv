@@ -7,7 +7,7 @@ audience: Server owners
 updated: 2026-10-18
 ---
 
-Give each person their own account so progress, My List, history, ratings, devices and security records belong to the right person. Keep the owner account private.
+Give each person their own account for sign-in, devices and security records. Use their profile for progress, My List, history and ratings. Keep the owner account private. See [Accounts and servers](/docs/start/accounts-and-servers/) for the difference.
 
 ## Create an account on this server
 
@@ -21,6 +21,8 @@ They can sign in directly without a Portico Account. See [Connect a Portico app]
 
 ## Create an invitation
 
+Invitations created here grant access to all libraries. You can restrict library access only after the person joins. If they must never receive unrestricted access, create a server account with specific libraries instead.
+
 1. Open **Settings → Server → People → Invitations**.
 2. Select **Invite someone**.
 3. Choose the role. You can enter an email address to label the invitation and a **Portico Account username** to limit who can use it.
@@ -29,7 +31,7 @@ They can sign in directly without a Portico Account. See [Connect a Portico app]
 
 An unrestricted invitation can be used by anyone who has the link or code. Invitations created here expire after seven days. The recipient can join with their Portico Account, or create an account on the server when the invitation permits it.
 
-Invitations created by this screen grant all libraries. After the person joins, open their account under **Accounts** and edit **Libraries they can see** if they need restricted access.
+After the person joins, open their account under **Settings → Server → People → Accounts** and edit **Libraries they can see** if they need restricted access.
 
 ## Review the person's access
 

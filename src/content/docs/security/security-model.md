@@ -21,7 +21,7 @@ Portico Cloud manages Portico Accounts, hosted security settings, server ownersh
 
 The server's identity signing key and certificate private key stay on the server. Certificate requests send a certificate signing request, not the certificate private key. Cloud route and policy signing keys belong to Portico Cloud. Portico Server verifies hosted signing certificates against Portico's trusted public signing root. The shared web and native connection code fetches the route-verification key from the configured Portico Account service over HTTPS and checks route signatures with that key.
 
-For account-based discovery, the app checks the route document's signature, account audience, server identity, generations and expiry. Before sending credentials to a candidate address, it asks that server to sign a fresh challenge for that exact address and checks it against the expected identity. A manually entered server address establishes an initial identity that the app remembers; this isn't prior independent proof that you entered the intended server.
+For account-based discovery, the app checks the connection document's signature, intended account, server identity, version numbers (generations) and expiry. Before sending credentials to an address, it asks the server to sign a new challenge for that exact address and verifies the signature against the expected server identity. A manually entered server address establishes an initial identity that the app remembers; this isn't prior independent proof that you entered the intended server.
 
 ## HTTP and HTTPS
 
@@ -43,4 +43,4 @@ Send the credential in `Authorization: Bearer <secret>`. For `GET` and `HEAD`, `
 
 Sign-in, password and two-step verification changes, credential management, ownership and server claiming require sessions. Other session-only operations, including profile selection, invitation acceptance and device pairing, are identified by `x-scope: session` in the API contract. Keys can't create other keys.
 
-Keys and tokens have their own lifetime. Password changes and sign-out don't revoke them. Revoke them separately under **Settings → Integrations** in the **Server** section, or **Personal access tokens** under **Settings → Profile & account**. After restoring a backup, review the credentials restored with the database.
+Keys and tokens have their own lifetime. Password changes and sign-out don't revoke them. Revoke them separately under **Settings → Server → Integrations**, or **Personal access tokens** under **Settings → Account → Profile & account**. After restoring a backup, review the credentials restored with the database.

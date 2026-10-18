@@ -15,7 +15,7 @@ The API base path is `/v1` on the same origin and port as the bundled web app. T
 
 `GET /v1/system` is public and reports the server's ID, name, version and setup state. Protected operations require a server session, API key or personal access token, as described in [Authentication architecture](/docs/developers/authentication/).
 
-The server repository's `server/api/portico.openapi.json` is generated from the production route registry. Its `server/api/guide/` directory documents authentication, media, playback, keys, webhooks and MCP. Read each operation's models, `x-scope`, limits and preconditions rather than infer routes from browser traffic.
+The server repository's `server/api/portico.openapi.json` is generated from the production route registry. Its `server/api/guide/` directory documents authentication, media, playback, keys, webhooks and MCP. Read each operation's models, `x-scope`, limits and preconditions instead of inferring routes from browser traffic.
 
 Use this contract for libraries, titles, search, playback, downloads, Live TV, DVR, permissions, settings and diagnostics.
 
@@ -35,7 +35,7 @@ Writes can require a body `expectedRevision` or an `If-Match` header. Playback s
 
 ## Webhooks
 
-Owners manage **Webhooks** under **Settings → Integrations** in the **Server** section. API management uses `/v1/admin/webhooks`; an owner's key with `admin` scope can manage them too. The local server sends event payloads directly to the configured HTTP or HTTPS destination. Events can include titles and playback activity, so choose the destination carefully.
+Owners manage webhooks under **Settings → Server → Integrations → Webhooks**. API management uses `/v1/admin/webhooks`; an owner's key with `admin` scope can manage them too. The local server sends event payloads directly to the configured HTTP or HTTPS destination. Events can include titles and playback activity, so choose the destination carefully.
 
 Verify the `Portico-Signature` header using HMAC-SHA256 over `<timestamp>.<raw request body>` with the webhook secret. Reject stale timestamps and deduplicate `Portico-Event-Id`. The server retries failed deliveries; inspect the webhook's **Delivery log**.
 
@@ -43,7 +43,7 @@ Verify the `Portico-Signature` header using HMAC-SHA256 over `<timestamp>.<raw r
 
 Portico Server includes a Model Context Protocol endpoint at `POST /v1/mcp`. It uses Streamable HTTP with JSON-RPC requests and JSON responses. Give the assistant an API key or personal access token in the bearer header; a signed-in app session isn't accepted here.
 
-Tools are filtered by the credential's scopes and member role. They use the same server permissions as direct API calls. The **Assistants** tab under **Settings → Integrations** contains **Assistants (MCP)** and shows the endpoint address. An assistant on another computer needs an address it can reach; its `127.0.0.1` isn't your media server.
+Tools are filtered by the credential's scopes and member role. They use the same server permissions as direct API calls. **Settings → Server → Integrations → Assistants** contains **Assistants (MCP)** and shows the endpoint address. An assistant on another computer needs an address it can reach; its `127.0.0.1` isn't your media server.
 
 ## Shared client code
 

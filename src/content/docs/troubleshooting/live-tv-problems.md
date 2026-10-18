@@ -9,7 +9,7 @@ updated: 2026-10-18
 
 ## Test the source first
 
-Open **Settings → Live TV & Channels → Sources** in the **Server** section. Check whether the source is enabled and whether its last refresh failed. For a new remote source, **Check source** previews the channel and guide data before you save it. That preview doesn't prove that every channel will play.
+Open **Settings → Server → Live TV & Channels → Sources**. Check whether the source is enabled and whether its last refresh failed. For a new remote source, **Check source** previews the channel and guide data before you save it. That preview doesn't prove that every channel will play.
 
 Try the affected channel in **Channels**, and test it in the source provider's own player where available. If the source can't deliver the stream, changing guide data or recording rules won't fix it.
 
@@ -25,9 +25,9 @@ Check the recording under **Channels → Recordings**, then review:
 - Recording conflicts and schedule state
 - Recording permissions for the owning profile
 - Write access and free space on the recording folder
-- Storage limits and reserved free space under **Settings → Live TV & Channels → Recording**
+- Storage limits and reserved free space under **Settings → Server → Live TV & Channels → Recording**
 
-Read server events around the scheduled start under **Settings → Troubleshooting**. [Connection troubleshooting basics](/docs/troubleshooting/connection-basics/) lists log locations.
+Read server events around the scheduled start under **Settings → Server → Troubleshooting**. [Connection troubleshooting basics](/docs/troubleshooting/connection-basics/) lists log locations.
 
 ## A recording exists but won't play
 

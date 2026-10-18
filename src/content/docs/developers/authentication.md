@@ -1,6 +1,6 @@
 ---
 title: Authentication architecture
-description: How an app goes from a Portico Account session to an authorized session on one server.
+description: Choose API keys, personal access tokens or server sessions, and implement local or Portico Account sign-in.
 category: developers
 order: 3
 audience: Developers
@@ -13,8 +13,8 @@ An interactive app uses a server session. A script or assistant normally uses an
 
 | Credential | Created by | Web app location |
 | --- | --- | --- |
-| API key (`pk.`) | Server owner | **Settings → Integrations** in the **Server** section, then **API keys → Create a key** |
-| Personal access token (`pat.`) | A member, when allowed by the owner | **Settings → Profile & account → Personal access tokens → Create a token** |
+| API key (`pk.`) | Server owner | **Settings → Server → Integrations → API keys → Create a key** |
+| Personal access token (`pat.`) | A member, when allowed by the owner | **Settings → Account → Profile & account → Personal access tokens → Create a token** |
 
 Choose only the scopes the integration needs. `read`, `playback` and `library` are separate; `admin` includes all three but still can't exceed the creator's role or current library access. The secret is shown once. Store it privately.
 

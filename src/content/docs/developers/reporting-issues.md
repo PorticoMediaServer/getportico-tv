@@ -23,7 +23,7 @@ Reduce the problem to the shortest sequence that still fails. Say whether it hap
 
 ## Attach evidence
 
-Include a request identifier, a short relevant log excerpt and the playback decision when they apply. In the web app, server logs are under **Settings → Troubleshooting** in the **Server** section. The server version appears under **Settings → General**.
+Include a request identifier, a short relevant log excerpt and the playback decision when they apply. In the web app, server logs are under **Settings → Server → Troubleshooting**. The server version appears under **Settings → Server → General**.
 
 Before you send them, remove tokens, cookies, emails, public or private addresses, filesystem paths, and media names that should stay private.
 

@@ -13,11 +13,11 @@ Play another item on the same device. If only one file buffers, compare its form
 
 ## Read the active stream
 
-As an owner or administrator, open **Settings → Dashboard** in the **Server** section. **Watching now** shows the viewer, device, playback state, delivery method, local or remote location, bitrate when available, and start time. Record those details while the problem is happening.
+As an owner or administrator, open **Settings → Server → Dashboard → Watching now**. The panel shows the viewer, device, playback state, delivery method, local or remote location, bitrate when available, and start time. Record those details while the problem is happening.
 
 Also note the selected quality, video and audio codecs and subtitle track from the player or media details where available. Use the matching conversion logs for further diagnostics.
 
-A transcode can be held back by CPU load, hardware acceleration or temporary storage. Burning a subtitle into the picture can add work. Check **Settings → Streaming** in the **Server** section and the matching logs under **Settings → Troubleshooting**.
+A transcode can be held back by CPU load, hardware acceleration or temporary storage. Burning a subtitle into the picture can add work. Check **Settings → Server → Streaming** and the matching logs under **Settings → Server → Troubleshooting**.
 
 ## Check the network for direct play
 
@@ -25,10 +25,10 @@ Compare the media bitrate with what the network path can carry. Where possible, 
 
 ## Try a lower quality
 
-Lower the player's quality as a test. If that helps, check **Settings → Quality & data** for **At home** and **Away from home**, then ask the owner to check **Streaming limits** under **Settings → Streaming**. Check the server's home-network classification under **Settings → Remote access** too. Don't leave quality turned down without checking why it was needed.
+Lower the player's quality as a test. If that helps, check **Settings → Account → Quality & data** for **At home** and **Away from home**, then ask the owner to check **Streaming limits** under **Settings → Server → Streaming**. Check the server's home-network classification under **Settings → Server → Remote access** too. Don't leave quality turned down without checking why it was needed.
 
 ## If it still buffers
 
 - If every transcode buffers, collect the playback details and matching server log events. [Connection troubleshooting basics](/docs/troubleshooting/connection-basics/) lists log locations.
-- If only one device has the problem, read [How clients differ](/docs/clients/client-differences/).
+- If only one device has the problem, read [Why controls differ between apps](/docs/clients/client-differences/).
 - If playback fails instead of buffering, go to [Playback failed](/docs/troubleshooting/playback-failed/).

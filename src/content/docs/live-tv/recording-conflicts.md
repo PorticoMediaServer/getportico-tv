@@ -11,7 +11,7 @@ Recordings can compete for the same tuners or provider stream limit. Live viewer
 
 ## Compare overlapping recordings
 
-1. Open **DVR → Upcoming** and the recording's **Resolve conflict…** action.
+1. Open **Channels → Recordings → Upcoming** and the recording's **Resolve conflict…** action.
 2. Review the overlapping programs and available tuner count.
 3. Choose **Record this instead** to raise this recording above the conflicting recordings, or **Skip this one** to cancel it.
 
@@ -30,4 +30,4 @@ The owner chooses the policy under **Settings → Server → Live TV & Channels 
 
 Only raise a tuner limit if the source supports another simultaneous stream. An unknown capacity is an estimate, not a guarantee that overlapping recordings will work. Portico doesn't reject a schedule solely because of an unknown-capacity estimate.
 
-Check DVR state and history for a late start, incomplete recording or failure. Free space, provider availability and a correct channel mapping still matter after a scheduling conflict is resolved.
+Check recording state and **Channels → Recordings → History** for a late start, incomplete recording or failure. Free space, provider availability and a correct channel mapping still matter after a scheduling conflict is resolved.
