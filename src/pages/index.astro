@@ -58,27 +58,10 @@ const faqs = [
     </div>
   </section>
 
-  <section class="section section-split" aria-labelledby="library-title">
-    <div class="section-ambient ambient-violet" aria-hidden="true"></div>
-    <div class="container split">
-      <div class="split-copy">
-        <h2 id="library-title" class="display-2">Your folders become<br />a proper library.</h2>
-        <p class="lede">Add your media folders and Portico builds the library: posters, artwork and cast, with shows sorted into seasons and episodes. The original files stay where they are.</p>
-        <ul class="check-list">
-          <li>Libraries for movies, TV, anime, music and audiobooks</li>
-          <li>If a title is matched wrong, you can pick the right one</li>
-          <li>Scanning never renames or moves your files</li>
-        </ul>
-        <a class="text-link" href="/docs/media/">How to organize your media <span aria-hidden="true">→</span></a>
-      </div>
-      <BrowserFrame src="/media/portico-detail.png" alt="A Portico show page for Fargo, with its poster, details and playback actions" address="web.getportico.tv" />
-    </div>
-  </section>
-
   <section class="section" aria-labelledby="household-title">
     <div class="section-ambient ambient-amber" aria-hidden="true"></div>
     <div class="container">
-      <h2 id="household-title" class="display-2">Everyone gets<br />their own account.</h2>
+      <h2 id="household-title" class="display-2">Everyone gets their own account.</h2>
       <div class="household-board" role="img" aria-label="Three people on one Portico server, each with their own Continue Watching row and their own library access.">
         {people.map((person) => (
           <div class="person-card">
@@ -119,37 +102,26 @@ const faqs = [
     </div>
   </section>
 
-  <section class="section" aria-labelledby="screens-title">
-    <div class="container">
-      <div class="section-head">
-        <h2 id="screens-title" class="display-2">Apps for the screens<br />you already own.</h2>
-        <p class="lede">A web app, plus native apps for phones, tablets, TVs and streaming players. The TV apps are made for a remote, and the phone apps for touch.</p>
+  <section class="section section-split" aria-labelledby="library-title">
+    <div class="section-ambient ambient-violet" aria-hidden="true"></div>
+    <div class="container split">
+      <div class="split-copy">
+        <h2 id="library-title" class="display-2">Your folders become a proper library.</h2>
+        <p class="lede">Add your media folders and Portico builds the library: posters, artwork and cast, with shows sorted into seasons and episodes. The original files stay where they are.</p>
+        <ul class="check-list">
+          <li>Libraries for movies, TV, anime, music and audiobooks</li>
+          <li>If a title is matched wrong, you can pick the right one</li>
+          <li>Scanning never renames or moves your files</li>
+        </ul>
+        <a class="text-link" href="/docs/media/">How to organize your media <span aria-hidden="true">→</span></a>
       </div>
-      <div class="platform-board">
-        <div class="platform-group">
-          <h3>Watch on</h3>
-          <ul class="platform-grid">
-            {watchPlatforms.map((platform) => (
-              <li><PlatformIcon name={platform.icon} /><span>{platform.name}</span></li>
-            ))}
-          </ul>
-        </div>
-        <div class="platform-group">
-          <h3>Run the server on</h3>
-          <ul class="platform-grid platform-grid-server">
-            {serverPlatforms.map((platform) => (
-              <li><PlatformIcon name={platform.icon} /><span>{platform.name}</span></li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <a class="text-link" href="/download/">See all downloads <span aria-hidden="true">→</span></a>
+      <BrowserFrame src="/media/portico-detail.png" alt="A Portico show page for Fargo, with its poster, details and playback actions" address="web.getportico.tv" />
     </div>
   </section>
 
   <section class="section" aria-labelledby="yours-title">
     <div class="container yours">
-      <h2 id="yours-title" class="display-2">Free, with nobody<br />in the middle.</h2>
+      <h2 id="yours-title" class="display-2">Free, with nobody in the middle.</h2>
       <div class="yours-grid">
         <article>
           <h3>Media never touches Portico Cloud.</h3>
@@ -190,25 +162,53 @@ const faqs = [
     </div>
   </section>
 
+  <section class="section" aria-labelledby="screens-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="screens-title" class="display-2">Apps for the screens you already own.</h2>
+        <p class="lede">A web app, plus native apps for phones, tablets, TVs and streaming players. The TV apps are made for a remote, and the phone apps for touch.</p>
+      </div>
+      <div class="platform-board">
+        <div class="platform-group">
+          <h3>Watch on</h3>
+          <ul class="platform-grid">
+            {watchPlatforms.map((platform) => (
+              <li><PlatformIcon name={platform.icon} /><span>{platform.name}</span></li>
+            ))}
+          </ul>
+        </div>
+        <div class="platform-group">
+          <h3>Run the server on</h3>
+          <ul class="platform-grid platform-grid-server">
+            {serverPlatforms.map((platform) => (
+              <li><PlatformIcon name={platform.icon} /><span>{platform.name}</span></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <a class="text-link" href="/download/">See all downloads <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="steps-title">
     <div class="container">
-      <h2 id="steps-title" class="display-2">How setup<br />works.</h2>
-      <ol class="step-cards">
+      <h2 id="steps-title" class="display-2">How setup works.</h2>
+      <ol class="step-cards" role="list">
         <li class="step-blue">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="6" rx="1.5" /><rect x="4" y="14" width="16" height="6" rx="1.5" /><path d="M7.5 7h1M7.5 17h1" /></svg>
-          <span class="step-number">01</span>
+          <span class="step-number" aria-hidden="true">01</span>
           <h3>Install the server</h3>
           <p>On the computer that holds your media, install Portico Server for Windows, macOS or Linux, or run it in Docker.</p>
         </li>
         <li class="step-teal">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" /><path d="m10.5 10.5 4 2.5-4 2.5Z" /></svg>
-          <span class="step-number">02</span>
+          <span class="step-number" aria-hidden="true">02</span>
           <h3>Add your folders</h3>
           <p>Create a library for each kind of media. Portico scans the files and fills in artwork and details.</p>
         </li>
         <li class="step-amber">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="15" height="11" rx="1.5" /><path d="M7 19h5M9.5 15v4" /><rect x="17" y="9" width="5" height="10" rx="1.2" /></svg>
-          <span class="step-number">03</span>
+          <span class="step-number" aria-hidden="true">03</span>
           <h3>Invite people and press play</h3>
           <p>Add an account for each person, then sign in from the web or the Portico app on any screen.</p>
         </li>
@@ -219,7 +219,7 @@ const faqs = [
 
   <section class="section" aria-labelledby="faq-title">
     <div class="container faq">
-      <h2 id="faq-title" class="display-2">Common<br />questions.</h2>
+      <h2 id="faq-title" class="display-2">Common questions.</h2>
       <div class="faq-list">
         {faqs.map((item) => (
           <details>
@@ -246,13 +246,25 @@ const faqs = [
     </div>
   </section>
 
+
   <section class="final-cta" aria-labelledby="cta-title">
     <div class="final-ambient" aria-hidden="true"></div>
-    <div class="container">
-      <h2 id="cta-title" class="display-1">Start your Portico server.</h2>
-      <div class="hero-actions">
-        <a class="button button-primary" href="/download/">Get Portico</a>
-        <a class="button button-ghost" href="/docs/">Read the docs</a>
+    <div class="container final-cta-grid">
+      <div>
+        <h2 id="cta-title" class="display-1">Start your Portico server.</h2>
+        <p class="lede">Install it on the computer that holds your media, add a library, and invite the people you watch with.</p>
+      </div>
+      <div class="final-cta-card">
+        <span class="final-cta-label">Portico Server for</span>
+        <ul class="final-cta-platforms">
+          {serverPlatforms.map((platform) => (
+            <li><a href="/download/"><PlatformIcon name={platform.icon} /><span>{platform.name}</span></a></li>
+          ))}
+        </ul>
+        <div class="hero-actions">
+          <a class="button button-primary" href="/download/">Get Portico</a>
+          <a class="button button-ghost" href="/docs/start/quick-start/">Quick start</a>
+        </div>
       </div>
     </div>
   </section>

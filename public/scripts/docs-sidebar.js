@@ -24,7 +24,6 @@ sidebarSearch?.addEventListener('input', () => {
 });
 
 const current = sidebar?.querySelector('a[aria-current="page"]');
-if (current && window.matchMedia('(min-width: 961px)').matches) {
-  current.scrollIntoView({ block: 'center' });
-  window.scrollTo(0, 0);
+if (current && sidebar && window.matchMedia('(min-width: 961px)').matches) {
+  sidebar.scrollTop = current.offsetTop - sidebar.clientHeight / 2;
 }

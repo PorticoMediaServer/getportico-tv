@@ -8,6 +8,7 @@ const plain = (markdown: string) =>
     .replace(/^#{1,6}\s+(.+)$/gm, '$1.')
     .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/^\s*(?:[-+]|\d+\.)\s+/gm, '')
     .replace(/[#>*_`|]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();

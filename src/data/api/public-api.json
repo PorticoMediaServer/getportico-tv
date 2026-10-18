@@ -1,0 +1,3573 @@
+{
+  "generatedFrom": {
+    "specPath": "server/api/portico.openapi.json",
+    "serverCommit": "fbcd4ba9"
+  },
+  "groups": [
+    {
+      "id": "system",
+      "title": "Server information",
+      "description": "Identify a server and check whether it is ready. Players and monitoring tools can read the public checks before signing in."
+    },
+    {
+      "id": "authentication",
+      "title": "Sign-in and profiles",
+      "description": "Sign people in with local credentials or a TV code, select a profile and renew the session. These flows are for player apps; API keys and personal access tokens cannot replace a session on session-only routes."
+    },
+    {
+      "id": "credentials",
+      "title": "Keys and personal tokens",
+      "description": "Let a signed-in person create a scoped credential for a script or integration. Credential management requires a session, even when the caller already has an admin-scoped key."
+    },
+    {
+      "id": "browse",
+      "title": "Browse and search",
+      "description": "Find visible libraries and titles, or build a player screen from the server’s published browse choices. Structured browse keeps filtering, ordering and access checks on the server."
+    },
+    {
+      "id": "titles",
+      "title": "Title details and artwork",
+      "description": "Read title details, episode and track order, credits and images. These reads apply the viewer’s current library access and content restrictions."
+    },
+    {
+      "id": "playback",
+      "title": "Playback sessions",
+      "description": "Publish the player’s real capabilities, request a presentation and report what the renderer does. Session revisions and leases keep controls and progress consistent."
+    },
+    {
+      "id": "queues",
+      "title": "Playback queues",
+      "description": "Build and edit a device queue without loading all its entries. Queue revisions protect edits, and audio players can prepare the next entry before the current one ends."
+    },
+    {
+      "id": "media-delivery",
+      "title": "Media and subtitles",
+      "description": "Fetch media and subtitle resources using the URLs in a playback presentation. Grant-bearing URLs still enforce session and viewer access; clients should not construct them."
+    },
+    {
+      "id": "downloads",
+      "title": "Offline downloads",
+      "description": "Prepare media, transfer its companion files and retain signed permission for offline playback. Download-capable players also revalidate receipts and reconcile progress when they reconnect."
+    },
+    {
+      "id": "personal-state",
+      "title": "Personal state and bulk jobs",
+      "description": "Read and change the current profile’s watched state, My List, favourites, history and preferences. Bulk jobs capture a selection and report progress and individual failures."
+    },
+    {
+      "id": "playlists",
+      "title": "Playlists and saved lists",
+      "description": "Create and edit playlists, personal collections and saved filters. Revisions and operation IDs protect list edits, and sharing remains subject to the caller’s access."
+    },
+    {
+      "id": "live-tv",
+      "title": "Live TV and recordings",
+      "description": "Read the TV guide, play channels and manage the current viewer’s recordings. Source setup, tuner administration and storage policy belong to the server owner’s console."
+    },
+    {
+      "id": "events",
+      "title": "Events and notifications",
+      "description": "Keep open clients current with invalidation hints and a paged notification inbox. Event positions and inbox revisions are separate values."
+    },
+    {
+      "id": "library-integrations",
+      "title": "Title queries and scans",
+      "description": "Let catalogue indexes and download managers find titles and notify Portico about changed files. Scan and path-reporting writes require an owner’s credential with library scope."
+    },
+    {
+      "id": "metadata-integrations",
+      "title": "Metadata integrations",
+      "description": "Inspect and repair title matches or update metadata through an owner-authorized integration. These operations use library scope and keep revision checks separate from background provider work."
+    },
+    {
+      "id": "playback-integrations",
+      "title": "Playback dashboards and controls",
+      "description": "Show active playback and let an authorized administrator control it. Admin scope and the administrator’s playback permission are both required."
+    },
+    {
+      "id": "webhooks",
+      "title": "Webhooks",
+      "description": "Send signed event notifications to automation services and other integrations. An owner can manage subscriptions and inspect delivery results with an admin-scoped credential."
+    },
+    {
+      "id": "mcp",
+      "title": "AI assistants with MCP",
+      "description": "Connect an assistant to the server with a deliberately scoped API key or personal access token. The tool list follows both the credential’s scopes and the member’s current permissions."
+    }
+  ],
+  "operations": [
+    {
+      "operationId": "get_system",
+      "method": "get",
+      "path": "/v1/system",
+      "group": "system",
+      "core": true,
+      "title": "Read server information",
+      "description": "Returns the server ID, name, version and setup status. Use it to identify the server before signing in.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_server",
+      "method": "get",
+      "path": "/v1/server",
+      "group": "system",
+      "core": false,
+      "title": "Read the API version",
+      "description": "Returns the server identity and API major version and level. Use these values when checking client compatibility.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_health_live",
+      "method": "get",
+      "path": "/health/live",
+      "group": "system",
+      "core": false,
+      "title": "Check whether the server is running",
+      "description": "Returns a small liveness response without account or dependency details. Monitoring tools can use it without credentials.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_health_ready",
+      "method": "get",
+      "path": "/health/ready",
+      "group": "system",
+      "core": false,
+      "title": "Check database readiness",
+      "description": "Checks that the database responds and returns 503 when the server is not ready. Use this for an external readiness probe.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_readiness",
+      "method": "get",
+      "path": "/v1/readiness",
+      "group": "system",
+      "core": false,
+      "title": "Read the server's readiness state",
+      "description": "Returns the readiness flag and status, including starting or degraded states. A 503 response includes Retry-After.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_capabilities",
+      "method": "get",
+      "path": "/v1/capabilities",
+      "group": "system",
+      "core": true,
+      "title": "Read available features and limits",
+      "description": "Returns feature states and published limits for the current viewer. Use it to decide which client features to offer.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_auth_capabilities",
+      "method": "get",
+      "path": "/v1/auth/capabilities",
+      "group": "authentication",
+      "core": true,
+      "title": "Read available sign-in methods",
+      "description": "Returns the sign-in methods and policies available on this server. Read it before offering a local sign-in or pairing option.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "post_direct_sign_in",
+      "method": "post",
+      "path": "/v1/direct/sign-in",
+      "group": "authentication",
+      "core": true,
+      "title": "Sign in with local credentials",
+      "description": "Signs in with a username and password and returns the account snapshot and session when admission succeeds. Handle a two-factor challenge, required password change, pending device approval or account-only session before browsing.",
+      "params": {
+        "X-Portico-Installation-Id": "Stable random ID for this installation, 32–128 letters, digits, hyphens or underscores."
+      },
+      "notes": [
+        "Persist a random installation ID and send X-Portico-Installation-Id and the device/app headers.",
+        "Tokenless cross-origin browser sign-in is refused; native clients can omit Origin.",
+        "Local credentials and TV codes are the documented third-party sign-in paths; third-party Portico Account assertion issuance is not provided.",
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "post_auth_two_factor_challenge",
+      "method": "post",
+      "path": "/v1/auth/two-factor/challenge",
+      "group": "authentication",
+      "core": true,
+      "title": "Complete a two-factor challenge",
+      "description": "Submits the challenge token and current verification code from sign-in. Success returns the sign-in result after the second factor is proven.",
+      "params": {},
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "get_direct_account",
+      "method": "get",
+      "path": "/v1/direct",
+      "group": "authentication",
+      "core": true,
+      "title": "Read the account and its profiles",
+      "description": "Returns the signed-in account snapshot and available profiles. An account-only session can use this to reach profile selection.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "post_direct_profiles_id_select",
+      "method": "post",
+      "path": "/v1/direct/profiles/{id}/select",
+      "group": "authentication",
+      "core": true,
+      "title": "Select a profile",
+      "description": "Selects a profile with its PIN or remembered trust token where required and returns new session credentials. Remembered trust belongs to the same installation.",
+      "params": {
+        "id": "Profile ID."
+      },
+      "notes": [
+        "Save the replacement session credentials before issuing viewer requests.",
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "post_direct_profile_switch",
+      "method": "post",
+      "path": "/v1/direct/profile-switch",
+      "group": "authentication",
+      "core": false,
+      "title": "End the outgoing profile's sessions",
+      "description": "Revokes the outgoing profile's session families on the named installation before another profile takes over. This also ends their playback and queues on that device.",
+      "params": {},
+      "notes": [
+        "Keep usable account credentials for selecting the next profile; the outgoing families are revoked.",
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "post_direct_password",
+      "method": "post",
+      "path": "/v1/direct/password",
+      "group": "authentication",
+      "core": false,
+      "title": "Change the local account password",
+      "description": "Changes the password after proving the current password and any required second factor. Use it to complete a required password change, then sign in again because existing sessions end.",
+      "params": {},
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "post_auth_refresh",
+      "method": "post",
+      "path": "/v1/auth/refresh",
+      "group": "authentication",
+      "core": true,
+      "title": "Renew a session",
+      "description": "Exchanges the refresh token for a new session envelope bound to the installation. Save both tokens atomically and retry a lost response with the same refresh token, installation ID and request ID.",
+      "params": {},
+      "notes": [
+        "Store refresh tokens privately and serialize refreshes within the app. Reusing a predecessor outside an exact retry can revoke its session family.",
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "get_me",
+      "method": "get",
+      "path": "/v1/me",
+      "group": "authentication",
+      "core": true,
+      "title": "Read the current viewer",
+      "description": "Returns the authenticated viewer's identity and permissions. Use it after profile selection to establish whose state the app is showing.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_profiles_id_avatar",
+      "method": "get",
+      "path": "/v1/profiles/{id}/avatar",
+      "group": "authentication",
+      "core": false,
+      "title": "Read a profile picture",
+      "description": "Returns a profile's avatar image subject to access checks. Use the returned avatar URL when displaying the profile picker.",
+      "params": {
+        "id": "Profile ID from the account’s profile list.",
+        "v": "Avatar version from the returned URL."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "delete_sessions_current",
+      "method": "delete",
+      "path": "/v1/sessions/current",
+      "group": "authentication",
+      "core": true,
+      "title": "Sign out this session",
+      "description": "Revokes the entire current session family, including its playback access. It accepts an authentic expired or retired family token and takes no query or body.",
+      "params": {},
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "post_quick_connect",
+      "method": "post",
+      "path": "/v1/quick-connect",
+      "group": "authentication",
+      "core": true,
+      "title": "Request a TV sign-in code",
+      "description": "Creates a pairing attempt and returns the display code, verification URLs, expiry and polling interval. Keep deviceCode private and show the returned verification address.",
+      "params": {},
+      "notes": [
+        "Persist a random installation ID and send X-Portico-Installation-Id and the device/app headers.",
+        "Tokenless cross-origin browser sign-in is refused; native clients can omit Origin.",
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "post_quick_connect_review",
+      "method": "post",
+      "path": "/v1/quick-connect/review",
+      "group": "authentication",
+      "core": true,
+      "title": "Review a TV sign-in request",
+      "description": "Looks up a user code so the signed-in viewer can inspect the waiting device before deciding. This step does not approve it.",
+      "params": {},
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "post_quick_connect_decision",
+      "method": "post",
+      "path": "/v1/quick-connect/decision",
+      "group": "authentication",
+      "core": true,
+      "title": "Approve or deny a TV sign-in",
+      "description": "Records the signed-in viewer's decision for a user code and returns 204. An approved device receives the approver's identity and role, including owner authority when the owner approves.",
+      "params": {},
+      "notes": [
+        "Approval grants the approver’s identity and role to the waiting device.",
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "post_quick_connect_token",
+      "method": "post",
+      "path": "/v1/quick-connect/token",
+      "group": "authentication",
+      "core": true,
+      "title": "Collect the TV session",
+      "description": "Polls a pairing attempt with its secret device code and returns the session envelope after approval. Honour the polling interval and Retry-After for authorization_pending or slow_down, and stop on denial or expiry.",
+      "params": {},
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "post_quick_connect_cancel",
+      "method": "post",
+      "path": "/v1/quick-connect/cancel",
+      "group": "authentication",
+      "core": false,
+      "title": "Cancel a TV sign-in request",
+      "description": "Cancels an unused pairing attempt with its device code. Call it when the viewer leaves the waiting screen.",
+      "params": {},
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "get_api_access_options",
+      "method": "get",
+      "path": "/v1/me/api-access",
+      "group": "credentials",
+      "core": false,
+      "title": "Read credential options and limits",
+      "description": "Returns the available scopes, credential limits and whether members may create personal tokens. Read this before presenting a credential form.",
+      "params": {},
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "list_access_tokens",
+      "method": "get",
+      "path": "/v1/me/access-tokens",
+      "group": "credentials",
+      "core": false,
+      "title": "List your personal access tokens",
+      "description": "Lists the current member's tokens with hints, usage and lifecycle state. Stored secrets cannot be read back.",
+      "params": {
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "create_access_token",
+      "method": "post",
+      "path": "/v1/me/access-tokens",
+      "group": "credentials",
+      "core": true,
+      "title": "Create a personal access token",
+      "description": "Creates a token for the signed-in member with the requested scopes and optional expiry. The operation ID prevents duplicate creation, but a replay does not return the secret again.",
+      "params": {},
+      "notes": [
+        "Save the secret from the first response; it is not returned on an idempotent replay.",
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "revoke_access_token",
+      "method": "delete",
+      "path": "/v1/me/access-tokens/{id}",
+      "group": "credentials",
+      "core": false,
+      "title": "Revoke a personal access token",
+      "description": "Revokes one of the current member's tokens and takes effect on its next request. Revocation is safe to repeat.",
+      "params": {
+        "id": "Personal access token ID."
+      },
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "list_api_keys",
+      "method": "get",
+      "path": "/v1/admin/api-keys",
+      "group": "credentials",
+      "core": false,
+      "title": "List server API keys",
+      "description": "Lets the owner list integration keys, including their scopes, usage and state. The list shows secret hints rather than full secrets.",
+      "params": {
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "create_api_key",
+      "method": "post",
+      "path": "/v1/admin/api-keys",
+      "group": "credentials",
+      "core": true,
+      "title": "Create an API key",
+      "description": "Lets a signed-in owner create a scoped integration key with an optional expiry. Save the secret from the first successful response; replaying the operation ID does not reveal it again.",
+      "params": {},
+      "notes": [
+        "Save the secret from the first response; it is not returned on an idempotent replay.",
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "revoke_api_key",
+      "method": "delete",
+      "path": "/v1/admin/api-keys/{id}",
+      "group": "credentials",
+      "core": false,
+      "title": "Revoke an API key",
+      "description": "Lets a signed-in owner revoke an integration key. The key stops working on its next request and the revocation is safe to repeat.",
+      "params": {
+        "id": "API key ID."
+      },
+      "notes": [
+        "API keys and personal access tokens cannot be used for this operation."
+      ]
+    },
+    {
+      "operationId": "get_libraries",
+      "method": "get",
+      "path": "/v1/libraries",
+      "group": "browse",
+      "core": true,
+      "title": "List visible libraries",
+      "description": "Returns the libraries available to the viewer and their default views. Use their IDs for browsing and title queries.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_home",
+      "method": "get",
+      "path": "/v1/home",
+      "group": "browse",
+      "core": true,
+      "title": "Read Home",
+      "description": "Returns the viewer's Home hero, layout and initial rows. Continue individual rows through their returned paging information.",
+      "params": {
+        "limit": "Initial entry limit used when composing Home rows."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_home_row",
+      "method": "get",
+      "path": "/v1/home/rows/{id}",
+      "group": "browse",
+      "core": true,
+      "title": "Read more of a Home row",
+      "description": "Returns a bounded portion of one Home row. Use its cursor or positional window with the matching revision rather than loading the whole library.",
+      "params": {
+        "id": "Home row ID from the Home response.",
+        "limit": "Page or window size within this operation’s published bounds.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "start": "Starting row position; use the revision belonging to this row.",
+        "revision": "Revision from the same Home row being continued.",
+        "anchorId": "Entry ID used to anchor the requested row window."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_saved_content",
+      "method": "get",
+      "path": "/v1/content",
+      "group": "browse",
+      "core": false,
+      "title": "Read a Saved screen",
+      "description": "Returns a composed global content screen selected by view, with headings, sections and allowed choices. Use the returned navigation and filters for the viewer's Saved content.",
+      "params": {
+        "view": "Saved content or directory view from the returned navigation.",
+        "sort": "Sort choice published for this operation.",
+        "direction": "Sort or window direction supported by this operation.",
+        "filter": "Filter choice offered by the Saved screen.",
+        "limit": "Page or window size within this operation’s published bounds.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_libraries_id_content",
+      "method": "get",
+      "path": "/v1/libraries/{id}/content",
+      "group": "browse",
+      "core": false,
+      "title": "Read a library screen",
+      "description": "Returns a composed library screen with navigation, sections, available sorts and filters. The view and entityId select the library or subgroup being shown.",
+      "params": {
+        "id": "Library ID.",
+        "view": "Content view named by the returned navigation.",
+        "entityId": "Entity ID selecting a subgroup within the requested content view.",
+        "sort": "Sort choice published for this operation.",
+        "direction": "Sort or window direction supported by this operation.",
+        "category": "Category value offered by the content screen.",
+        "q": "Search text or the text used to narrow facet choices.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds.",
+        "start": "Starting position in the matching content window.",
+        "section": "Section of the composed library screen to continue."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_libraries_id_browse_capabilities",
+      "method": "get",
+      "path": "/v1/libraries/{id}/browse-capabilities",
+      "group": "browse",
+      "core": false,
+      "title": "Read library browse options",
+      "description": "Returns the fields, operators, pivots, sorts and query limits supported by this library. Read it before building a structured browse request.",
+      "params": {
+        "id": "Library ID.",
+        "pivot": "Browse pivot from the published capabilities."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_library_facets",
+      "method": "get",
+      "path": "/v1/libraries/{id}/facets",
+      "group": "browse",
+      "core": false,
+      "title": "List library facet values",
+      "description": "Returns values and counts for a supported browse field within the visible library. Use q to narrow the facet choices.",
+      "params": {
+        "id": "Library ID.",
+        "field": "Browse field whose facet values should be returned.",
+        "q": "Search text or the text used to narrow facet choices.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "browse_library",
+      "method": "post",
+      "path": "/v1/libraries/{id}/browse",
+      "group": "browse",
+      "core": true,
+      "title": "Browse a library",
+      "description": "Runs a structured filter and sort over visible library entries. Continue with pageInfo.nextCursor or use a positional range with its revision; totals above 10,000 are reported as a lower bound.",
+      "params": {
+        "id": "Library ID."
+      },
+      "notes": [
+        "Read browse capabilities first. Keep cursors and positional revisions with the query and viewer that produced them."
+      ]
+    },
+    {
+      "operationId": "get_browse_capabilities",
+      "method": "get",
+      "path": "/v1/browse-capabilities",
+      "group": "browse",
+      "core": false,
+      "title": "Read cross-library browse options",
+      "description": "Returns the supported fields, pivots, sorts and limits for grouped lists across visible libraries. Use it before browsing a person, playlist or personal list.",
+      "params": {
+        "pivot": "Supported pivot for the cross-library browse vocabulary."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_browse_facets",
+      "method": "get",
+      "path": "/v1/browse/facets",
+      "group": "browse",
+      "core": false,
+      "title": "List cross-library facet values",
+      "description": "Returns facet choices and counts across the viewer's libraries. Group and value can restrict the facet to the same group as the browse query.",
+      "params": {
+        "field": "Browse field whose facet values should be returned.",
+        "q": "Search text or the text used to narrow facet choices.",
+        "limit": "Page or window size within this operation’s published bounds.",
+        "group": "Group condition such as person, list, savedCollection, homeRow, watchlisted, favorite or lastPlayedAt.",
+        "value": "Subject of the named group condition, such as a person or list ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "browse_across",
+      "method": "post",
+      "path": "/v1/browse",
+      "group": "browse",
+      "core": false,
+      "title": "Browse a group across libraries",
+      "description": "Runs a structured query for a named group such as a person, playlist, Home row, My List or History. Results are paged and preserve the group's own order when groupOrder is selected.",
+      "params": {},
+      "notes": [
+        "Read browse capabilities first. Keep cursors and positional revisions with the query and viewer that produced them."
+      ]
+    },
+    {
+      "operationId": "search",
+      "method": "get",
+      "path": "/v1/search",
+      "group": "browse",
+      "core": true,
+      "title": "Search the catalogue",
+      "description": "Searches visible titles, people, years and collections and returns grouped results. Limit is 1–40; set record=1 only when a person commits a search.",
+      "params": {
+        "q": "Search text or the text used to narrow facet choices.",
+        "group": "Search result group to continue.",
+        "groups": "Search result groups to include, as accepted by the search contract.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Results per page, 1–40.",
+        "sort": "Sort choice published for this operation.",
+        "direction": "Sort direction accepted by the search contract.",
+        "libraryIds": "Library IDs to search, within the viewer’s current access.",
+        "record": "Set 1 only when a person commits a search, to save it in their history."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_search_history",
+      "method": "get",
+      "path": "/v1/search/history",
+      "group": "browse",
+      "core": false,
+      "title": "Read your search history",
+      "description": "Returns searches saved for the current viewer. Use it for recent-search suggestions rather than recording every keystroke.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "delete_search_history",
+      "method": "delete",
+      "path": "/v1/search/history",
+      "group": "browse",
+      "core": false,
+      "title": "Clear your search history",
+      "description": "Clears the current viewer's saved search queries. It does not change other profiles' history.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_people",
+      "method": "get",
+      "path": "/v1/people",
+      "group": "browse",
+      "core": false,
+      "title": "Find people",
+      "description": "Searches people in the visible catalogue. Use the returned person IDs to read credits and related titles.",
+      "params": {
+        "limit": "Page or window size within this operation’s published bounds.",
+        "q": "Search text or the text used to narrow facet choices."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_items_id",
+      "method": "get",
+      "path": "/v1/items/{id}",
+      "group": "titles",
+      "core": false,
+      "title": "Read an item",
+      "description": "Returns one visible item with the viewer's personal state. Use its ID for detail, playback and personal-state requests.",
+      "params": {
+        "id": "Item ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_items_id_detail",
+      "method": "get",
+      "path": "/v1/items/{id}/detail",
+      "group": "titles",
+      "core": true,
+      "title": "Read title details",
+      "description": "Returns the item's details, files, metadata, personal state and available actions. Use related to request the supported related-content sections.",
+      "params": {
+        "id": "Item ID.",
+        "related": "Use all for the complete supported related-content sections."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_items_id_credits",
+      "method": "get",
+      "path": "/v1/items/{id}/credits",
+      "group": "titles",
+      "core": false,
+      "title": "List title credits",
+      "description": "Returns a paged set of credits for a title. Use group to request the relevant credit group and continue with nextCursor.",
+      "params": {
+        "id": "Item ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "group": "Result or content group supported by this operation.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_shows_id_seasons",
+      "method": "get",
+      "path": "/v1/shows/{id}/seasons",
+      "group": "titles",
+      "core": false,
+      "title": "List a show's seasons",
+      "description": "Returns the visible seasons belonging to a show. Use their IDs to request episodes in season order.",
+      "params": {
+        "id": "Show ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_shows_id_episodes",
+      "method": "get",
+      "path": "/v1/shows/{id}/episodes",
+      "group": "titles",
+      "core": false,
+      "title": "List a show's episodes",
+      "description": "Returns a paged episode list for a show. Continue with the returned cursor rather than assuming a short page ends the list.",
+      "params": {
+        "id": "Show ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_seasons_id_episodes",
+      "method": "get",
+      "path": "/v1/seasons/{id}/episodes",
+      "group": "titles",
+      "core": false,
+      "title": "List a season's episodes",
+      "description": "Returns a paged list of visible episodes in a season. Use it to build an episode picker or a queue selector.",
+      "params": {
+        "id": "Season ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_artists_id_albums",
+      "method": "get",
+      "path": "/v1/artists/{id}/albums",
+      "group": "titles",
+      "core": false,
+      "title": "List an artist's albums",
+      "description": "Returns a paged list of albums for an artist. Follow nextCursor for additional albums.",
+      "params": {
+        "id": "Artist ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_albums_id_songs",
+      "method": "get",
+      "path": "/v1/albums/{id}/songs",
+      "group": "titles",
+      "core": false,
+      "title": "List an album's songs",
+      "description": "Returns a paged list of songs in an album. Keep the server's ordering when displaying the track list.",
+      "params": {
+        "id": "Album ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_books_id_chapters",
+      "method": "get",
+      "path": "/v1/books/{id}/chapters",
+      "group": "titles",
+      "core": false,
+      "title": "List an audiobook's chapters",
+      "description": "Returns a paged list of chapters for a book. Follow nextCursor to read the remaining chapter entries.",
+      "params": {
+        "id": "Book ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_books_id_files",
+      "method": "get",
+      "path": "/v1/books/{id}/files",
+      "group": "titles",
+      "core": false,
+      "title": "List an audiobook's files",
+      "description": "Returns the visible files associated with an audiobook. Use the cursor to continue when the book spans more than one page.",
+      "params": {
+        "id": "Book ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_people_id",
+      "method": "get",
+      "path": "/v1/people/{id}",
+      "group": "titles",
+      "core": false,
+      "title": "Read a person's credits",
+      "description": "Returns the person's catalogue page and a paged set of credits. The role parameter narrows the credit view.",
+      "params": {
+        "id": "Person ID.",
+        "role": "Credit role used to narrow this person’s titles.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_people_id_portrait",
+      "method": "get",
+      "path": "/v1/people/{id}/portrait",
+      "group": "titles",
+      "core": false,
+      "title": "Read a person's portrait",
+      "description": "Returns the portrait image for a visible person. Use the URL supplied by catalogue responses.",
+      "params": {
+        "id": "Person ID.",
+        "v": "Artwork version digest from the returned image URL."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_items_id_art_kind",
+      "method": "get",
+      "path": "/v1/items/{id}/art/{kind}",
+      "group": "titles",
+      "core": false,
+      "title": "Read title artwork",
+      "description": "Returns the selected image for a title and artwork kind. Replaced versioned images return 410; reuse the server's URL and validators.",
+      "params": {
+        "id": "Item ID.",
+        "kind": "Artwork role, such as poster or backdrop.",
+        "v": "Artwork version digest from the returned image URL.",
+        "w": "Artwork width from the returned URL: 400, 800 or 1920."
+      },
+      "notes": [
+        "The handler accepts w for the returned artwork sizes (400, 800 or 1920), though the spec omits that query parameter."
+      ]
+    },
+    {
+      "operationId": "get_metadata_kind_id_art_role",
+      "method": "get",
+      "path": "/v1/metadata/{kind}/{id}/art/{role}",
+      "group": "titles",
+      "core": false,
+      "title": "Read entity artwork",
+      "description": "Returns selected artwork for an item or supported container and role. Candidate previews require owner authority; use catalogue-provided URLs for ordinary artwork.",
+      "params": {
+        "kind": "item, album, show, artist, book or season.",
+        "id": "Entity ID for the requested kind.",
+        "role": "Artwork role from the returned image URL.",
+        "candidate": "Artwork candidate ID for an owner-only preview.",
+        "subject": "Subject identifier for role-specific artwork, such as a portrait.",
+        "v": "Artwork version digest from the returned image URL.",
+        "w": "Artwork width from the returned URL: 400, 800 or 1920."
+      },
+      "notes": [
+        "Ordinary selected artwork follows viewer visibility checks. The spec’s owner access label also covers owner-only candidate previews.",
+        "The handler accepts w for the returned artwork sizes (400, 800 or 1920), though the spec omits that query parameter."
+      ]
+    },
+    {
+      "operationId": "get_items_id_recommendations",
+      "method": "get",
+      "path": "/v1/items/{id}/recommendations",
+      "group": "titles",
+      "core": false,
+      "title": "Read related title suggestions",
+      "description": "Returns recommendations related to a visible item. Use these for a title's related-content section.",
+      "params": {
+        "id": "Item ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_shows_id_recommendations",
+      "method": "get",
+      "path": "/v1/shows/{id}/recommendations",
+      "group": "titles",
+      "core": false,
+      "title": "Read related show suggestions",
+      "description": "Returns recommendations related to a visible show. Visibility and content restrictions apply to the returned titles.",
+      "params": {
+        "id": "Show ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_items_id_lyrics",
+      "method": "get",
+      "path": "/v1/items/{id}/lyrics",
+      "group": "titles",
+      "core": false,
+      "title": "Read lyric choices",
+      "description": "Returns available lyric resources, source information and the viewer's selection for an item. Use the returned resource and revision to fetch the lyric document.",
+      "params": {
+        "id": "Item ID.",
+        "sessionId": "Playback session whose source or presentation should be used.",
+        "sourceId": "Source ID used to narrow or select this operation’s data.",
+        "sourceVersion": "Exact source version from the lyric source information."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_items_id_lyrics_resource_revisions_revision",
+      "method": "get",
+      "path": "/v1/items/{id}/lyrics/{resource}/revisions/{revision}",
+      "group": "titles",
+      "core": false,
+      "title": "Read a lyric document",
+      "description": "Returns a particular revision of a lyric resource for a visible item. Preserve the document's timing units when synchronizing lyrics with playback.",
+      "params": {
+        "id": "Item ID.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "sessionId": "Playback session whose source or presentation should be used.",
+        "sourceId": "Source ID used to narrow or select this operation’s data.",
+        "sourceVersion": "Exact source version from the lyric source information."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "put_items_id_lyrics_selection",
+      "method": "put",
+      "path": "/v1/items/{id}/lyrics/selection",
+      "group": "titles",
+      "core": false,
+      "title": "Choose a lyric resource",
+      "description": "Saves the viewer's lyric selection for the item. This changes personal playback state rather than replacing the shared lyric resource.",
+      "params": {
+        "id": "Item ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_device_capabilities",
+      "method": "get",
+      "path": "/v1/me/devices/current/capabilities",
+      "group": "playback",
+      "core": true,
+      "title": "Read this device's playback capabilities",
+      "description": "Returns the capability document and revision for the current device. Keep its ETag for the next update; conditional reads can return 304.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "put_device_capabilities",
+      "method": "put",
+      "path": "/v1/me/devices/current/capabilities",
+      "group": "playback",
+      "core": true,
+      "title": "Publish this device's playback capabilities",
+      "description": "Replaces the device's supported engines, codecs, containers, subtitles and output limits. Send If-Match from the current document and declare only what the player can render.",
+      "params": {
+        "If-Match": "Current resource ETag or quoted revision from the preceding read."
+      },
+      "notes": [
+        "Send If-Match. Missing preconditions return 428; stale revisions return 412."
+      ]
+    },
+    {
+      "operationId": "get_playback_options",
+      "method": "get",
+      "path": "/v1/items/{itemId}/playback-options",
+      "group": "playback",
+      "core": true,
+      "title": "Read playback choices for a title",
+      "description": "Returns the sources, track choices, controls and delivery decision for this device. Preview a particular version or quality before starting, then use the presentation engine selected by the server.",
+      "params": {
+        "itemId": "Visible item ID.",
+        "versionId": "Media version ID to preview.",
+        "partId": "Media part ID to preview.",
+        "audioId": "Audio track ID to preview.",
+        "subtitleId": "Subtitle track ID to preview.",
+        "quality": "Quality mode to preview, using the server’s supported choices.",
+        "qualityId": "Saved quality ID used with the selected quality mode.",
+        "maxVideoBitrateKbps": "Maximum video bitrate in kilobits per second for the quality preview.",
+        "maxHeight": "Maximum video height in pixels for the quality preview.",
+        "maxAudioBitrateKbps": "Maximum audio bitrate in kilobits per second for the quality preview."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_playback_delivery_policy",
+      "method": "get",
+      "path": "/v1/playback/delivery-policy",
+      "group": "playback",
+      "core": false,
+      "title": "Read available playback qualities",
+      "description": "Returns the delivery policy, quality ladder and saved quality choices available to clients. Use these values when presenting playback quality controls.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "start_playback_session",
+      "method": "post",
+      "path": "/v1/playback/sessions",
+      "group": "playback",
+      "core": true,
+      "title": "Start playback",
+      "description": "Starts playback and returns a session and presentation URL with 201. A 202 means preparation is still running; follow Retry-After and replay the same request with the same Idempotency-Key.",
+      "params": {
+        "Idempotency-Key": "Stable request key; reuse it only with the identical request."
+      },
+      "notes": [
+        "A temporary conversion_capacity response uses 429 and Retry-After: 2. Retry the same request after that delay.",
+        "Send Idempotency-Key and reuse the same key and payload after a lost response."
+      ]
+    },
+    {
+      "operationId": "get_playback_session",
+      "method": "get",
+      "path": "/v1/playback/sessions/{id}",
+      "group": "playback",
+      "core": true,
+      "title": "Read a playback session",
+      "description": "Returns the session state, lease, revision and current presentation with its ETag. Reread it after a session.updated event or a revision conflict.",
+      "params": {
+        "id": "Playback session ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "change_playback_session",
+      "method": "patch",
+      "path": "/v1/playback/sessions/{id}",
+      "group": "playback",
+      "core": true,
+      "title": "Change playback",
+      "description": "Changes state, position, quality, version or tracks using If-Match. Changes to delivered bytes keep the session and queue but advance the presentation generation; adopt the new URLs.",
+      "params": {
+        "id": "Playback session ID.",
+        "If-Match": "Current resource ETag or quoted revision from the preceding read."
+      },
+      "notes": [
+        "A temporary conversion_capacity response uses 429 and Retry-After: 2. Retry the same request after that delay.",
+        "Send If-Match. Missing preconditions return 428; stale revisions return 412."
+      ]
+    },
+    {
+      "operationId": "report_playback_timeline",
+      "method": "post",
+      "path": "/v1/playback/sessions/{id}/timeline",
+      "group": "playback",
+      "core": true,
+      "title": "Report playback progress",
+      "description": "Reports the renderer's actual state and position using the current generation and a strictly increasing sequence. Reports renew the lease and update progress and history; serialize them and retry a lost response unchanged.",
+      "params": {
+        "id": "Playback session ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "stop_playback_session",
+      "method": "delete",
+      "path": "/v1/playback/sessions/{id}",
+      "group": "playback",
+      "core": true,
+      "title": "Stop playback",
+      "description": "Stops the session and ends its playback grant access. The operation is idempotent and can include the final positionMs.",
+      "params": {
+        "id": "Playback session ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_playback_sessions_id_chapters",
+      "method": "get",
+      "path": "/v1/playback/sessions/{id}/chapters",
+      "group": "playback",
+      "core": false,
+      "title": "Read playback chapters",
+      "description": "Returns a paged chapter list for the active playback session. Keep the matching revision with chapter continuations and use the list for the player's chapter menu.",
+      "params": {
+        "id": "Playback session ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds.",
+        "revision": "Chapter-list revision from the same playback session."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_remote_playback_controls",
+      "method": "get",
+      "path": "/v1/playback/controls",
+      "group": "playback",
+      "core": false,
+      "title": "List your devices' playback controls",
+      "description": "Returns what the current profile is playing on its devices and the controls it may use. Page the list and use the returned session information for remote controls.",
+      "params": {
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_items_id_source_availability",
+      "method": "get",
+      "path": "/v1/items/{id}/source-availability",
+      "group": "playback",
+      "core": false,
+      "title": "Read a title's source availability",
+      "description": "Returns an advisory availability state for a visible item's sources. It does not select a source or grant playback access; use playback options and a session to play.",
+      "params": {
+        "id": "Item ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_items_id_trickplay",
+      "method": "get",
+      "path": "/v1/items/{id}/trickplay",
+      "group": "playback",
+      "core": false,
+      "title": "Read seek-preview information",
+      "description": "Returns the available trickplay sets for a title. Use their returned URLs to show preview images while seeking.",
+      "params": {
+        "id": "Item ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_items_id_trickplay_set_thumbnails_vtt",
+      "method": "get",
+      "path": "/v1/items/{id}/trickplay/{set}/thumbnails.vtt",
+      "group": "playback",
+      "core": false,
+      "title": "Read a seek-preview index",
+      "description": "Returns the WebVTT index that maps playback times to preview tiles. Fetch tiles using the URLs in the index.",
+      "params": {
+        "id": "Item ID.",
+        "set": "Trickplay set identifier from the returned preview information."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_items_id_trickplay_set_tiles_tile_jpg",
+      "method": "get",
+      "path": "/v1/items/{id}/trickplay/{set}/tiles/{tile}.jpg",
+      "group": "playback",
+      "core": false,
+      "title": "Read a seek-preview tile",
+      "description": "Returns one JPEG tile from a trickplay set after checking current title access. Conditional reads can reuse the image by ETag.",
+      "params": {
+        "id": "Item ID.",
+        "set": "Trickplay set identifier from the returned preview information.",
+        "tile": "Tile identifier from the returned trickplay index.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_items_id_chapters_chapter_image",
+      "method": "get",
+      "path": "/v1/items/{id}/chapters/{chapter}/image",
+      "group": "playback",
+      "core": false,
+      "title": "Read a chapter image",
+      "description": "Returns a thumbnail for a title's chapter after checking viewer access. Use the returned image URL and its cache validator.",
+      "params": {
+        "id": "Item ID.",
+        "chapter": "Chapter identifier from the title’s chapter information.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "create_queue",
+      "method": "post",
+      "path": "/v1/queues",
+      "group": "queues",
+      "core": true,
+      "title": "Create a playback queue",
+      "description": "Replaces this device's queue from one selector form or a set of segments and can start the first session. Send Idempotency-Key and retain the returned queue revision.",
+      "params": {
+        "Idempotency-Key": "Stable request key; reuse it only with the identical request."
+      },
+      "notes": [
+        "A temporary conversion_capacity response uses 429 and Retry-After: 2. Retry the same request after that delay.",
+        "Send Idempotency-Key and reuse the same key and payload after a lost response."
+      ]
+    },
+    {
+      "operationId": "get_queue",
+      "method": "get",
+      "path": "/v1/queues/{id}",
+      "group": "queues",
+      "core": true,
+      "title": "Read a queue",
+      "description": "Returns the bounded queue header, current entry, repeat and shuffle state, segments and available post-play information. Read entries through the window or entries route.",
+      "params": {
+        "id": "Queue ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_queue_window",
+      "method": "get",
+      "path": "/v1/queues/{id}/window",
+      "group": "queues",
+      "core": false,
+      "title": "Read the current queue window",
+      "description": "Returns up to 200 entries around the current entry. Set around=current or omit it, then choose the before and after counts for the window.",
+      "params": {
+        "id": "Queue ID.",
+        "around": "Only current is accepted; omitting it has the same effect.",
+        "before": "Entries before the current entry; defaults to 20.",
+        "after": "Entries after the current entry; defaults to 50."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "list_queue_entries",
+      "method": "get",
+      "path": "/v1/queues/{id}/entries",
+      "group": "queues",
+      "core": false,
+      "title": "Read a page of queue entries",
+      "description": "Returns up to 200 entries from a queue position. Keep the revision associated with the page when making edits.",
+      "params": {
+        "id": "Queue ID.",
+        "from": "Zero-based starting queue position; defaults to 0.",
+        "limit": "Entries per page, at most 200; defaults to 50.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "add_queue_segment",
+      "method": "post",
+      "path": "/v1/queues/{id}/segments",
+      "group": "queues",
+      "core": false,
+      "title": "Add titles to a queue",
+      "description": "Adds a selector as a segment to play next, append or insert after an entry. Send If-Match for the current queue revision.",
+      "params": {
+        "id": "Queue ID.",
+        "If-Match": "Current resource ETag or quoted revision from the preceding read."
+      },
+      "notes": [
+        "Send If-Match. Missing preconditions return 428; stale revisions return 412."
+      ]
+    },
+    {
+      "operationId": "remove_queue_entry",
+      "method": "delete",
+      "path": "/v1/queues/{id}/entries/{entryId}",
+      "group": "queues",
+      "core": false,
+      "title": "Remove a queue entry",
+      "description": "Removes one occurrence from a queue using the current If-Match value. Other occurrences of the same title remain.",
+      "params": {
+        "id": "Queue ID.",
+        "entryId": "Occurrence ID within the list or queue, not the title ID.",
+        "If-Match": "Current resource ETag or quoted revision from the preceding read."
+      },
+      "notes": [
+        "Send If-Match. Missing preconditions return 428; stale revisions return 412."
+      ]
+    },
+    {
+      "operationId": "move_queue_entry",
+      "method": "post",
+      "path": "/v1/queues/{id}/entries/{entryId}:move",
+      "group": "queues",
+      "core": false,
+      "title": "Move a queue entry",
+      "description": "Moves one occurrence before or after another entry. Send the queue's current If-Match value.",
+      "params": {
+        "id": "Queue ID.",
+        "entryId": "Occurrence ID within the list or queue, not the title ID.",
+        "If-Match": "Current resource ETag or quoted revision from the preceding read."
+      },
+      "notes": [
+        "Send If-Match. Missing preconditions return 428; stale revisions return 412."
+      ]
+    },
+    {
+      "operationId": "update_queue",
+      "method": "patch",
+      "path": "/v1/queues/{id}",
+      "group": "queues",
+      "core": false,
+      "title": "Change repeat or shuffle",
+      "description": "Updates the queue's repeat mode or turns shuffle on or off. Send If-Match and adopt the returned queue revision.",
+      "params": {
+        "id": "Queue ID.",
+        "If-Match": "Current resource ETag or quoted revision from the preceding read."
+      },
+      "notes": [
+        "Send If-Match. Missing preconditions return 428; stale revisions return 412."
+      ]
+    },
+    {
+      "operationId": "advance_queue",
+      "method": "post",
+      "path": "/v1/queues/{id}:advance",
+      "group": "queues",
+      "core": true,
+      "title": "Advance a queue",
+      "description": "Moves to the next, previous or specified entry using If-Match. If the queue is playing, the server starts the selected entry's session.",
+      "params": {
+        "id": "Queue ID.",
+        "If-Match": "Current resource ETag or quoted revision from the preceding read."
+      },
+      "notes": [
+        "A temporary conversion_capacity response uses 429 and Retry-After: 2. Retry the same request after that delay.",
+        "Send If-Match. Missing preconditions return 428; stale revisions return 412."
+      ]
+    },
+    {
+      "operationId": "prepare_queue_next",
+      "method": "post",
+      "path": "/v1/queues/{id}:prepare-next",
+      "group": "queues",
+      "core": false,
+      "title": "Prepare the next audio entry",
+      "description": "Prepares the next entry's audio before the current entry ends without making it current. Send If-Match and Idempotency-Key, then commit the returned preparation at the audio boundary.",
+      "params": {
+        "id": "Queue ID.",
+        "If-Match": "Current resource ETag or quoted revision from the preceding read.",
+        "Idempotency-Key": "Stable request key; reuse it only with the identical request."
+      },
+      "notes": [
+        "A temporary conversion_capacity response uses 429 and Retry-After: 2. Retry the same request after that delay.",
+        "Send If-Match. Missing preconditions return 428; stale revisions return 412.",
+        "Send Idempotency-Key and reuse the same key and payload after a lost response."
+      ]
+    },
+    {
+      "operationId": "commit_queue_next",
+      "method": "post",
+      "path": "/v1/queues/{id}:commit-next",
+      "group": "queues",
+      "core": false,
+      "title": "Commit the prepared audio entry",
+      "description": "Makes a prepared next entry current at the audio boundary and returns its new playback session. It inherits the playback state, rate, quality and track choices.",
+      "params": {
+        "id": "Queue ID."
+      },
+      "notes": [
+        "Send the token from prepare-next in the JSON body. Replaying a committed token returns its saved result; expired or cancelled preparations require reconciliation."
+      ]
+    },
+    {
+      "operationId": "save_queue_as_playlist",
+      "method": "post",
+      "path": "/v1/queues/{id}:save-as-playlist",
+      "group": "queues",
+      "core": false,
+      "title": "Save a queue as a playlist",
+      "description": "Copies the queue in play order to a new playlist using If-Match and Idempotency-Key. Long copies run in the background; replay the same key to read progress.",
+      "params": {
+        "id": "Queue ID.",
+        "If-Match": "Current resource ETag or quoted revision from the preceding read.",
+        "Idempotency-Key": "Stable request key; reuse it only with the identical request."
+      },
+      "notes": [
+        "Send If-Match. Missing preconditions return 428; stale revisions return 412.",
+        "Send Idempotency-Key and reuse the same key and payload after a lost response."
+      ]
+    },
+    {
+      "operationId": "delete_queue",
+      "method": "delete",
+      "path": "/v1/queues/{id}",
+      "group": "queues",
+      "core": false,
+      "title": "Clear a queue",
+      "description": "Clears the device queue. The operation is idempotent.",
+      "params": {
+        "id": "Queue ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_media_grant",
+      "method": "get",
+      "path": "/v1/media/{grant}",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read a playback stream",
+      "description": "Delivers media authorized by the current playback grant. Open the URL returned by the presentation and follow its selected engine.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_media_grant_file",
+      "method": "get",
+      "path": "/v1/media/{grant}/{file}",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read a playback media file",
+      "description": "Delivers the requested file under a playback grant, such as a manifest or segment. Follow the returned presentation and manifest URLs.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "file": "File name or relative resource supplied by the presentation or bundle."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_media_grant_audio",
+      "method": "get",
+      "path": "/v1/media/{grant}/audio",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read direct audio",
+      "description": "Delivers audio under a playback grant. Use the presentation's audio URL rather than deriving a path from the item ID.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "head_media_grant_audio",
+      "method": "head",
+      "path": "/v1/media/{grant}/audio",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read direct audio headers",
+      "description": "Returns audio response headers without the media body. The same grant and access checks apply as for GET.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_media_grant_audio_converted",
+      "method": "get",
+      "path": "/v1/media/{grant}/audio-converted",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read converted audio",
+      "description": "Delivers converted audio for the current playback grant. Use this route only through the URL selected by the server.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "fromFrame": "Audio frame at which the converted stream should start."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_media_grant_audio_index",
+      "method": "get",
+      "path": "/v1/media/{grant}/audio-index",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read an audio seek index",
+      "description": "Returns the seek index for audio delivered under a playback grant. Use it when the selected audio presentation requires indexed seeking.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_items_itemId_subtitles",
+      "method": "get",
+      "path": "/v1/items/{itemId}/subtitles",
+      "group": "media-delivery",
+      "core": false,
+      "title": "List subtitle choices",
+      "description": "Returns admitted subtitle discoveries and their available delivery formats for a title. A discovered track can be selected directly; it does not need an import before playback.",
+      "params": {
+        "itemId": "Visible item ID.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_items_itemId_playback_session_subtitles",
+      "method": "get",
+      "path": "/v1/items/{itemId}/playback/{session}/subtitles",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read a session's subtitle plan",
+      "description": "Returns the subtitle plan for the named item and playback session, including its presentation generation. Use the plan's grant URLs for the selected track.",
+      "params": {
+        "itemId": "Visible item ID.",
+        "session": "Playback session ID associated with the item.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read subtitle cues as JSON",
+      "description": "Returns a version 1 cue document on the source-relative timeline. Cue startUs and endUs are decimal microsecond strings; plain-text clients apply the selected offset locally.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": [
+        "Use the returned documentUrl. Stopping the session or changing its grant ends subtitle access."
+      ]
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision_vtt",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}.vtt",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read WebVTT subtitles",
+      "description": "Returns UTF-8 WebVTT for the selected resource revision, including the selected offset. The first request can fill the subtitle cache; retries join work already in progress.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": [
+        "Cold embedded subtitles can require a full demux pass. A disconnected request does not cancel cache filling; retry the same URL."
+      ]
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision_fonts",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/fonts",
+      "group": "media-delivery",
+      "core": false,
+      "title": "List subtitle fonts",
+      "description": "Returns the font names and grant URLs attached to an authored subtitle script. Fetch each returned URL rather than turning a font label into a path.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision_fonts_font",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/fonts/{font}",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read a subtitle font",
+      "description": "Returns one font attached to the selected subtitle resource. Grant, revision and access checks apply to range and conditional requests.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "font": "Font identifier from the subtitle font list.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "head_v1_media_subtitles_grant_resource_revision_fonts_font",
+      "method": "head",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/fonts/{font}",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read subtitle font headers",
+      "description": "Returns the font response headers without its bytes. The same grant and revision checks apply as for GET.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "font": "Font identifier from the subtitle font list.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_subtitle_fonts_cjk",
+      "method": "get",
+      "path": "/v1/subtitle-fonts/cjk",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read the CJK subtitle font",
+      "description": "Returns the server's Chinese, Japanese and Korean font for client-rendered subtitles. Fetch it when the renderer needs those glyphs and cache it with its ETag.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision_original_ass",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.ass",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read ASS subtitle script",
+      "description": "Returns the original ASS subtitle script for the selected resource revision. Preserves the authored script and source encoding; honour the response charset.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "head_v1_media_subtitles_grant_resource_revision_original_ass",
+      "method": "head",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.ass",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read headers for ASS subtitle script",
+      "description": "Returns response headers for the original ASS subtitle script without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision_original_ssa",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.ssa",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read SSA subtitle script",
+      "description": "Returns the original SSA subtitle script for the selected resource revision. Preserves the authored script and source encoding; honour the response charset.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "head_v1_media_subtitles_grant_resource_revision_original_ssa",
+      "method": "head",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.ssa",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read headers for SSA subtitle script",
+      "description": "Returns response headers for the original SSA subtitle script without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision_original_sup",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.sup",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read PGS subtitle packets",
+      "description": "Returns the original PGS subtitle packets for the selected resource revision. Use a client renderer that declares PGS support.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "head_v1_media_subtitles_grant_resource_revision_original_sup",
+      "method": "head",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.sup",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read headers for PGS subtitle packets",
+      "description": "Returns response headers for the original PGS subtitle packets without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision_original_idx",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.idx",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read VobSub subtitle index",
+      "description": "Returns the original VobSub subtitle index for the selected resource revision. Fetch the companion SUB file and preserve their matching basename locally.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "head_v1_media_subtitles_grant_resource_revision_original_idx",
+      "method": "head",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.idx",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read headers for VobSub subtitle index",
+      "description": "Returns response headers for the original VobSub subtitle index without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision_original_sub",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.sub",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read VobSub subtitle pictures",
+      "description": "Returns the original VobSub subtitle pictures for the selected resource revision. Keep this file beside the matching IDX index with the same basename.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "head_v1_media_subtitles_grant_resource_revision_original_sub",
+      "method": "head",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.sub",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read headers for VobSub subtitle pictures",
+      "description": "Returns response headers for the original VobSub subtitle pictures without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_v1_media_subtitles_grant_resource_revision_original_mks",
+      "method": "get",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.mks",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read DVB subtitle capsule",
+      "description": "Returns the original DVB subtitle capsule for the selected resource revision. The single-track Matroska capsule contains DVB subtitle packets.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "head_v1_media_subtitles_grant_resource_revision_original_mks",
+      "method": "head",
+      "path": "/v1/media/subtitles/{grant}/{resource}/{revision}/original.mks",
+      "group": "media-delivery",
+      "core": false,
+      "title": "Read headers for DVB subtitle capsule",
+      "description": "Returns response headers for the original DVB subtitle capsule without its bytes. Grant checks, byte ranges and conditional reads follow the same rules as GET.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "segment": "WebVTT segment index where supported; omit for the full subtitle document."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_download_options",
+      "method": "get",
+      "path": "/v1/items/{itemId}/download-options",
+      "group": "downloads",
+      "core": false,
+      "title": "Read download choices",
+      "description": "Returns the download qualities and estimated sizes available for a title. Original is the default; use these choices before creating a preparation.",
+      "params": {
+        "itemId": "Visible item ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "create_download_request",
+      "method": "post",
+      "path": "/v1/downloads/requests",
+      "group": "downloads",
+      "core": false,
+      "title": "Request a container download",
+      "description": "Creates a download request for a show, season, album, book or playlist and a target device. The server pages the membership and applies the requested all, unwatched or next policy.",
+      "params": {},
+      "notes": [
+        "Quality is explicit in this request; choose original for the original file."
+      ]
+    },
+    {
+      "operationId": "list_download_requests",
+      "method": "get",
+      "path": "/v1/downloads/requests",
+      "group": "downloads",
+      "core": false,
+      "title": "List device download requests",
+      "description": "Returns requests still running or completed within the last day for the named device. Use it to recover request state after the app closes.",
+      "params": {
+        "deviceId": "Target device ID associated with the download request."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_download_request",
+      "method": "get",
+      "path": "/v1/downloads/requests/{id}",
+      "group": "downloads",
+      "core": false,
+      "title": "Read a download request",
+      "description": "Returns request counts and a page of its members. Continue through the returned member paging information while preparations progress.",
+      "params": {
+        "id": "Download request ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Number of request members to read in this page."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "create_download_preparations",
+      "method": "post",
+      "path": "/v1/downloads/preparations",
+      "group": "downloads",
+      "core": false,
+      "title": "Prepare titles for download",
+      "description": "Creates or finds preparation claims for the requested titles and quality. An original becomes ready after its digest is known; converted copies may require background work.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "list_download_preparations",
+      "method": "get",
+      "path": "/v1/downloads/preparations",
+      "group": "downloads",
+      "core": false,
+      "title": "List download preparations",
+      "description": "Returns preparation claims visible to the viewer. Use the returned states and actions to show download progress.",
+      "params": {
+        "state": "State filter supported by this resource.",
+        "profileId": "Profile filter available to an authorized owner.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds.",
+        "ids": "Comma-separated preparation IDs to read together."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_download_preparation",
+      "method": "get",
+      "path": "/v1/downloads/preparations/{id}",
+      "group": "downloads",
+      "core": false,
+      "title": "Read a download preparation",
+      "description": "Returns the current preparation, file identity, progress and available actions. The artifact digest identifies the bytes independently of a transfer URL.",
+      "params": {
+        "id": "Download preparation ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "act_on_download_preparation",
+      "method": "post",
+      "path": "/v1/downloads/preparations/{id}/actions",
+      "group": "downloads",
+      "core": false,
+      "title": "Change a download preparation",
+      "description": "Applies an offered action such as pause, cancel or removal using the preparation revision. On download_conflict, reread and retry only if the action is still offered.",
+      "params": {
+        "id": "Download preparation ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_download_bundle",
+      "method": "get",
+      "path": "/v1/downloads/preparations/{id}/bundle",
+      "group": "downloads",
+      "core": false,
+      "title": "Read offline title and companion metadata",
+      "description": "Returns the ready preparation's title, media information, artwork, chapters, markers, audio and subtitle companions. Fetch all required companions before allowing server preparation cleanup.",
+      "params": {
+        "id": "Download preparation ID."
+      },
+      "notes": [
+        "Companion paths are relative to the grant URL; retain artwork, metadata and subtitles with the media."
+      ]
+    },
+    {
+      "operationId": "create_download_grant",
+      "method": "post",
+      "path": "/v1/downloads/preparations/{id}/grant",
+      "group": "downloads",
+      "core": false,
+      "title": "Create or renew a transfer URL",
+      "description": "Returns a grant URL and token for transferring the prepared file and companions. Send the held token in renew to retain the same URL when it still names the same claim and file, and renew unfinished transfers at renewAfterMs.",
+      "params": {
+        "id": "Download preparation ID."
+      },
+      "notes": [
+        "An active transfer grant lasts through use or renewal and for 24 hours after the last of either. Follow renewAfterMs for unfinished transfers."
+      ]
+    },
+    {
+      "operationId": "get_download_artifact",
+      "method": "get",
+      "path": "/v1/downloads/artifacts/{grant}",
+      "group": "downloads",
+      "core": false,
+      "title": "Download prepared media",
+      "description": "Transfers media using the grant URL without a sign-in header. Resume with Range and If-Range, and verify the completed SHA-256 against the preparation.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL."
+      },
+      "notes": [
+        "The grant URL is the transfer credential. Every request still checks the claim, current permission and exact bytes."
+      ]
+    },
+    {
+      "operationId": "head_download_artifact",
+      "method": "head",
+      "path": "/v1/downloads/artifacts/{grant}",
+      "group": "downloads",
+      "core": false,
+      "title": "Read download media headers",
+      "description": "Returns the prepared file's headers without its body. The grant URL, current download permission and exact file identity are still checked.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL."
+      },
+      "notes": [
+        "The grant URL is the transfer credential. Every request still checks the claim, current permission and exact bytes."
+      ]
+    },
+    {
+      "operationId": "get_download_artwork",
+      "method": "get",
+      "path": "/v1/downloads/artifacts/{grant}/artwork/{role}",
+      "group": "downloads",
+      "core": false,
+      "title": "Download offline artwork",
+      "description": "Returns artwork for a download grant and role. Use the relative path in the bundle; 404 can mean that the title has no image for that role.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "role": "Artwork or credit role supported by this operation."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_download_chapter_image",
+      "method": "get",
+      "path": "/v1/downloads/artifacts/{grant}/chapters/{source}/{index}/image",
+      "group": "downloads",
+      "core": false,
+      "title": "Download an offline chapter image",
+      "description": "Returns a chapter image associated with the prepared media. Fetch it through the companion path supplied by the bundle.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "source": "Library source ID, or source identifier from an offline bundle.",
+        "index": "Chapter-image index from the offline bundle."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_download_subtitle",
+      "method": "get",
+      "path": "/v1/downloads/artifacts/{grant}/subtitles/{resource}/{revision}.vtt",
+      "group": "downloads",
+      "core": false,
+      "title": "Download offline WebVTT subtitles",
+      "description": "Returns a subtitle companion as WebVTT under the download grant. Retain it with the downloaded media for offline playback.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_download_subtitle_original",
+      "method": "get",
+      "path": "/v1/downloads/artifacts/{grant}/subtitles/{resource}/{revision}/{file}",
+      "group": "downloads",
+      "core": false,
+      "title": "Download an original subtitle companion",
+      "description": "Returns an authored subtitle, bitmap companion or attached font named by the bundle. Keep each required companion when storing the offline title.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "resource": "Subtitle or lyric resource ID from the returned inventory.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "file": "File name or relative resource supplied by the presentation or bundle."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_download_trickplay_thumbnails",
+      "method": "get",
+      "path": "/v1/downloads/artifacts/{grant}/trickplay/{set}/thumbnails.vtt",
+      "group": "downloads",
+      "core": false,
+      "title": "Download an offline seek-preview index",
+      "description": "Returns the WebVTT thumbnail index for the prepared title's trickplay set. Store it with the referenced tiles for offline seeking.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "set": "Trickplay set identifier from the returned preview information."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_download_trickplay_tile",
+      "method": "get",
+      "path": "/v1/downloads/artifacts/{grant}/trickplay/{set}/tiles/{tile}",
+      "group": "downloads",
+      "core": false,
+      "title": "Download an offline seek-preview tile",
+      "description": "Returns one trickplay tile under the download grant. Use the tile path supplied by the offline index.",
+      "params": {
+        "grant": "Secret grant component from the returned playback or download URL.",
+        "set": "Trickplay set identifier from the returned preview information.",
+        "tile": "Tile identifier from the returned trickplay index."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "list_download_receipt_keys",
+      "method": "get",
+      "path": "/v1/downloads/receipt-keys",
+      "group": "downloads",
+      "core": false,
+      "title": "Read offline receipt verification keys",
+      "description": "Returns public keys for checking the server's signed download receipts. Keep the keys locally so verification works without a connection.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "issue_download_receipts",
+      "method": "post",
+      "path": "/v1/downloads/receipts",
+      "group": "downloads",
+      "core": false,
+      "title": "Issue offline playback receipts",
+      "description": "Issues signed receipts for up to 100 preparations. Verify the signature and viewer, file digest and expiry before allowing offline playback.",
+      "params": {},
+      "notes": [
+        "Receipts last thirty days. Offline playback requires a valid signature, the current viewer and an unexpired receipt."
+      ]
+    },
+    {
+      "operationId": "revalidate_download_receipts",
+      "method": "post",
+      "path": "/v1/downloads/receipts/revalidate",
+      "group": "downloads",
+      "core": false,
+      "title": "Renew offline playback receipts",
+      "description": "Revalidates up to 100 receipts and returns current viewing state with successful renewals. Handle refusal reasons individually; unknown_receipt calls for reconciliation rather than immediate deletion of the local copy.",
+      "params": {},
+      "notes": [
+        "Revalidate regularly when online. Access refusals can require removing a copy; unknown_receipt requires reconciling its claim."
+      ]
+    },
+    {
+      "operationId": "list_download_revocations",
+      "method": "get",
+      "path": "/v1/downloads/receipts/revocations",
+      "group": "downloads",
+      "core": false,
+      "title": "Read offline receipt revocations",
+      "description": "Pages withdrawn receipts by sequence so a device can reconcile its copies. Keep the returned continuation position.",
+      "params": {
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds.",
+        "scope": "Set server for owner-authorized server-wide revocations; otherwise reads this viewer’s revocations."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "revoke_download_receipts",
+      "method": "post",
+      "path": "/v1/downloads/receipts/revoke",
+      "group": "downloads",
+      "core": false,
+      "title": "Revoke offline playback receipts",
+      "description": "Withdraws the named receipts; viewers can revoke their own and the owner can act across profiles. Call it when a device removes its local copy.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "sync_download_progress",
+      "method": "post",
+      "path": "/v1/downloads/progress",
+      "group": "downloads",
+      "core": false,
+      "title": "Report offline plays",
+      "description": "Reconciles up to 100 offline play observations, keeping one stable playId per play. Each outcome returns current server progress and watched state, including when a newer online change supersedes the observation.",
+      "params": {},
+      "notes": [
+        "Read each outcome, including superseded_online, stale_observation or history_paused; adopt the returned server state."
+      ]
+    },
+    {
+      "operationId": "get_download_settings",
+      "method": "get",
+      "path": "/v1/downloads/settings",
+      "group": "downloads",
+      "core": false,
+      "title": "Read download policy",
+      "description": "Returns the download settings available to the viewer. Use the server's policy when presenting offline features.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_download_usage",
+      "method": "get",
+      "path": "/v1/downloads/usage",
+      "group": "downloads",
+      "core": false,
+      "title": "Read download storage usage",
+      "description": "Returns paged download preparation usage for the viewer, or across the server when the owner requests scope=server. Use it to show preparation storage consumption.",
+      "params": {
+        "scope": "Set server for owner-authorized server-wide usage; otherwise reads this viewer’s usage.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "put_items_id_personal_state",
+      "method": "put",
+      "path": "/v1/items/{id}/personal-state",
+      "group": "personal-state",
+      "core": true,
+      "title": "Change an item's personal state",
+      "description": "Changes the viewer's watched state, progress, rating, favourite or My List state with an operation ID and expectedRevision. Reconcile conflicts with the current state before retrying.",
+      "params": {
+        "id": "Item ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "put_items_personal_state_batch",
+      "method": "put",
+      "path": "/v1/items/personal-state:batch",
+      "group": "personal-state",
+      "core": false,
+      "title": "Change personal state for several items",
+      "description": "Applies up to 200 personal-state intents under one operation ID. Each item has its own outcome; inspect the receipt rather than assuming every row succeeded.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_container_personal_state",
+      "method": "get",
+      "path": "/v1/containers/{kind}/{id}/personal-state",
+      "group": "personal-state",
+      "core": false,
+      "title": "Read a container's personal state",
+      "description": "Returns the current watched watermark, revision, saved flags and visible-member counts for a show, season, album or book. Read it before changing container state.",
+      "params": {
+        "kind": "show, season, album or book.",
+        "id": "Container ID for the requested kind."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "set_container_personal_state",
+      "method": "put",
+      "path": "/v1/containers/{kind}/{id}/personal-state",
+      "group": "personal-state",
+      "core": false,
+      "title": "Change a container's personal state",
+      "description": "Sets watched state, My List or favourite state for a visible container using expectedRevision. A watched mark covers members present at its watermark, clears their progress and does not mark later additions.",
+      "params": {
+        "kind": "show, season, album or book.",
+        "id": "Container ID for the requested kind."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "undo_container_personal_state",
+      "method": "post",
+      "path": "/v1/containers/{kind}/{id}/personal-state/undo",
+      "group": "personal-state",
+      "core": false,
+      "title": "Undo a container watched mark",
+      "description": "Restores watched and resume state from before a recent container mark. Use the mark's receipt and revision; an expired operation cannot be undone.",
+      "params": {
+        "kind": "show, season, album or book.",
+        "id": "Container ID for the requested kind."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_personal_history",
+      "method": "get",
+      "path": "/v1/personal-history",
+      "group": "personal-state",
+      "core": false,
+      "title": "Read your viewing history",
+      "description": "Returns a paged history for the current profile under current title access. Filter by library and period where needed.",
+      "params": {
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "period": "History period supported by the server.",
+        "libraryId": "Library ID used to narrow the result.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "post_personal_history_actions",
+      "method": "post",
+      "path": "/v1/personal-history/actions",
+      "group": "personal-state",
+      "core": false,
+      "title": "Change your viewing history",
+      "description": "Applies a personal history action with an operation ID and expectedRevision. Changes to this history do not erase the owner's play history.",
+      "params": {},
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_preferences",
+      "method": "get",
+      "path": "/v1/preferences",
+      "group": "personal-state",
+      "core": false,
+      "title": "Read your preferences",
+      "description": "Returns the viewer's effective preferences and revision, optionally for a device class. Use this document before editing personal playback choices.",
+      "params": {
+        "deviceClass": "Device class whose effective preferences should be read."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "patch_preferences",
+      "method": "patch",
+      "path": "/v1/preferences",
+      "group": "personal-state",
+      "core": false,
+      "title": "Change your preferences",
+      "description": "Changes the selected preference values using expectedRevision and an idempotency key. Keep account, profile and device-class choices in the scope defined by the request.",
+      "params": {},
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "create_job",
+      "method": "post",
+      "path": "/v1/jobs",
+      "group": "personal-state",
+      "core": false,
+      "title": "Start a bulk job",
+      "description": "Captures an item, container or browse selection and queues the requested bulk command. A 202 means accepted; totalKnown stays false until membership capture finishes.",
+      "params": {},
+      "notes": [
+        "Commands that edit library metadata require the appropriate library authority in addition to access to this bulk-job route.",
+        "Read individual failures; accepted work is not an all-or-nothing completion result."
+      ]
+    },
+    {
+      "operationId": "get_job",
+      "method": "get",
+      "path": "/v1/jobs/{id}",
+      "group": "personal-state",
+      "core": false,
+      "title": "Read bulk job progress",
+      "description": "Returns progress and outcomes for a job belonging to the current profile. Poll it until the job reaches a terminal state.",
+      "params": {
+        "id": "Bulk job ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_job_failures",
+      "method": "get",
+      "path": "/v1/jobs/{id}/failures",
+      "group": "personal-state",
+      "core": false,
+      "title": "Read bulk job failures",
+      "description": "Returns a page of visible failures from the current profile's job. Follow the cursor to inspect every failed entry.",
+      "params": {
+        "id": "Bulk job ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "post_playlists",
+      "method": "post",
+      "path": "/v1/playlists",
+      "group": "playlists",
+      "core": false,
+      "title": "Create a playlist",
+      "description": "Creates a playlist for the current profile using an operation ID. Keep its ID and revision for later edits and queue selectors.",
+      "params": {},
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_playlists_id",
+      "method": "get",
+      "path": "/v1/playlists/{id}",
+      "group": "playlists",
+      "core": false,
+      "title": "Read a playlist",
+      "description": "Returns a playlist's name, summary, entry count, revision, sharing role and available actions. Browse its entries with a playlist group query.",
+      "params": {
+        "id": "Playlist ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "patch_playlists_id",
+      "method": "patch",
+      "path": "/v1/playlists/{id}",
+      "group": "playlists",
+      "core": false,
+      "title": "Edit a playlist",
+      "description": "Changes a playlist's supported fields using its expectedRevision and an operation ID. Reread the resource when another edit changes the revision.",
+      "params": {
+        "id": "Playlist ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "delete_playlists_id",
+      "method": "delete",
+      "path": "/v1/playlists/{id}",
+      "group": "playlists",
+      "core": false,
+      "title": "Delete a playlist",
+      "description": "Deletes a playlist the viewer may manage using its revision and operation ID. This removes the list rather than its library media.",
+      "params": {
+        "id": "Playlist ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "post_playlists_id_entries",
+      "method": "post",
+      "path": "/v1/playlists/{id}/entries",
+      "group": "playlists",
+      "core": false,
+      "title": "Add playlist entries",
+      "description": "Adds titles as playlist occurrences using an operation ID and expectedRevision. An occurrence has its own entry ID, so a title can appear more than once.",
+      "params": {
+        "id": "Playlist ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "delete_playlists_id_entries_entryId",
+      "method": "delete",
+      "path": "/v1/playlists/{id}/entries/{entryId}",
+      "group": "playlists",
+      "core": false,
+      "title": "Remove a playlist entry",
+      "description": "Removes one playlist occurrence using its entry ID, expectedRevision and an operation ID. Other occurrences of the same title remain.",
+      "params": {
+        "id": "Playlist ID.",
+        "entryId": "Occurrence ID within the list or queue, not the title ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_playlist_order",
+      "method": "get",
+      "path": "/v1/playlists/{id}/order",
+      "group": "playlists",
+      "core": false,
+      "title": "Read playlist entry order",
+      "description": "Returns a revision-bound window of occurrence IDs, with pages of up to 100. Use entry IDs rather than title IDs when reordering.",
+      "params": {
+        "id": "Playlist ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "reorder_playlist_window",
+      "method": "put",
+      "path": "/v1/playlists/{id}/order",
+      "group": "playlists",
+      "core": false,
+      "title": "Reorder playlist entries",
+      "description": "Moves or permutes up to 200 occurrences using expectedRevision and an operation ID. An afterEntryId places the selected block relative to an existing occurrence.",
+      "params": {
+        "id": "Playlist ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_playlists_id_share_candidates",
+      "method": "get",
+      "path": "/v1/playlists/{id}/share-candidates",
+      "group": "playlists",
+      "core": false,
+      "title": "List playlist sharing choices",
+      "description": "Returns a paged set of people the viewer may share this playlist with. Use these identities when changing shares.",
+      "params": {
+        "id": "Playlist ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "put_playlists_id_shares",
+      "method": "put",
+      "path": "/v1/playlists/{id}/shares",
+      "group": "playlists",
+      "core": false,
+      "title": "Share a playlist",
+      "description": "Adds or changes a playlist share for the named member or profile. Send the operation ID and current expectedRevision and respect the caller's sharing role.",
+      "params": {
+        "id": "Playlist ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "delete_playlists_id_shares",
+      "method": "delete",
+      "path": "/v1/playlists/{id}/shares",
+      "group": "playlists",
+      "core": false,
+      "title": "Remove a playlist share",
+      "description": "Removes the specified share using an operation ID and expectedRevision. The playlist remains available to its other permitted viewers.",
+      "params": {
+        "id": "Playlist ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_saved_resources",
+      "method": "get",
+      "path": "/v1/saved-resources",
+      "group": "playlists",
+      "core": false,
+      "title": "List saved resources",
+      "description": "Returns the viewer's saved resources, optionally filtered by kind or pinned state. Pinned results follow the viewer's arrangement.",
+      "params": {
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "kind": "Saved-resource kind filter, such as collection or view.",
+        "pinned": "Filter by pinned state; true, false, 1 and 0 are accepted.",
+        "limit": "Resources per page, 1–100; defaults to 40."
+      },
+      "notes": [
+        "The handler accepts limit (1–100, default 40) even though this spec operation omits it."
+      ]
+    },
+    {
+      "operationId": "get_saved_resources_id",
+      "method": "get",
+      "path": "/v1/saved-resources/{id}",
+      "group": "playlists",
+      "core": false,
+      "title": "Read a saved resource",
+      "description": "Returns a saved resource's definition, status, revision, sharing role and available actions. Use its group in structured browse to read its titles.",
+      "params": {
+        "id": "Saved resource ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "post_saved_resources",
+      "method": "post",
+      "path": "/v1/saved-resources",
+      "group": "playlists",
+      "core": false,
+      "title": "Create a saved resource",
+      "description": "Creates a supported personal collection or saved filter using an operation ID and expectedRevision. Keep the returned definition and revision for later changes.",
+      "params": {},
+      "notes": [
+        "For a new resource, send expectedRevision: 0 with kind collection or view. A saved view also needs its query definition."
+      ]
+    },
+    {
+      "operationId": "patch_saved_resources_id",
+      "method": "patch",
+      "path": "/v1/saved-resources/{id}",
+      "group": "playlists",
+      "core": false,
+      "title": "Edit a saved resource",
+      "description": "Changes a saved resource's name, summary or supported definition fields. Send expectedRevision and an operation ID to protect concurrent edits.",
+      "params": {
+        "id": "Saved resource ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "delete_saved_resources_id",
+      "method": "delete",
+      "path": "/v1/saved-resources/{id}",
+      "group": "playlists",
+      "core": false,
+      "title": "Delete a saved resource",
+      "description": "Deletes a saved resource the viewer may manage using expectedRevision and an operation ID. Its library titles are retained.",
+      "params": {
+        "id": "Saved resource ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "put_saved_resources_id_entries",
+      "method": "put",
+      "path": "/v1/saved-resources/{id}/entries",
+      "group": "playlists",
+      "core": false,
+      "title": "Change collection membership",
+      "description": "Adds titles to or removes entries from a personal collection using expectedRevision and an operation ID. Inspect per-entry outcomes because hidden or missing titles can be refused individually.",
+      "params": {
+        "id": "Saved resource ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "reorder_saved_collection",
+      "method": "put",
+      "path": "/v1/saved-resources/{id}/order",
+      "group": "playlists",
+      "core": false,
+      "title": "Reorder a personal collection",
+      "description": "Moves up to 200 entries in a personal collection using its revision and an operation ID. Use collection entry IDs and the supported placement fields.",
+      "params": {
+        "id": "Saved resource ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_saved_resources_id_share_candidates",
+      "method": "get",
+      "path": "/v1/saved-resources/{id}/share-candidates",
+      "group": "playlists",
+      "core": false,
+      "title": "List saved-resource sharing choices",
+      "description": "Returns people the viewer may share this saved resource with. Continue with its cursor when more candidates are available.",
+      "params": {
+        "id": "Saved resource ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "put_saved_resources_id_shares",
+      "method": "put",
+      "path": "/v1/saved-resources/{id}/shares",
+      "group": "playlists",
+      "core": false,
+      "title": "Share a saved resource",
+      "description": "Adds or changes access for the named member or profile. Send expectedRevision and an operation ID and use an allowed sharing role.",
+      "params": {
+        "id": "Saved resource ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "delete_saved_resources_id_shares",
+      "method": "delete",
+      "path": "/v1/saved-resources/{id}/shares",
+      "group": "playlists",
+      "core": false,
+      "title": "Remove a saved-resource share",
+      "description": "Removes the specified share using expectedRevision and an operation ID. Other shares and the saved resource remain.",
+      "params": {
+        "id": "Saved resource ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_guide_sources",
+      "method": "get",
+      "path": "/v1/guide/sources",
+      "group": "live-tv",
+      "core": false,
+      "title": "List visible TV sources",
+      "description": "Returns Live TV sources the viewer is allowed to use. Use their IDs to narrow the guide and channel directory.",
+      "params": {
+        "includeHidden": "Set true to include channels this viewer has hidden.",
+        "timezone": "Time zone for the guide or channel directory."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_guide_channels",
+      "method": "get",
+      "path": "/v1/guide/channels",
+      "group": "live-tv",
+      "core": false,
+      "title": "Browse TV channels",
+      "description": "Returns a channel directory with the supported sort, filters and positioning information. Keep its revision when continuing a positional or anchored window.",
+      "params": {
+        "anchorChannelId": "Channel ID used to anchor a directory window.",
+        "anchorProvenance": "Provenance of the channel used as the directory anchor.",
+        "anchorSourceId": "Source ID of the channel used as the directory anchor.",
+        "direction": "Directory window direction for an anchor, as supported by the channel contract.",
+        "favorites": "Set true to show only channels this viewer has marked as favourites.",
+        "group": "Result or content group supported by this operation.",
+        "includeHidden": "Set true to include channels this viewer has hidden.",
+        "kind": "Channel provenance filter supported by Live TV.",
+        "limit": "Page or window size within this operation’s published bounds.",
+        "offset": "Directory offset in the matching channel revision.",
+        "revision": "Revision belonging to this resource or window; preserve its returned value.",
+        "search": "Text used to narrow channels.",
+        "sort": "Sort choice published for this operation.",
+        "sourceId": "Source ID used to narrow or select this operation’s data.",
+        "timezone": "Time zone for the guide or channel directory."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_guide",
+      "method": "get",
+      "path": "/v1/guide",
+      "group": "live-tv",
+      "core": false,
+      "title": "Read the TV guide",
+      "description": "Returns channels and programs for a time range under the viewer's source access. Use RFC 3339 timestamps with whole seconds and continue with the returned paging information.",
+      "params": {
+        "channels": "Comma-separated channel IDs, up to 50.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "end": "Required guide-window end as RFC 3339 with whole seconds.",
+        "favorites": "Set true to show only channels this viewer has marked as favourites.",
+        "group": "Result or content group supported by this operation.",
+        "includeHidden": "Set true to include channels this viewer has hidden.",
+        "kind": "Channel provenance filter supported by Live TV.",
+        "limit": "Required channel-page size within the guide’s published bounds.",
+        "programmes": "Set none to omit program data; otherwise omit this parameter.",
+        "search": "Text used to narrow channels.",
+        "sourceId": "Source ID used to narrow or select this operation’s data.",
+        "start": "Required guide-window start as RFC 3339 with whole seconds.",
+        "timezone": "Time zone for the guide or channel directory."
+      },
+      "notes": [
+        "Send start, end and limit. Omit programmes for program data or set programmes=none for channels alone."
+      ]
+    },
+    {
+      "operationId": "get_guide_programme_image",
+      "method": "get",
+      "path": "/v1/guide/programme-images/{generation}/{programme}",
+      "group": "live-tv",
+      "core": false,
+      "title": "Read a TV program image",
+      "description": "Returns an image for a program in the named guide generation. Use the image URL returned by the guide.",
+      "params": {
+        "generation": "Generation from the current presentation or guide image URL.",
+        "programme": "TV program identifier from the guide image URL."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "post_channels_preferences",
+      "method": "post",
+      "path": "/v1/channels/preferences",
+      "group": "live-tv",
+      "core": false,
+      "title": "Change channel preferences",
+      "description": "Sets the viewer's favourite or hidden state for a source channel. Send the request ID and expectedRevision from the current channel preferences.",
+      "params": {},
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "post_library_channels_preferences",
+      "method": "post",
+      "path": "/v1/library-channels/preferences",
+      "group": "live-tv",
+      "core": false,
+      "title": "Change library-channel preferences",
+      "description": "Sets the viewer's favourite or hidden state for a library channel. Send the request ID and current expectedRevision.",
+      "params": {},
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_library_channels_id_logo",
+      "method": "get",
+      "path": "/v1/library-channels/{id}/logo",
+      "group": "live-tv",
+      "core": false,
+      "title": "Read a library-channel logo",
+      "description": "Returns the image for a visible channel generated from library titles. Use the logo URL provided by the channel response.",
+      "params": {
+        "id": "Library channel ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_media_linear_playbackId_generation_token_name",
+      "method": "get",
+      "path": "/v1/media/linear/{playbackId}/{generation}/{token}/{name}",
+      "group": "live-tv",
+      "core": false,
+      "title": "Read a Live TV media resource",
+      "description": "Delivers a media resource for the current linear playback generation and token. Use the URLs returned by a channel playback presentation.",
+      "params": {
+        "playbackId": "Linear playback ID from the current presentation URL.",
+        "generation": "Generation from the current presentation or guide image URL.",
+        "token": "Secret token component from the current Live TV presentation URL.",
+        "name": "Media resource name from the current Live TV presentation."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_dvr",
+      "method": "get",
+      "path": "/v1/dvr",
+      "group": "live-tv",
+      "core": false,
+      "title": "List recordings",
+      "description": "Returns a page of recordings for the viewer, filtered by state. The default state is upcoming; continue with the returned cursor.",
+      "params": {
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds.",
+        "state": "Recording state to list; defaults to upcoming."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_dvr_channels",
+      "method": "get",
+      "path": "/v1/dvr/channels",
+      "group": "live-tv",
+      "core": false,
+      "title": "List recording channel choices",
+      "description": "Returns channels available to the viewer for recording. Narrow by source or search and continue with the cursor.",
+      "params": {
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "search": "Text used to narrow channels.",
+        "sourceId": "Source ID used to narrow or select this operation’s data."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "post_dvr_recordings",
+      "method": "post",
+      "path": "/v1/dvr/recordings",
+      "group": "live-tv",
+      "core": false,
+      "title": "Schedule a recording",
+      "description": "Schedules a program occurrence with a stable requestId and supplied or default options. Recording access and available capture support are checked by the server.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_dvr_recordings_id",
+      "method": "get",
+      "path": "/v1/dvr/recordings/{id}",
+      "group": "live-tv",
+      "core": false,
+      "title": "Read a recording",
+      "description": "Returns one visible recording and its current actions and revision. Use after for the supported detail continuation.",
+      "params": {
+        "id": "Recording ID.",
+        "after": "Detail continuation supplied by the recording response."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "patch_dvr_recordings_id",
+      "method": "patch",
+      "path": "/v1/dvr/recordings/{id}",
+      "group": "live-tv",
+      "core": false,
+      "title": "Change recording options",
+      "description": "Updates a recording using the request's revision precondition. Reread after dvr_conflict before applying a new edit.",
+      "params": {
+        "id": "Recording ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "post_dvr_recordings_id_cancel",
+      "method": "post",
+      "path": "/v1/dvr/recordings/{id}/cancel",
+      "group": "live-tv",
+      "core": false,
+      "title": "Cancel a recording",
+      "description": "Cancels a recording using the current revision and request ID. Use the action offered by the recording's current state.",
+      "params": {
+        "id": "Recording ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "put_dvr_recordings_id_keep",
+      "method": "put",
+      "path": "/v1/dvr/recordings/{id}/keep",
+      "group": "live-tv",
+      "core": false,
+      "title": "Change recording retention",
+      "description": "Changes the recording's keep setting using its current revision and request ID. This controls whether ordinary recording cleanup may remove it.",
+      "params": {
+        "id": "Recording ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_dvr_recordings_id_delete_preview",
+      "method": "get",
+      "path": "/v1/dvr/recordings/{id}/delete-preview",
+      "group": "live-tv",
+      "core": false,
+      "title": "Preview recording deletion",
+      "description": "Returns the effect of deleting a recording before the viewer confirms it. Read the current recording and preview before sending a delete.",
+      "params": {
+        "id": "Recording ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "delete_dvr_recordings_id",
+      "method": "delete",
+      "path": "/v1/dvr/recordings/{id}",
+      "group": "live-tv",
+      "core": false,
+      "title": "Delete a recording",
+      "description": "Deletes a recording the viewer may manage using its revision and request ID. Use the preview to show the effect before submitting.",
+      "params": {
+        "id": "Recording ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "post_dvr_rules_preview",
+      "method": "post",
+      "path": "/v1/dvr/rules/preview",
+      "group": "live-tv",
+      "core": false,
+      "title": "Preview a recording rule",
+      "description": "Evaluates a proposed recording rule before it is saved. Use the returned matches to check that the rule selects the intended programs.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "put_dvr_rules_id",
+      "method": "put",
+      "path": "/v1/dvr/rules/{id}",
+      "group": "live-tv",
+      "core": false,
+      "title": "Save a recording rule",
+      "description": "Creates or updates a recording rule with its revision precondition. The body's ID must match the rule ID in the path.",
+      "params": {
+        "id": "Recording rule ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "delete_dvr_rules_id",
+      "method": "delete",
+      "path": "/v1/dvr/rules/{id}",
+      "group": "live-tv",
+      "core": false,
+      "title": "Delete a recording rule",
+      "description": "Removes a recording rule using the request's revision and identity fields. Reconcile a conflict before repeating the edit.",
+      "params": {
+        "id": "Recording rule ID."
+      },
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_events",
+      "method": "get",
+      "path": "/v1/events",
+      "group": "events",
+      "core": true,
+      "title": "Follow resource changes",
+      "description": "Streams authorized invalidation hints as SSE, or returns JSON when waitMs is supplied. Resume SSE with Last-Event-ID or polling with nextAfter; stream.resync means reread visible resources and continue from the new position.",
+      "params": {
+        "after": "Continuation position returned by the preceding response.",
+        "waitMs": "Use 0–25000 milliseconds for a JSON event poll; omit for SSE."
+      },
+      "notes": [
+        "One installation shares one SSE stream. Refresh credentials and reconnect at the token deadline or when the stream ends.",
+        "Treat events as hints to reread resources, not as a complete change log; retain positions even for filtered events."
+      ]
+    },
+    {
+      "operationId": "get_notifications_capabilities",
+      "method": "get",
+      "path": "/v1/notifications/capabilities",
+      "group": "events",
+      "core": false,
+      "title": "Read notification options",
+      "description": "Returns the notification features and actions available to the viewer. Use them before presenting inbox controls.",
+      "params": {},
+      "notes": []
+    },
+    {
+      "operationId": "get_notifications_inbox",
+      "method": "get",
+      "path": "/v1/notifications/inbox",
+      "group": "events",
+      "core": false,
+      "title": "Read the notification inbox",
+      "description": "Returns a paged inbox with its own revision, filtered by audience and state. Keep the scope and revision from the returned data envelope.",
+      "params": {
+        "audience": "Notification audience to read or act on, as allowed by the server.",
+        "state": "Inbox state filter supported by notification capabilities.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_notifications_unread_count",
+      "method": "get",
+      "path": "/v1/notifications/unread-count",
+      "group": "events",
+      "core": false,
+      "title": "Read the unread notification count",
+      "description": "Returns the unread count for the selected audience. Refresh it after notification.changed rather than deriving it from event positions.",
+      "params": {
+        "audience": "Notification audience to read or act on, as allowed by the server."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "post_notifications_inbox_actions",
+      "method": "post",
+      "path": "/v1/notifications/inbox/actions",
+      "group": "events",
+      "core": false,
+      "title": "Change notification state",
+      "description": "Applies read or archive actions with an operation ID and expectedRevision. Use the inbox revision, which is independent of the event feed cursor.",
+      "params": {},
+      "notes": [
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "query_titles",
+      "method": "get",
+      "path": "/v1/titles",
+      "group": "library-integrations",
+      "core": true,
+      "title": "Query titles or provider IDs",
+      "description": "Lists one title kind in one library or finds a title by provider and providerId. Pages default to 50 and allow 1–100; cursors last 30 minutes and can finish a walk during a scan.",
+      "params": {
+        "library": "Library ID; required for a title list and optional for provider lookup.",
+        "kind": "movie, show, season, episode, artist, album, song, book, author or collection.",
+        "sort": "title (default), added or year.",
+        "order": "Title-query direction: asc or desc; defaults to asc.",
+        "yearFrom": "Earliest year, inclusive; use only with sort=year.",
+        "yearTo": "Latest year, inclusive; use only with sort=year.",
+        "addedAfter": "Include titles added after this RFC 3339 time; use only with sort=added.",
+        "addedBefore": "Include titles added before this RFC 3339 time; use only with sort=added.",
+        "provider": "Provider for an ID lookup: tmdb, tvdb, imdb or anilist.",
+        "providerId": "Title ID at the named metadata provider; use with provider.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Titles per page, 1–100; defaults to 50."
+      },
+      "notes": [
+        "Ranges are accepted only on the selected sort key. Reconcile an index by stable title ID when concurrent edits move sort keys."
+      ]
+    },
+    {
+      "operationId": "report_changed_paths",
+      "method": "post",
+      "path": "/v1/libraries/paths-changed",
+      "group": "library-integrations",
+      "core": true,
+      "title": "Report changed files or folders",
+      "description": "Accepts up to 200 absolute paths as the server sees them and queues scans of the affected folders. A 202 includes per-path status; outside_libraries means that path did not schedule work.",
+      "params": {},
+      "notes": [
+        "Map paths to the server’s filesystem before sending them. Inspect each path’s status even when HTTP returns 202.",
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "post_libraries_id_scans",
+      "method": "post",
+      "path": "/v1/libraries/{id}/scans",
+      "group": "library-integrations",
+      "core": false,
+      "title": "Start a library scan",
+      "description": "Queues an incremental, full or integrity scan for a library and returns 202. If a scan is already running, the server returns that scan; use changed paths when only particular folders changed.",
+      "params": {
+        "id": "Library ID.",
+        "mode": "Scan mode: incremental, full or integrity."
+      },
+      "notes": [
+        "A 202 receipt or running job does not establish that the scan finished. Poll the job or check scan.finished webhooks.",
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "get_libraries_id_inventory_status",
+      "method": "get",
+      "path": "/v1/libraries/{id}/inventory-status",
+      "group": "library-integrations",
+      "core": false,
+      "title": "Read library scan status",
+      "description": "Returns the library's current inventory and scan status, including progress and completed source scans. Players and tools can read it without owner-only job access.",
+      "params": {
+        "id": "Library ID."
+      },
+      "notes": []
+    },
+    {
+      "operationId": "get_admin_jobs",
+      "method": "get",
+      "path": "/v1/admin/jobs",
+      "group": "library-integrations",
+      "core": false,
+      "title": "List scan jobs",
+      "description": "Returns scan job history for an owner integration. Use the returned items and continuation information to follow recent ingestion work.",
+      "params": {
+        "libraryId": "Library ID used to narrow scan jobs.",
+        "status": "Scan job state, such as queued, running, complete or failed.",
+        "limit": "Jobs per page, 1–40.",
+        "cursor": "Continuation from the preceding scan-job page."
+      },
+      "notes": [
+        "The handler accepts libraryId, status, limit (1–40) and cursor even though this spec operation omits those query parameters.",
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "get_admin_ingestion_jobs_id",
+      "method": "get",
+      "path": "/v1/admin/ingestion/jobs/{id}",
+      "group": "library-integrations",
+      "core": false,
+      "title": "Read a scan job",
+      "description": "Returns the current status, phase, processed counts and warnings for an ingestion job. A queued or running job is not proof that imported files are ready.",
+      "params": {
+        "id": "Ingestion job ID."
+      },
+      "notes": [
+        "A 202 receipt or running job does not establish that the scan finished. Poll the job or check scan.finished webhooks.",
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "delete_admin_ingestion_jobs_id",
+      "method": "delete",
+      "path": "/v1/admin/ingestion/jobs/{id}",
+      "group": "library-integrations",
+      "core": false,
+      "title": "Cancel a scan job",
+      "description": "Requests cancellation of an ingestion job for the owner. Read the job again to reconcile its final outcome.",
+      "params": {
+        "id": "Ingestion job ID."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "get_scan_issues",
+      "method": "get",
+      "path": "/v1/admin/libraries/{id}/scans/{job}/issues",
+      "group": "library-integrations",
+      "core": false,
+      "title": "Read skipped scan entries",
+      "description": "Returns files and folders skipped by a scan, paged by sequence. Limit defaults to 64 and allows up to 128.",
+      "params": {
+        "id": "Library ID.",
+        "job": "Scan job ID.",
+        "after": "Sequence after which to read skipped entries.",
+        "limit": "Entries per page, 1–128; defaults to 64."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "get_inventory_changes",
+      "method": "get",
+      "path": "/v1/admin/libraries/{id}/sources/{source}/changes",
+      "group": "library-integrations",
+      "core": false,
+      "title": "Read source inventory changes",
+      "description": "Returns retained inventory changes for one library source after a sequence. Handle the returned cursor-expiry information by rebuilding the affected inventory.",
+      "params": {
+        "id": "Library ID.",
+        "source": "Library source ID.",
+        "after": "Retained inventory sequence after which to read changes."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "get_library_inventory",
+      "method": "get",
+      "path": "/v1/admin/libraries/{id}/inventory",
+      "group": "library-integrations",
+      "core": false,
+      "title": "Read library inventory entries",
+      "description": "Returns paged inventory entries for an owner integration, with filters for source, asset or state. Use it to investigate unmatched or unavailable files without reading console panels.",
+      "params": {
+        "id": "Library ID.",
+        "sourceId": "Source ID used to narrow or select this operation’s data.",
+        "assetId": "Inventory asset ID used to narrow the results.",
+        "state": "State filter supported by this resource.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "get_metadata_kind_id",
+      "method": "get",
+      "path": "/v1/metadata/{kind}/{id}",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "Read a title's match and metadata",
+      "description": "Returns the repair state, current revision, match evidence and provider candidates for a supported entity kind. Read this before searching for or selecting a different match.",
+      "params": {
+        "kind": "Entity kind supported by metadata repair, such as item, show, season, album, artist or book.",
+        "id": "Entity ID for the requested kind."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "post_metadata_kind_id",
+      "method": "post",
+      "path": "/v1/metadata/{kind}/{id}",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "Change a title's match or metadata",
+      "description": "Applies a supported repair action such as searching, identifying a provider candidate or editing fields. Send the current expectedRevision and the action's required confirmation or operation ID; provider work can continue in the background.",
+      "params": {
+        "kind": "Entity kind supported by metadata repair, such as item, show, season, album, artist or book.",
+        "id": "Entity ID for the requested kind."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope.",
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "get_metadata_attention",
+      "method": "get",
+      "path": "/v1/libraries/{id}/metadata/attention",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "List a library's uncertain matches",
+      "description": "Returns unmatched and uncertain titles with their best candidates for one library. Pages default to 25 and allow 1–50; includeInProgress controls whether work already running is listed.",
+      "params": {
+        "id": "Library ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Titles per page, 1–50; defaults to 25.",
+        "includeInProgress": "Whether to include titles whose metadata work is already running; defaults to true."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "get_server_metadata_attention",
+      "method": "get",
+      "path": "/v1/admin/metadata/attention",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "List uncertain matches across libraries",
+      "description": "Returns a paged list of unmatched and uncertain titles across the server. Use it for a metadata integration's review queue.",
+      "params": {
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Titles per page, 1–50; defaults to 25.",
+        "includeInProgress": "Whether to include titles whose metadata work is already running; defaults to true."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "get_metadata_attention_counts",
+      "method": "get",
+      "path": "/v1/admin/metadata/attention/counts",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "Count titles needing match review",
+      "description": "Returns counts for each library and the server total. Use it for an integration dashboard without fetching every uncertain title.",
+      "params": {},
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "post_metadata_attention",
+      "method": "post",
+      "path": "/v1/libraries/{id}/metadata/attention",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "Resolve a title needing match review",
+      "description": "Accepts a candidate, searches, enters a provider ID or dismisses a title from the library's attention list. Send the command's current revision and inspect the accepted work after the 202 receipt.",
+      "params": {
+        "id": "Library ID."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope.",
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "refresh_items_metadata",
+      "method": "post",
+      "path": "/v1/items/{id}/metadata/refresh",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "Refresh an item's metadata",
+      "description": "Queues a fresh metadata fetch for the item and returns 202. Reread its details or match state after the background work finishes.",
+      "params": {
+        "id": "Item ID."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "refresh_shows_metadata",
+      "method": "post",
+      "path": "/v1/shows/{id}/metadata/refresh",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "Refresh a show's metadata",
+      "description": "Queues a fresh metadata fetch for the show and returns 202. Existing metadata remains readable while the work runs.",
+      "params": {
+        "id": "Show ID."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "get_items_id_metadata_manual",
+      "method": "get",
+      "path": "/v1/items/{id}/metadata/manual",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "Read editable item metadata",
+      "description": "Returns manually editable item metadata and its revision for the owner. Use this read before applying field changes.",
+      "params": {
+        "id": "Item ID."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope."
+      ]
+    },
+    {
+      "operationId": "patch_items_id_metadata_manual",
+      "method": "patch",
+      "path": "/v1/items/{id}/metadata/manual",
+      "group": "metadata-integrations",
+      "core": false,
+      "title": "Edit item metadata",
+      "description": "Changes supported manual metadata fields under the owner's authority. Send the current revision and reconcile manual_metadata_conflict before retrying.",
+      "params": {
+        "id": "Item ID."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs library scope.",
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "list_admin_sessions",
+      "method": "get",
+      "path": "/v1/admin/sessions",
+      "group": "playback-integrations",
+      "core": false,
+      "title": "List active playback sessions",
+      "description": "Returns a paged list of active sessions with the viewer, title, device and delivery information. Refresh it after an admin.sessions event to keep a dashboard current.",
+      "params": {
+        "limit": "Page or window size within this operation’s published bounds.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query."
+      },
+      "notes": [
+        "Requires administrator playback permission; an API key or personal token also needs admin scope."
+      ]
+    },
+    {
+      "operationId": "get_admin_session_controls",
+      "method": "get",
+      "path": "/v1/admin/sessions/{id}/controls",
+      "group": "playback-integrations",
+      "core": false,
+      "title": "Read an active session's controls",
+      "description": "Returns the controls an administrator can use for a playback session and the current control revision. Read it before submitting an administrative control.",
+      "params": {
+        "id": "Playback session ID."
+      },
+      "notes": [
+        "Requires administrator playback permission; an API key or personal token also needs admin scope."
+      ]
+    },
+    {
+      "operationId": "control_admin_session",
+      "method": "post",
+      "path": "/v1/admin/sessions/{id}/controls",
+      "group": "playback-integrations",
+      "core": false,
+      "title": "Control an active session",
+      "description": "Applies an allowed playback action with expectedRevision and a position for seek where needed. Use the controls resource to check what the administrator may do.",
+      "params": {
+        "id": "Playback session ID."
+      },
+      "notes": [
+        "Requires administrator playback permission; an API key or personal token also needs admin scope.",
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "terminate_admin_session",
+      "method": "post",
+      "path": "/v1/admin/sessions/{id}:terminate",
+      "group": "playback-integrations",
+      "core": false,
+      "title": "End an active playback session",
+      "description": "Ends a viewer's playback and can show an optional message to them. The operation is idempotent.",
+      "params": {
+        "id": "Playback session ID."
+      },
+      "notes": [
+        "Requires administrator playback permission; an API key or personal token also needs admin scope."
+      ]
+    },
+    {
+      "operationId": "list_webhooks",
+      "method": "get",
+      "path": "/v1/admin/webhooks",
+      "group": "webhooks",
+      "core": false,
+      "title": "List webhooks and event types",
+      "description": "Returns configured webhooks and the event types available for subscriptions. Secrets are represented by hints.",
+      "params": {},
+      "notes": [
+        "Requires the owner; an API key or personal token also needs admin scope."
+      ]
+    },
+    {
+      "operationId": "create_webhook",
+      "method": "post",
+      "path": "/v1/admin/webhooks",
+      "group": "webhooks",
+      "core": false,
+      "title": "Create a webhook",
+      "description": "Adds a destination and event subscription and returns its signing secret once. URLs may use HTTP or HTTPS, including a private network address, but cannot contain a username or password.",
+      "params": {},
+      "notes": [
+        "Keep the signing secret privately; it is shown only when issued or replaced.",
+        "Requires the owner; an API key or personal token also needs admin scope."
+      ]
+    },
+    {
+      "operationId": "get_webhook",
+      "method": "get",
+      "path": "/v1/admin/webhooks/{id}",
+      "group": "webhooks",
+      "core": false,
+      "title": "Read a webhook",
+      "description": "Returns one webhook's configuration, revision and delivery state. Read it before changing a subscription.",
+      "params": {
+        "id": "Webhook ID."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs admin scope."
+      ]
+    },
+    {
+      "operationId": "update_webhook",
+      "method": "patch",
+      "path": "/v1/admin/webhooks/{id}",
+      "group": "webhooks",
+      "core": false,
+      "title": "Change a webhook",
+      "description": "Changes the destination, events or enabled state using expectedRevision. Setting rotateSecret returns the replacement signing secret once; disabling a webhook abandons queued deliveries.",
+      "params": {
+        "id": "Webhook ID."
+      },
+      "notes": [
+        "Keep the signing secret privately; it is shown only when issued or replaced.",
+        "Requires the owner; an API key or personal token also needs admin scope.",
+        "Send the current expectedRevision from this resource and reconcile conflicts before retrying."
+      ]
+    },
+    {
+      "operationId": "delete_webhook",
+      "method": "delete",
+      "path": "/v1/admin/webhooks/{id}",
+      "group": "webhooks",
+      "core": false,
+      "title": "Delete a webhook",
+      "description": "Removes the webhook together with its waiting deliveries and delivery log. Use this when an integration is disconnected.",
+      "params": {
+        "id": "Webhook ID."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs admin scope."
+      ]
+    },
+    {
+      "operationId": "test_webhook",
+      "method": "post",
+      "path": "/v1/admin/webhooks/{id}/test",
+      "group": "webhooks",
+      "core": false,
+      "title": "Send a webhook test",
+      "description": "Queues a webhook.test event even if the webhook is disabled and returns 202. Check the delivery log to confirm that the receiver accepted it.",
+      "params": {
+        "id": "Webhook ID."
+      },
+      "notes": [
+        "Requires the owner; an API key or personal token also needs admin scope."
+      ]
+    },
+    {
+      "operationId": "list_webhook_deliveries",
+      "method": "get",
+      "path": "/v1/admin/webhooks/{id}/deliveries",
+      "group": "webhooks",
+      "core": false,
+      "title": "Read webhook delivery results",
+      "description": "Returns a paged delivery log, newest first, with attempt counts and HTTP results. Event IDs stay the same across retries so receivers can ignore duplicate deliveries.",
+      "params": {
+        "id": "Webhook ID.",
+        "cursor": "Continuation returned by the previous page; send it unchanged with the same query.",
+        "limit": "Page or window size within this operation’s published bounds."
+      },
+      "notes": [
+        "Verify signatures against the raw request body, reject stale timestamps and deduplicate Portico-Event-Id values at the receiver.",
+        "Requires the owner; an API key or personal token also needs admin scope."
+      ]
+    },
+    {
+      "operationId": "mcp",
+      "method": "post",
+      "path": "/v1/mcp",
+      "group": "mcp",
+      "core": true,
+      "title": "Call the MCP server",
+      "description": "Accepts MCP JSON-RPC over stateless Streamable HTTP, with JSON responses and no session ID to retain. Use initialize, tools/list and tools/call with an API key or personal token; signed-in app sessions are refused.",
+      "params": {},
+      "notes": [
+        "Use an API key or personal access token; the route’s open scope label does not mean unauthenticated MCP access.",
+        "POST supports initialize, ping, tools/list, tools/call and notifications. GET returns 405; there is no server event stream.",
+        "Supported protocol versions: 2025-06-18, 2025-03-26 and 2024-11-05. Tools are filtered by scope, role and configured features."
+      ]
+    }
+  ]
+}

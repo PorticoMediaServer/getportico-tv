@@ -53,7 +53,8 @@ const render = async () => {
   const query = input.value.trim().toLowerCase();
   selected = 0;
   if (!query) {
-    results.innerHTML = '<li class="docs-search-empty">Try "remote access", "subtitles" or "backup".</li>';
+    input.removeAttribute('aria-activedescendant');
+    results.innerHTML = '<li class="docs-search-empty" role="presentation">Try "remote access", "subtitles" or "backup".</li>';
     return;
   }
   const terms = query.split(/\s+/).filter(Boolean);
@@ -63,12 +64,14 @@ const render = async () => {
     .sort((a, b) => b.score - a.score)
     .slice(0, 12);
   if (matches.length === 0) {
-    results.innerHTML = `<li class="docs-search-empty">Nothing matches "${escapeHtml(input.value.trim())}".</li>`;
+    input.removeAttribute('aria-activedescendant');
+    results.innerHTML = `<li class="docs-search-empty" role="presentation">Nothing matches "${escapeHtml(input.value.trim())}".</li>`;
     return;
   }
   results.innerHTML = matches
-    .map(({ doc }, position) => `<li><a href="${doc.url}" role="option" aria-selected="${position === 0}"><small>${escapeHtml(doc.category)}</small><strong>${escapeHtml(doc.title)}</strong><span>${snippet(doc.text, terms) || escapeHtml(doc.description)}</span></a></li>`)
+    .map(({ doc }, position) => `<li role="presentation"><a id="docs-search-option-${position}" href="${doc.url}" role="option" aria-selected="${position === 0}"><small>${escapeHtml(doc.category)}</small><strong>${escapeHtml(doc.title)}</strong><span>${snippet(doc.text, terms) || escapeHtml(doc.description)}</span></a></li>`)
     .join('');
+  input.setAttribute('aria-activedescendant', 'docs-search-option-0');
 };
 
 const open = () => {
@@ -92,12 +95,16 @@ input?.addEventListener('input', render);
 
 input?.addEventListener('keydown', (event) => {
   const links = [...results.querySelectorAll('a')];
-  if (links.length === 0) return;
+  if (links.length === 0) {
+    if (event.key === 'Enter') event.preventDefault();
+    return;
+  }
   if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     event.preventDefault();
     selected = (selected + (event.key === 'ArrowDown' ? 1 : -1) + links.length) % links.length;
     links.forEach((link, position) => link.setAttribute('aria-selected', String(position === selected)));
     links[selected].scrollIntoView({ block: 'nearest' });
+    input.setAttribute('aria-activedescendant', links[selected].id);
   } else if (event.key === 'Enter') {
     event.preventDefault();
     window.location.href = links[selected].href;

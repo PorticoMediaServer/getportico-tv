@@ -13,6 +13,7 @@ const serverFamilies: { icon: PlatformIconName; title: string; detail: string; a
   { icon: 'docker', title: 'Docker', detail: 'For NAS boxes, home labs and servers', accent: 'rgba(79, 209, 197, 0.18)' }
 ];
 
+const serverColumns: (PlatformIconName | 'web')[][] = [['windows', 'docker'], ['apple', 'web'], ['linux']];
 const groupId = (title: string) => `download-${title.toLowerCase().replaceAll(' ', '-')}`;
 const action = (item: DownloadItem) => item.href;
 ---
@@ -32,51 +33,62 @@ const action = (item: DownloadItem) => item.href;
         <h2 id={groupId(serverGroup.title)}>{serverGroup.title}</h2>
         <p>{serverGroup.description}</p>
       </div>
-      <div class="download-cards download-cards-server">
-        {serverFamilies.map((family) => (
-          <article class:list={['download-card', `download-card-${family.icon}`]} style={`--accent: ${family.accent}`}>
-            <div class="download-card-head">
-              <div class="download-icon"><PlatformIcon name={family.icon} /></div>
-              <div>
-                <h3>{family.title}</h3>
-                <span>{family.detail}</span>
-              </div>
-            </div>
-            <ul class="download-options">
-              {serverGroup.items.filter((item) => item.icon === family.icon).map((item) => (
-                <li>
-                  <div>
-                    <strong>{item.name}</strong>
-                    <small>{item.detail}</small>
+      <div class="download-columns">
+        {serverColumns.map((column) => (
+          <div class="download-column">
+            {column.map((id) => {
+              if (id === 'web') {
+                return (
+                  <article class="download-card" style="--accent: rgba(108, 188, 246, 0.16)">
+                    <div class="download-card-head">
+                      <div class="download-icon"><PlatformIcon name="web" /></div>
+                      <div>
+                        <h3>Web</h3>
+                        <span>Included with every server</span>
+                      </div>
+                    </div>
+                    <ul class="download-options">
+                      <li>
+                        <div>
+                          <strong>Portico Web</strong>
+                          <small>Open your server's address in any modern browser, or sign in at web.getportico.tv</small>
+                        </div>
+                        <a class="button button-ghost button-small" href="https://web.getportico.tv">Open</a>
+                      </li>
+                    </ul>
+                  </article>
+                );
+              }
+              const family = serverFamilies.find((candidate) => candidate.icon === id)!;
+              return (
+                <article class="download-card" style={`--accent: ${family.accent}`}>
+                  <div class="download-card-head">
+                    <div class="download-icon"><PlatformIcon name={family.icon} /></div>
+                    <div>
+                      <h3>{family.title}</h3>
+                      <span>{family.detail}</span>
+                    </div>
                   </div>
-                  {action(item) ? (
-                    <a class="download-action" href={item.href}>Download</a>
-                  ) : (
-                    <button class="download-status" type="button" disabled>Coming soon</button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
-        <article class="download-card" style="--accent: rgba(108, 188, 246, 0.16)">
-          <div class="download-card-head">
-            <div class="download-icon"><PlatformIcon name="web" /></div>
-            <div>
-              <h3>Web</h3>
-              <span>Included with every server</span>
-            </div>
+                  <ul class="download-options">
+                    {serverGroup.items.filter((item) => item.icon === family.icon).map((item) => (
+                      <li>
+                        <div>
+                          <strong>{item.name}</strong>
+                          <small>{item.detail}</small>
+                        </div>
+                        {action(item) ? (
+                          <a class="download-action" href={item.href}>Download</a>
+                        ) : (
+                          <span class="download-status">Coming soon</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
           </div>
-          <ul class="download-options">
-            <li>
-              <div>
-                <strong>Portico on the web</strong>
-                <small>Open your server's address in any modern browser, or sign in at web.getportico.tv</small>
-              </div>
-              <a class="button button-ghost button-small" href="https://web.getportico.tv">Open</a>
-            </li>
-          </ul>
-        </article>
+        ))}
       </div>
       <p class="download-note">New to Portico? Follow the <a href="/docs/start/quick-start/">quick start</a> or read the install guide for <a href="/docs/install/windows/">Windows</a>, <a href="/docs/install/macos/">macOS</a>, <a href="/docs/install/linux/">Linux</a> or <a href="/docs/install/docker/">Docker</a>.</p>
     </div>
@@ -107,7 +119,7 @@ const action = (item: DownloadItem) => item.href;
                   {action(item) ? (
                     <a class="download-action" href={item.href}>Download</a>
                   ) : (
-                    <button class="download-status" type="button" disabled>Coming soon</button>
+                    <span class="download-status">Coming soon</span>
                   )}
                 </li>
               </ul>

@@ -6,7 +6,8 @@ const targets = tocLinks
 if (targets.length > 0 && 'IntersectionObserver' in window) {
   const visible = new Set();
   const update = () => {
-    const first = targets.find((target) => visible.has(target)) ?? null;
+    const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    const first = atBottom ? targets[targets.length - 1] : targets.find((target) => visible.has(target)) ?? null;
     if (!first) return;
     for (const link of tocLinks) {
       link.classList.toggle('is-active', link.hash === `#${first.id}`);
@@ -20,4 +21,5 @@ if (targets.length > 0 && 'IntersectionObserver' in window) {
     update();
   }, { rootMargin: '-80px 0px -60% 0px' });
   targets.forEach((target) => observer.observe(target));
+  window.addEventListener('scroll', update, { passive: true });
 }
