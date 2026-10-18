@@ -36,7 +36,7 @@ const scopes = ['open', 'read', 'playback', 'library', 'admin', 'session'];
     </article>
     <article>
       <h3>Requests and errors</h3>
-      <p>Most operations exchange JSON; media, artwork, subtitles and event streams use the format shown on the operation. Errors return an <code>error</code> object with a machine-readable <code>code</code> and a readable <code>message</code>. Follow each list's cursor or window fields to read more.</p>
+      <p>Most operations exchange JSON; media, artwork, subtitles and event streams use the format shown on the operation. Errors return an <code>error</code> object with a machine-readable <code>code</code> and a readable <code>message</code>. Follow each list's cursor or window fields to read more. Writes that guard a revision answer <code>428</code> when the precondition is missing and <code>409</code> or <code>412</code> when it's stale.</p>
       <p class="api-small">See the <a href="/docs/developers/api-overview/">API architecture overview</a> for paging, revisions, retries and idempotency.</p>
     </article>
   </section>
