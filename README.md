@@ -48,6 +48,10 @@ npm run build
 
 The generated site is written to `dist/`. Deployment configuration is intentionally separate from Hosted Services and is documented only where it is safe and useful to users.
 
+## Support and warranty
+
+Portico is provided **"AS IS", without warranty**, to the extent permitted by applicable law. Support is voluntary and not guaranteed, including responses, fixes, maintenance, and updates. See [SUPPORT.md](SUPPORT.md) and [LICENSE](LICENSE) for details.
+
 ## Feedback and contributions
 
 Website problems and documentation feedback are welcome through [GitHub Issues](https://github.com/PorticoMediaServer/getportico-tv/issues). Portico does not accept external code contributions. See [CONTRIBUTING.md](CONTRIBUTING.md).
