@@ -6,7 +6,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     <h1>Privacy</h1>
     <p class="legal-lead">Your media activity stays between your devices and the Portico Server you choose. Portico Services coordinate access, but they aren't part of the media path.</p>
 
-    <p><strong>Last updated:</strong> August 25, 2026</p>
+    <p><strong>Last updated:</strong> October 22, 2026</p>
 
     <h2>Who this policy covers</h2>
     <p>This policy covers information processed by the Portico public website, Portico applications, and Portico-hosted account and connection services (“Portico Services”).</p>
@@ -20,31 +20,31 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     <p>If you use Portico Services, we process the information needed to provide and protect your account. This can include:</p>
     <ul>
       <li>your email address</li>
-      <li>your profile name and image</li>
+      <li>your username and display name</li>
       <li>authentication and recovery information</li>
-      <li>account settings</li>
       <li>active sessions</li>
       <li>registered devices</li>
       <li>security events</li>
       <li>records of your requests to us</li>
     </ul>
     <p>We don't store passwords and comparable secrets as readable account records. We store them using appropriate one-way or encrypted protections.</p>
-    <p>Processed profile images are kept in private object storage run by our infrastructure provider, separate from Portico's account database. After an authenticated request, Portico authorizes access to an image for a limited period. The storage bucket itself isn't made public.</p>
+    <p>Profiles, their names and pictures, viewing preferences and permissions live only on each Portico Server. Portico Services don't store them.</p>
 
     <h2>Server coordination information</h2>
     <p>Portico Services process the limited account and connection information needed to connect accounts and servers. This can include:</p>
     <ul>
       <li>a server identifier and public identity key</li>
-      <li>ownership and membership records</li>
-      <li>invitations and revocations</li>
-      <li>signed policy and route information</li>
+      <li>the owner account and an index of account roles: owner, administrator or member</li>
+      <li>registered addresses and signed connection information</li>
       <li>connection reachability and health state</li>
       <li>certificate coordination state</li>
       <li>software version and device descriptors</li>
       <li>timestamps</li>
       <li>the public network address observed when a server contacts Portico Services</li>
     </ul>
-    <p>This information tells Portico Services how to authenticate and coordinate a server. It doesn't give access to that server's media library.</p>
+    <p>The server decides who may use it and what they may do. Portico Services keep the role index so apps can show your server list; they don't store libraries, access permissions or invitations.</p>
+    <p>To let apps connect at home, a Portico Account server's home-network addresses are published under public DNS names. Those names and addresses can be looked up publicly. Knowing an address doesn't authorize access: the server still requires sign-in.</p>
+    <p>A server using local accounts doesn't contact Portico Services. If its owner switches to local sign-in while offline, a notice already queued for delivery withdraws its Portico registration when Services can be reached.</p>
 
     <h2>Media and streaming stay private</h2>
     <p>Portico Services don't host, proxy, tunnel, relay, cache, transform, inspect, meter or store any of the following: video, audio, Live TV, DVR recordings, artwork, subtitles or downloads. They don't receive ordinary library browsing, playback, progress, remote-control or server API traffic.</p>
@@ -79,7 +79,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     <ul>
       <li>provide and secure Portico Accounts</li>
       <li>coordinate connections</li>
-      <li>maintain memberships and invitations</li>
+      <li>show the servers your account belongs to</li>
       <li>deliver service messages</li>
       <li>diagnose failures</li>
       <li>prevent fraud and abuse</li>
@@ -114,13 +114,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       <li>Portico is required or compelled by law to preserve it.</li>
     </ul>
     <p>Encrypted backups rotate on a separate, limited recovery schedule. A deleted value may remain, inaccessible, in a backup until that backup expires.</p>
-    <p>When you replace or remove a profile image, Portico stops referencing the previous image immediately and schedules it for deletion. Temporary delivery links expire automatically. If the storage provider is temporarily unavailable, we retry the deletion. The image stays subject to the maximum post-purpose retention period above, unless the law requires us to preserve it.</p>
+    <p>Deleting a Portico Account is refused while it owns a server. Change owner, switch to local sign-in or start over on that server first. When an account is deleted or leaves, Portico Services send only a departure notice. Each server disables that membership and keeps its profiles and media activity until its owner deletes them. Portico Services never erase data on a server. A person's own request to delete their server profiles and history is handled by that server.</p>
+    <p>After a server leaves Portico Services, its registration, account links, addresses and certificate orders are removed. Public-name withdrawal records remain so DNS readers that were offline can remove the names too. These records contain only public names and feed sequence numbers, with no server or account identifiers, network addresses or keys. A hashed receipt permits safe retries of the withdrawal notice.</p>
     <p>Where feasible, we keep transient network information for shorter periods. Raw or hashed network addresses, stale endpoint observations, rate-limit state and cached connection-retry state are ordinarily kept for about one or two days or less after they stop being operationally useful. Portico doesn't keep them permanently just for convenience.</p>
     <p>Routine operational audit events are generally kept for seven days. Security and support audit records may be kept longer while they're still needed for those purposes. Request-network fingerprints are removed from them earlier.</p>
 
     <h2>Your choices</h2>
-    <p>You can review and change the available profile, account, membership, device and server settings in Portico. You can also ask for access to, correction of, or deletion of your personal information by emailing <a href="mailto:admin@getportico.tv">admin@getportico.tv</a>. We may need to verify the request. Some information may be kept where it's required for security, legal compliance or another permitted reason.</p>
-    <p>Server owners manage the information stored on their own Portico Servers. Send requests about a server's media, local accounts, permissions, playback records or logs to that server's owner.</p>
+    <p>You can review and change account and sign-in settings through Portico Services, and profile, access and media settings on each server. You can also ask for access to, correction of, or deletion of your personal information by emailing <a href="mailto:admin@getportico.tv">admin@getportico.tv</a>. We may need to verify the request. Some information may be kept where it's required for security, legal compliance or another permitted reason.</p>
+    <p>Server owners manage the information stored on their own Portico Servers and can see server-wide play history. Administrators can see Now playing and manage People; they don't get full play history. Your main profile can manage the other profiles on your account without seeing their history. Send requests about a server's media, accounts, permissions, playback records or logs to its owner.</p>
 
     <h2>Security</h2>
     <p>Portico uses technical and organizational safeguards appropriate to the information it processes. These include encrypted transport, limited access, credential protection and data minimization. No system can guarantee absolute security. Please use strong account protection and report suspected compromise promptly.</p>
