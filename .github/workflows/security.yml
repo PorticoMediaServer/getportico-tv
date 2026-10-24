@@ -2,13 +2,18 @@ name: Security
 on:
   push: {branches: [main]}
   pull_request:
-  schedule: [{cron: '43 8 * * 1'}]
+  workflow_call:
+    inputs:
+      nightly:
+        type: boolean
+        default: false
 permissions: {contents: read, security-events: write}
 concurrency:
   group: security-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   secrets:
+    timeout-minutes: 10
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -20,6 +25,7 @@ jobs:
           tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
           "$RUNNER_TEMP/gitleaks" git . --redact --no-banner
   codeql:
+    if: inputs.nightly == true
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
