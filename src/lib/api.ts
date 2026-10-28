@@ -35,7 +35,8 @@ export type ApiOperation = {
   method: string;
   path: string;
   group: string;
-  core: boolean;
+  audience: 'Integrations' | 'Clients';
+  protocol: 'native' | 'integration-compatibility';
   title: string;
   description: string;
   notes: string[];
@@ -56,8 +57,10 @@ export const apiGroups = reference.groups as ApiGroup[];
 export const apiOperations = reference.operations as unknown as ApiOperation[];
 
 export const operationsFor = (group: string) => apiOperations.filter((operation) => operation.group === group);
-export const coreOperations = () => apiOperations.filter((operation) => operation.core);
-export const operationUrl = (operation: ApiOperation) => `/developers/api/${operation.group}/#${operation.operationId}`;
+export const integrationOperations = apiOperations.filter((operation) => operation.audience === 'Integrations' && operation.protocol === 'native');
+export const operationUrl = (operation: ApiOperation) => operation.audience === 'Integrations' && operation.protocol === 'native'
+  ? `/developers/api/integrations/#${operation.operationId}`
+  : `/developers/api/clients/${operation.group}/#${operation.operationId}`;
 
 export const scopeDescriptions: Record<string, string> = {
   open: 'No credential needed.',

@@ -9,13 +9,16 @@ const rawBody = jsonSchemaOf(operation.requestBody?.content);
 // The generator attaches an empty object body to some read routes; don't present it as a real request body.
 const emptyObject = rawBody.schema?.type === 'object' && !rawBody.schema.properties && !rawBody.schema.additionalProperties;
 const body = ['get', 'head'].includes(operation.method) && emptyObject ? { mediaType: undefined, schema: undefined } : rawBody;
-const responses = Object.entries(operation.responses).filter(([code]) => code !== 'default');
-const credential = operation.auth
-  ?? (operation.scope === 'open' || operation.access === 'public'
+const responses = Object.entries(operation.responses);
+const credential = operation.auth ?? (
+  operation.scope === 'open' || operation.access === 'public'
     ? 'No credential needed'
-    : operation.scope === 'session'
-      ? 'Session only; API keys and personal access tokens are refused'
-      : `API key or personal access token with the ${operation.scope} scope, or a signed-in session`);
+    : operation.protocol === 'integration-compatibility'
+      ? 'Dedicated integration credential; follow the tool setup guide for its connection and grant.'
+      : operation.scope === 'session'
+        ? 'Session only; API keys and personal access tokens are refused'
+        : `API key or personal access token with the ${operation.scope} scope, or a signed-in session`
+);
 const kib = (bytes: number) => (bytes >= 1048576 ? `${Math.round(bytes / 1048576)} MiB` : `${Math.round(bytes / 1024)} KiB`);
 ---
 
@@ -34,6 +37,7 @@ const kib = (bytes: number) => (bytes >= 1048576 ? `${Math.round(bytes / 1048576
       <ul class="api-notes">{operation.notes.map((note) => <li>{note}</li>)}</ul>
     )}
     <dl class="api-facts">
+      <div><dt>Audience</dt><dd>{operation.audience}{operation.protocol === 'integration-compatibility' ? ' · Tool compatibility' : ' · Native API'}</dd></div>
       <div><dt>Authorization</dt><dd>{credential}</dd></div>
       <div><dt>OpenAPI operation ID</dt><dd><code>{operation.operationId}</code></dd></div>
       {operation.maxBodyBytes && <div><dt>Max body</dt><dd>{kib(operation.maxBodyBytes)}</dd></div>}

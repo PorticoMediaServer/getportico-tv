@@ -1,90 +1,72 @@
-// Builds src/data/api/reference.json from Portico Server's OpenAPI contract and the
-// curated public list in src/data/api/public-api.json. Only curated operations are
-// copied, so the site never publishes first-party-only routes.
-//
-// Usage: node scripts/sync-api.mjs <path to portico-server checkout>
-
+// Generate both API audiences from a pinned production OpenAPI contract.
+// Usage: node scripts/sync-api.mjs <server checkout> [git ref, default HEAD]
 import { execFileSync } from 'node:child_process';
-import { readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createHash } from 'node:crypto';
 
-const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const serverRoot = process.argv[2] ?? process.env.PORTICO_SERVER_DIR;
-if (!serverRoot) {
-  console.error('Usage: node scripts/sync-api.mjs <path to portico-server checkout>');
-  process.exit(1);
-}
-
-const spec = JSON.parse(await readFile(resolve(serverRoot, 'server/api/portico.openapi.json'), 'utf8'));
-const curationPath = process.env.PORTICO_API_CURATION ?? resolve(projectRoot, 'src/data/api/public-api.json');
-const curation = JSON.parse(await readFile(curationPath, 'utf8'));
-const serverCommit = execFileSync('git', ['-C', serverRoot, 'rev-parse', '--short', 'HEAD'], { encoding: 'utf8' }).trim();
-
-const SAFE_INT = 9007199254740991;
-const KEEP_EXTENSIONS = new Set(['x-scope', 'x-access', 'x-error-codes', 'x-max-body-bytes']);
-
-// Drop the full-range integer bounds the generator adds to every integer; they carry no meaning.
+const methods = new Set(['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace']);
+const audiences = new Set(['Integrations', 'Clients']);
+const words = (value) => value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
 const clean = (value) => {
   if (Array.isArray(value)) return value.map(clean);
   if (!value || typeof value !== 'object') return value;
-  const out = {};
-  for (const [key, child] of Object.entries(value)) {
-    if ((key === 'maximum' && child === SAFE_INT) || (key === 'minimum' && child === -SAFE_INT)) continue;
-    out[key] = clean(child);
-  }
-  return out;
+  return Object.fromEntries(Object.entries(value)
+    .filter(([key, child]) => !(['maximum', 'minimum'].includes(key) && Math.abs(child) === Number.MAX_SAFE_INTEGER))
+    .map(([key, child]) => [key, clean(child)]));
 };
 
-const operations = [];
-const missing = [];
-for (const entry of curation.operations) {
-  const operation = spec.paths?.[entry.path]?.[entry.method];
-  if (!operation || operation.operationId !== entry.operationId) {
-    missing.push(`${entry.method.toUpperCase()} ${entry.path} (${entry.operationId})`);
-    continue;
+export function generateReference(spec, source) {
+  const operations = [];
+  const ids = new Set();
+  for (const [path, item] of Object.entries(spec.paths ?? {})) {
+    for (const [method, operation] of Object.entries(item)) {
+      if (!methods.has(method)) continue;
+      const tags = (operation.tags ?? []).filter((tag) => audiences.has(tag));
+      if (tags.length !== 1 || operation['x-audience'] !== tags[0]) {
+        throw new Error(`Missing or inconsistent API audience: ${method.toUpperCase()} ${path}`);
+      }
+      if (!operation.operationId || ids.has(operation.operationId)) throw new Error(`Missing or duplicate operation ID: ${path}`);
+      ids.add(operation.operationId);
+      const protocol = operation['x-protocol'] ?? 'native';
+      if (!['native', 'integration-compatibility'].includes(protocol)) throw new Error(`Unknown API protocol: ${protocol}`);
+      const segments = path.split('/').filter(Boolean);
+      const area = segments[0] === 'v1' ? segments[1] ?? 'server' : segments[0];
+      const group = protocol === 'integration-compatibility' ? 'compatibility'
+        : area === 'admin' && segments[2] ? `admin-${segments[2]}` : area;
+      operations.push({
+        operationId: operation.operationId, method, path, group,
+        audience: tags[0], protocol,
+        title: operation.summary || `${method.toUpperCase()} ${path}`,
+        description: operation.description ?? '', notes: [],
+        parameters: clean([...(item.parameters ?? []), ...(operation.parameters ?? [])]).map((parameter) => ({ ...parameter, description: parameter.description ?? '' })),
+        requestBody: clean(operation.requestBody ?? null), responses: clean(operation.responses ?? {}),
+        scope: operation['x-scope'], access: operation['x-access'],
+        errorCodes: operation['x-error-codes'] ?? [], maxBodyBytes: operation['x-max-body-bytes'] ?? null
+      });
+    }
   }
-  const extensions = Object.fromEntries(Object.entries(operation).filter(([key]) => KEEP_EXTENSIONS.has(key)));
-  operations.push({
-    operationId: entry.operationId,
-    method: entry.method,
-    path: entry.path,
-    group: entry.group,
-    core: Boolean(entry.core),
-    title: entry.title,
-    description: entry.description ?? '',
-    notes: entry.notes ?? [],
-    parameters: clean(operation.parameters ?? []).map((parameter) => ({
-      ...parameter,
-      description: entry.params?.[parameter.name] ?? parameter.description ?? ''
-    })),
-    requestBody: clean(operation.requestBody ?? null),
-    responses: clean(operation.responses ?? {}),
-    scope: extensions['x-scope'],
-    access: extensions['x-access'],
-    errorCodes: extensions['x-error-codes'] ?? [],
-    maxBodyBytes: extensions['x-max-body-bytes'] ?? null,
-    ...(entry.auth ? { auth: entry.auth } : {})
-  });
+  if (!operations.length) throw new Error('No API operations found');
+  operations.sort((a, b) => a.path.localeCompare(b.path, 'en') || a.method.localeCompare(b.method, 'en'));
+  const groups = [...new Set(operations.map((operation) => operation.group))].sort().map((id) => ({
+    id,
+    title: id === 'compatibility' ? 'Integration compatibility' : words(id),
+    description: id === 'compatibility' ? 'Tool compatibility routes and aliases. Enable Integrations compatibility before using these routes.' : `Generated ${words(id).toLowerCase()} operations.`
+  }));
+  return { info: { title: spec.info?.title ?? 'Portico API', version: spec.info?.version ?? '1', openapi: spec.openapi, ...source }, groups, operations };
 }
 
-if (missing.length > 0) {
-  console.error(`Curated operations missing from the server contract:\n${missing.join('\n')}`);
-  process.exit(1);
+if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  const serverRoot = process.argv[2] ?? process.env.PORTICO_SERVER_DIR;
+  if (!serverRoot) throw new Error('Usage: node scripts/sync-api.mjs <server checkout> [git ref]');
+  const ref = process.argv[3] ?? 'HEAD';
+  const git = (args) => execFileSync('git', ['-C', serverRoot, ...args], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const serverCommit = git(['rev-parse', '--verify', `${ref}^{commit}`]).trim();
+  const raw = git(['show', `${serverCommit}:server/api/portico.openapi.json`]);
+  const reference = generateReference(JSON.parse(raw), { serverCommit, specSha256: createHash('sha256').update(raw).digest('hex') });
+  const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+  await writeFile(resolve(projectRoot, 'src/data/api/reference.json'), `${JSON.stringify(reference)}\n`);
+  const native = reference.operations.filter((operation) => operation.audience === 'Integrations' && operation.protocol === 'native').length;
+  console.log(`Wrote ${reference.operations.length} operations, ${native} native Integrations operations, from ${serverCommit}.`);
 }
-
-const groupIds = new Set(curation.groups.map((group) => group.id));
-const orphans = operations.filter((operation) => !groupIds.has(operation.group));
-if (orphans.length > 0) {
-  console.error(`Operations reference unknown groups: ${orphans.map((operation) => operation.operationId).join(', ')}`);
-  process.exit(1);
-}
-
-const reference = {
-  info: { title: spec.info?.title ?? 'Portico API', version: spec.info?.version ?? '1', openapi: spec.openapi, serverCommit },
-  groups: curation.groups,
-  operations
-};
-
-await writeFile(resolve(projectRoot, 'src/data/api/reference.json'), `${JSON.stringify(reference)}\n`);
-console.log(`Wrote ${operations.length} public operations in ${curation.groups.length} groups from portico-server ${serverCommit}.`);

@@ -3584,3 +3584,21 @@ body:has(dialog[open]) {
   white-space: pre-wrap;
   word-break: break-all;
 }
+
+/* Task-led API docs use the existing documentation palette and type scale. */
+.api-start-action { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin: 24px 0; }
+.api-start-action .api-primary-link { display: inline-block; padding: 10px 16px; border-radius: 10px; background: var(--d-accent); color: var(--d-panel); font-weight: 700; }
+.api-task-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
+.api-task-grid a { display: grid; gap: 5px; padding: 18px 0; border-bottom: 1px solid var(--d-line); }
+.api-task-grid strong { color: var(--d-text); font-size: 1.04rem; }
+.api-task-grid span { color: var(--d-soft); font-size: .92rem; }
+.api-tool-links { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+.api-client-entry { padding-top: 28px; border-top: 2px solid var(--d-line); }
+.api-bucket-label { display: block; margin-bottom: 8px; color: var(--d-dim); font-weight: 600; font-size: .9rem; }
+.api-guide { max-width: 78ch; }
+.api-guide-contents { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 24px 0 32px; padding: 18px 0; border-block: 1px solid var(--d-line); font-size: .9rem; color: var(--d-accent); }
+.api-guide .article-body pre { padding-top: 44px; }
+.api-guide .api-copy { top: 8px; right: 10px; }
+.api-guide-back, .api-reference-note { margin: 28px 0; color: var(--d-soft); }
+.api-guide-back a, .api-reference-note a, .api-group-head a { color: var(--d-accent); }
+@media (max-width: 680px) { .api-task-grid { grid-template-columns: minmax(0, 1fr); } }

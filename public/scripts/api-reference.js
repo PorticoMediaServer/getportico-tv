@@ -1,3 +1,14 @@
+for (const pre of document.querySelectorAll('.api-guide pre')) {
+  pre.classList.add('api-code');
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'api-copy';
+  button.textContent = 'Copy';
+  button.setAttribute('aria-label', 'Copy code example');
+  button.dataset.copy = '';
+  pre.prepend(button);
+}
+
 for (const button of document.querySelectorAll('[data-copy]')) {
   button.addEventListener('click', async () => {
     const code = button.parentElement?.querySelector('code')?.textContent ?? '';

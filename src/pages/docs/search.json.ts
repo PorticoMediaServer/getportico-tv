@@ -1,6 +1,6 @@
 import { getCollection } from 'astro:content';
 import { getDocCategory } from '@/data/docs';
-import { apiOperations, apiGroups } from '@/lib/api';
+import { apiOperations, apiGroups, operationUrl } from '@/lib/api';
 
 const plain = (markdown: string) =>
   markdown
@@ -26,13 +26,21 @@ export async function GET() {
   const groupTitles = new Map(apiGroups.map((group) => [group.id, group.title]));
   for (const operation of apiOperations) {
     index.push({
-      url: `/developers/api/${operation.group}/#${operation.operationId}`,
+      url: operationUrl(operation),
       title: `${operation.method.toUpperCase()} ${operation.path}`,
       description: operation.title,
-      category: `API · ${groupTitles.get(operation.group) ?? ''}`,
+      category: `API · ${operation.audience} · ${groupTitles.get(operation.group) ?? ''}`,
       headings: [operation.title],
       text: `${operation.title}. ${operation.description}`
     });
   }
+  for (const guide of await getCollection('integrationGuides')) {
+    index.push({ url: `/developers/api/integrations/${guide.id}/`, title: guide.data.title,
+      description: guide.data.description, category: 'Integrations',
+      headings: [...(guide.body ?? '').matchAll(/^#{2,3}\s+(.+)$/gm)].map((match) => match[1].trim()),
+      text: plain(guide.body ?? '') });
+  }
+  index.push({ url: '/developers/api/', title: 'Portico API docs', description: 'Integrations and Clients',
+    category: 'Developers', headings: ['Integrations', 'Building a Portico app'], text: 'Task guides, tool setup and API references.' });
   return new Response(JSON.stringify(index), { headers: { 'Content-Type': 'application/json' } });
 }

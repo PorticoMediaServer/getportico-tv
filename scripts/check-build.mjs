@@ -59,12 +59,26 @@ if (articleCount < 25) {
 }
 
 const apiReference = JSON.parse(await readFile(new URL('../src/data/api/reference.json', import.meta.url), 'utf8'));
-const curatedIds = new Set(JSON.parse(await readFile(new URL('../src/data/api/public-api.json', import.meta.url), 'utf8')).operations.map((operation) => operation.operationId));
-const uncurated = apiReference.operations.filter((operation) => !curatedIds.has(operation.operationId));
-if (apiReference.operations.length === 0 || uncurated.length > 0) {
-  throw new Error(`API reference must contain only curated public operations: ${uncurated.map((operation) => operation.operationId).join(', ') || 'none generated'}`);
+const ids = new Set();
+for (const operation of apiReference.operations) {
+  if (!['Integrations', 'Clients'].includes(operation.audience) || ids.has(operation.operationId)) {
+    throw new Error(`Invalid API audience or duplicate ID: ${operation.operationId}`);
+  }
+  ids.add(operation.operationId);
 }
-for (const group of apiReference.groups) await access(new URL(`developers/api/${group.id}/index.html`, root));
+if (!ids.size) throw new Error('No generated API operations');
+for (const group of apiReference.groups) await access(new URL(`developers/api/clients/${group.id}/index.html`, root));
+for (const page of ['integrations', 'clients', 'integrations/quick-start', 'integrations/webhooks',
+  'integrations/sonarr', 'integrations/radarr', 'integrations/lidarr', 'integrations/bazarr',
+  'integrations/jellyseerr', 'integrations/home-assistant', 'integrations/jellystat']) {
+  await access(new URL(`developers/api/${page}/index.html`, root));
+}
+const integrationHtml = await readFile(new URL('developers/api/integrations/index.html', root), 'utf8');
+const nativeIds = [...integrationHtml.matchAll(/id="([^"]+)"[^>]*data-api-op/g)].map((match) => match[1]);
+const expectedIds = apiReference.operations.filter((operation) => operation.audience === 'Integrations' && operation.protocol === 'native').map((operation) => operation.operationId);
+if (nativeIds.length !== expectedIds.length || expectedIds.some((id) => !nativeIds.includes(id))) {
+  throw new Error('Integrations reference does not exactly match native tagged operations');
+}
 
 const allEntries = await readdir(root, { recursive: true });
 const htmlFiles = allEntries.filter((entry) => entry.endsWith('.html'));

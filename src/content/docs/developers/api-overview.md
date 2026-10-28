@@ -9,7 +9,9 @@ updated: 2026-10-18
 
 Portico Server and Portico Services have separate APIs. Use the Server API for integrations that work with a person's media server. Portico Account sign-in and connection coordination use the Portico Services API.
 
-For every public operation, with parameters, schemas and example requests, see the [API reference](/developers/api/).
+Start with [Integrations](/developers/api/) for task guides, tool setup and the native Integrations reference. The full generated reference is under [Building a Portico app](/developers/api/clients/).
+
+The OpenAPI tags are documentation buckets, not permissions. Integrations contracts preserve methods, paths, field meanings, IDs, paging, errors and scopes within `/v1`; breaking changes require a new major version and a documented transition. Ignore unknown optional fields. Portico is pre-release: this stability promise starts at the first stable release. Clients may negotiate presentation versions and add capabilities more frequently.
 
 ## Server address and contract
 

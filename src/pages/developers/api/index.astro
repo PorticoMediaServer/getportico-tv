@@ -1,86 +1,42 @@
 ---
+import { getCollection } from 'astro:content';
 import ApiLayout from '@/layouts/ApiLayout.astro';
-import ApiOperation from '@/components/api/ApiOperation.astro';
-import { apiGroups, apiInfo, apiOperations, coreOperations, operationsFor, scopeDescriptions } from '@/lib/api';
-
-const core = coreOperations();
-const scopes = ['open', 'read', 'playback', 'library', 'admin', 'session'];
+const tools = (await getCollection('integrationGuides')).filter((entry) => entry.data.kind === 'tool').sort((a, b) => a.data.order - b.data.order);
+const tasks = [
+  ['get-an-api-key', 'Get an API key', 'Choose a named key and the scopes your tool needs.'],
+  ['notify-a-file-or-folder-change', 'Notify a file or folder change', 'Queue a strictly targeted update using a real server path.'],
+  ['list-libraries', 'List libraries', 'Read the libraries your key can access.'],
+  ['recently-added', 'Recently added', 'Read a small page of the newest titles.'],
+  ['whos-watching', 'Who’s watching', 'Read permitted active playback sessions.'],
+  ['refresh-subtitles', 'Refresh subtitles', 'Reread subtitle sidecars for one title.']
+];
 ---
-
-<ApiLayout title="API reference" description="Reference for the Portico Server API: authentication, scopes, and every operation available to third-party players and integrations.">
-  <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <a href="/developers/">Developers</a><span aria-hidden="true">/</span><span>API reference</span>
-  </nav>
+<ApiLayout title="Portico API docs" description="Connect a tool, notify a file change, read your libraries or receive signed webhooks. Start with Portico Integrations.">
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/developers/">Developers</a><span aria-hidden="true">/</span><span>API docs</span></nav>
   <header class="api-group-head">
-    <h1>Portico API reference</h1>
-    <p>The public operations a third-party player, script or integration can call on a Portico Server. Methods, paths and schemas come straight from the server's OpenAPI contract, with descriptions and notes added for each operation.</p>
-    <div class="api-meta">
-      <span>OpenAPI {apiInfo.openapi}</span>
-      <span>Version {apiInfo.version}</span>
-      <span>{apiOperations.length} public operations</span>
-    </div>
+    <h1>Connect with Portico.</h1>
+    <p>Start with a task. Use a scoped key on your own server. No Portico Account required.</p>
   </header>
-
-  <section class="api-basics" aria-labelledby="api-basics-title">
-    <h2 id="api-basics-title" class="sr-only">Basics</h2>
-    <article>
-      <h3>Base address</h3>
-      <p>The API shares the server's address and port with the web app. The default port is 32500.</p>
-      <pre><code>http://192.168.1.20:32500/v1</code></pre>
-    </article>
-    <article>
-      <h3>Authorization</h3>
-      <p>Send an API key, a personal access token or a session's access token as a bearer token.</p>
-      <pre><code>Authorization: Bearer pk.3q2-7w…</code></pre>
-      <p class="api-small">On <code>GET</code> and <code>HEAD</code>, an API key or personal access token can go in the <code>apiKey</code> query parameter instead, for links and players that can't set headers. Session tokens always use the header. Treat any link that carries a credential as a secret.</p>
-    </article>
-    <article>
-      <h3>Requests and errors</h3>
-      <p>Most operations exchange JSON; media, artwork, subtitles and event streams use the format shown on the operation. Errors return an <code>error</code> object with a machine-readable <code>code</code> and a readable <code>message</code>. Follow each list's cursor or window fields to read more. Writes that guard a revision answer <code>428</code> when the precondition is missing and <code>409</code> or <code>412</code> when it's stale.</p>
-      <p class="api-small">See the <a href="/docs/developers/api-overview/">API architecture overview</a> for paging, revisions, retries and idempotency.</p>
-    </article>
-  </section>
-
-  <section class="api-section" aria-labelledby="api-scopes-title">
-    <h2 id="api-scopes-title">Scopes</h2>
-    <p>Each operation needs one scope. A key or token acts as the member who created it, limited to the scopes chosen when it was made. The <code>read</code>, <code>playback</code> and <code>library</code> scopes are independent, so a tool that reads titles and controls playback needs both <code>read</code> and <code>playback</code>; <code>admin</code> includes all three. Owners create API keys in <strong>Settings → Server → Integrations</strong>. Members can create personal access tokens in their own settings when the owner turns on <strong>Members may make their own tokens</strong> there; check <code>GET /v1/me/api-access</code> before offering it.</p>
-    <table class="api-params api-scopes">
-      <thead><tr><th>Scope</th><th>What it allows</th></tr></thead>
-      <tbody>
-        {scopes.map((scope) => (
-          <tr><td><span class:list={['api-scope', `api-scope-${scope}`]}>{scope}</span></td><td>{scopeDescriptions[scope]}</td></tr>
-        ))}
-      </tbody>
-    </table>
-  </section>
-
-  {core.length > 0 && (
-    <section class="api-section" aria-labelledby="api-core-title">
-      <div class="api-section-head">
-        <h2 id="api-core-title">Core API</h2>
-        <p>The operations most players and tools need. Open one to see its parameters, schemas and an example request.</p>
-      </div>
-      <label class="api-filter">
-        <span class="sr-only">Filter core operations</span>
-        <input type="search" placeholder={`Filter ${core.length} core operations`} data-api-filter />
-      </label>
-      <div class="api-op-list">
-        {core.map((operation) => <ApiOperation operation={operation} />)}
-      </div>
-      <p class="api-empty" hidden data-api-empty>No operations match that filter.</p>
-    </section>
-  )}
-
-  <section class="api-section" aria-labelledby="api-groups-title">
-    <h2 id="api-groups-title">All operations</h2>
-    <div class="api-group-grid">
-      {apiGroups.map((group) => (
-        <a href={`/developers/api/${group.id}/`}>
-          <strong>{group.title}</strong>
-          <span>{group.description}</span>
-          <small>{operationsFor(group.id).length} operations</small>
-        </a>
-      ))}
+  <section class="api-section api-start" aria-labelledby="integrations-title">
+    <h2 id="integrations-title">Integrations</h2>
+    <p>A small, stable API for automation and monitoring.</p>
+    <div class="api-start-action">
+      <a class="api-primary-link" href="/developers/api/integrations/quick-start/">Build your first integration</a>
+      <a href="/developers/api/integrations/">Native API reference</a>
     </div>
+    <div class="api-task-grid">
+      {tasks.map(([id, title, description]) => <a href={`/developers/api/integrations/quick-start/#${id}`}><strong>{title}</strong><span>{description}</span></a>)}
+      <a href="/developers/api/integrations/webhooks/"><strong>Receive webhooks</strong><span>Set up events, verify signatures and handle retries.</span></a>
+    </div>
+  </section>
+  <section class="api-section" aria-labelledby="tools-title">
+    <h2 id="tools-title">Connect a tool</h2>
+    <div class="api-tool-links">{tools.map((tool) => <a href={`/developers/api/integrations/${tool.id}/`}>{tool.data.title}</a>)}</div>
+  </section>
+  <section class="api-section api-client-entry" aria-labelledby="clients-title">
+    <span class="api-bucket-label">Clients</span>
+    <h2 id="clients-title">Building a Portico app</h2>
+    <p>The full generated API reference for apps that browse, play and manage media.</p>
+    <a href="/developers/api/clients/">Open the full reference</a>
   </section>
 </ApiLayout>
